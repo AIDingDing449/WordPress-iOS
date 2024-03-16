@@ -1,0 +1,1918 @@
+/* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
+/* Plural-Forms: nplurals=1; plural=0; */
+/* Generator: GlotPress/4.0.0 */
+/* Language: th */
+
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
+"%1$@ on %2$@" = "%1$@ บน %2$@";
+
+/* Accessibility label for comments button (plural)
+   Number of Comments per Page */
+"%@ comments" = "%@ ความเห็น";
+
+/* Number of days after which comments should autoclose */
+"%@ days" = "%@ วัน";
+
+/* Comments Threading Levels
+   Number of Threading Levels */
+"%@ levels" = "%@ ระดับ";
+
+/* Number of Links */
+"%@ links" = "%@ ลิงก์";
+
+/* Age between dates over one day.
+   Number of days */
+"%d days" = "%d วัน";
+
+/* Age between dates over one hour. */
+"%d hours" = "%d ชั่วโมง";
+
+/* Age between dates over one month. */
+"%d months" = "%d เดือน";
+
+/* Sepoken image size in pixels (e.g. 300 pixels) */
+"%d pixels" = "%d พิกเซล";
+
+/* Age between dates over one year. */
+"%d years" = "%d ปี";
+
+/* Empty Post Title */
+"(No Title)" = "(ไม่มีหัวข้อ)";
+
+/* Lets a user know that a local draft does not have a title. */
+"(no title)" = "(ไม่มีหัวข้อ)";
+
+/* Placeholder text for the title of a site */
+"A title for the site" = "หัวข้อสำหรับเว็บไซต์";
+
+/* Label for active Theme browser cell */
+"ACTIVE" = "ใช้งาน";
+
+/* My Profile 'About me' label */
+"About Me" = "เกี่ยวกับฉัน";
+
+/* Title for the account section in site settings screen */
+"Account" = "บัญชี";
+
+/* Account Settings Title
+   Link to Account Settings section */
+"Account Settings" = "การตั้งค่าบัญชี";
+
+/* Theme Activate action title */
+"Activate" = "เปิดการใช้งาน";
+
+/* Title of alert when theme activation fails */
+"Activation Error" = "ผิดพลาดในการเปิดใช้งาน";
+
+/* No comment provided by engineer. */
+"Activity Logs" = "log กิจกรรม";
+
+/* The title on the add category screen */
+"Add a Category" = "เพิ่มหมวดหมู่";
+
+/* No comment provided by engineer. */
+"Add alt text" = "เพิ่ม alt text";
+
+/* Add self-hosted site button */
+"Add self-hosted site" = "เพิ่มเว็บที่ติดตั้งบนโฮสท์ตัวเอง";
+
+/* Label for url blog setting
+   Register Domain - Address information field placeholder for Address line */
+"Address" = "ที่อยู่";
+
+/* Image alignment option title.
+   Title of the screen for choosing an image's alignment. */
+"Alignment" = "จัดตำแหน่ง";
+
+/* Autoapprove every comment
+   Browse all themes selection title
+   Displays all of the historical threats
+   Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
+"All" = "ทั้งหมด";
+
+/* An option in a list. Automatically approve all comments */
+"All comments" = "ความเห็นทั้งหมด";
+
+/* Settings: Comments Enabled */
+"Allow Comments" = "อนุญาตความเห็น";
+
+/* Image alt attribute option title.
+   Label for the alt for a media asset (image) */
+"Alt Text" = "Alt Text";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "นิรนาม";
+
+/* The title of the app appearance settings screen */
+"Appearance" = "รูปแบบ";
+
+/* Approve action. Verb
+   Approve comment (verb)
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
+"Approve" = "อนุมัติ";
+
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
+"Approved" = "อนุมัติแล้ว";
+
+/* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
+"Are you sure you want to continue?\n All site data will be removed from your %@." = "คุณแน่ใจหรือว่าต้องการทำต่อ?\n ข้อมูลเว็บทั้งหมดจะถูกลบจาก %@ ของคุณ";
+
+/* No comment provided by engineer. */
+"Authenticating" = "กำลังตรวจสอบ";
+
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
+"Author" = "ผู้เขียน";
+
+/* Label for comments by author
+   Period Stats 'Authors' header */
+"Authors" = "ผู้เขียน";
+
+/* Discussion Settings Title
+   Settings: Comments Approval settings */
+"Automatically Approve" = "อนุมัติอัตโนมัติ";
+
+/* Discussion Settings */
+"Automatically Close" = "ปิดการอนุมัติอัตโนมัติ";
+
+/* Explains the effect of the 'All comments' auto approval setting */
+"Automatically approve everyone's comments." = "อนุมัติความเห็นทุกคนอัตโนมัติ";
+
+/* Explains the effect of the 'Known users' auto approval setting */
+"Automatically approve if the user has a previously approved comment." = "อนุมัติอัตโนมัติถ้าผู้ใช้มีความเห็นเก่าที่เคยได้รับอนุมัติ";
+
+/* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
+   Back button title.
+   Dismiss view
+   Previous web page */
+"Back" = "กลับไป";
+
+/* Accessibility label for block quote button on formatting toolbar.
+   Discoverability title for block quote keyboard shortcut. */
+"Block Quote" = "ปิดกั้นการโค้ดข้อความ";
+
+/* Title of a button that displays the WordPress.com blog */
+"Blog" = "บล็อก";
+
+/* Accessibility label for bold button on formatting toolbar.
+   Discoverability title for bold formatting keyboard shortcut. */
+"Bold" = "ตัวหนา";
+
+/* Text snippet summarizing what comment paging does. */
+"Break comment threads into multiple pages." = "แตกความเห็นที่เกี่ยวข้องกันเป็นหลาย ๆ หน้า";
+
+/* Title of a prompt letting the user know that they must wait until the current aciton completes. */
+"Busy" = "ยุ่ง";
+
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
+"Camera" = "กล้อง";
+
+/* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
+   Button shown when the author is asked for publishing confirmation.
+   Button title, cancel fixing all threats
+   Button title. Cancels a pending action.
+   Button title. Cancels automatic uploading of the post when the device is back online.
+   Button title. Tapping it cancels the login flow.
+   Cancel
+   Cancel a prompt
+   Cancel Action
+   Cancel action on share extension editor screen.
+   Cancel action on the app extension category picker screen.
+   Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
+   Cancel action on the app extension tags picker screen.
+   Cancel action title
+   Cancel button
+   Cancel button for alert
+   Cancel button label
+   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
+   Cancel button.
+   Cancel button. Site creation modal popover.
+   Cancel copying link to comment button title
+   Cancel editing an image
+   Cancel Insight management action sheet.
+   Cancel prompt for user information.
+   Cancel registering a domain
+   Cancel removing a plugin
+   Cancel site creation
+   Cancel site creation.
+   Cancel the crop
+   Cancel updating User's Role
+   Cancel. Action.
+   Cancels an Action
+   Cancels an alert.
+   Cancels the mark all as read action.
+   Editing GIF alert cancel action button.
+   Menus cancel button for deleting a menu.
+   Menus cancel button within text bar while editing items.
+   Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
+   Text displayed by the left navigation button title
+   The title of a cancel button.
+   Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
+   Title. Title of a cancel button. Tapping disnisses an alert.
+   Verb. A button title.
+   Verb. A button title. Tapping cancels an action.
+   Verb. Button title. Tapping cancels an action.
+   Verb. Tapping cancels the publicize account selection.
+   Verb. Title for Jetpack Restore cancel button. */
+"Cancel" = "ยกเลิก";
+
+/* Dialog box title for when the user is canceling an upload. */
+"Cancel media uploads" = "ยกเลิกการอัปโหลดไฟล์สื่อ";
+
+/* Image caption field label (for editing)
+   Noun. Label for the caption for a media asset (image / video) */
+"Caption" = "คำอธิบาย";
+
+/* Alert title.
+   Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+"Careful!" = "ควรระวัง";
+
+/* Label for the categories field. Should be the same as WP core. */
+"Categories" = "หมวดหมู่";
+
+/* Error popup title to indicate that there was no category title filled in. */
+"Category title missing." = "หัวข้อหมวดหมู่หายไป";
+
+/* Center alignment for an image. Should be the same as in core WP. */
+"Center" = "ตรงกลาง";
+
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "การรับรองผิดพลาด";
+
+/* No comment provided by engineer. */
+"Clear Old Activity Logs" = "ล้างค่า log กิจกรรมเก่า";
+
+/* Label for number of clicks.
+   Period Stats 'Clicks' header */
+"Clicks" = "การกด";
+
+/* Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
+   Dismiss the current view
+   Dismisses the current screen */
+"Close" = "ปิด";
+
+/* Settings: Close comments after X period */
+"Close Commenting" = "ปิดการแสดงความเห็น";
+
+/* Close comments after a given number of days */
+"Close after" = "ปิดหลังจาก";
+
+/* Close Comments Title */
+"Close commenting" = "ปิดการแสดงความเห็น";
+
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments */
+"Comment" = "ความเห็น";
+
+/* Displayed when a Comment is deleted */
+"Comment has been deleted" = "ลบความเห็นแล้ว";
+
+/* Comments table header label.
+   Filters Comments Notifications
+   Insights 'Comments' header
+   Label for number of comments.
+   Label for Period Overview comments
+   Label for post comments count.
+   Noun. Title. Links to the blog's Comments screen.
+   Settings: Comment Sections
+   Text for the 'comment' button when there are multiple comments
+   Title for the Blog's Comments Section View
+   Title of the reader's comments screen
+   Today's Stats 'Comments' label */
+"Comments" = "ความเห็น";
+
+/* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
+"Comments on" = "ความเห็นบน";
+
+/* Notification Settings Channel */
+"Comments on Other Sites" = "ความเห็นบนเว็บอื่น";
+
+/* Setting: indicates if New Comments will be notified */
+"Comments on my site" = "ความเห็นบนเว็บของฉัน";
+
+/* A label title. */
+"Comments per page" = "ความเห็นต่อหน้า";
+
+/* Setting: WordPress.com Community */
+"Community" = "ชุมชน";
+
+/* The action is completed */
+"Completed" = "เสร็จแล้ว";
+
+/* Section title for the configure table section in the blog details screen */
+"Configure" = "ปรับแต่ง";
+
+/* Verb. Title for Jetpack Restore confirm button. */
+"Confirm" = "ยืนยัน";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "กำลังเชื่อมต่อไปยัง  WordPress.com";
+
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "อ่านเพิ่มเติม";
+
+/* Error message informing the user that there was a problem subscribing to a site or feed. */
+"Could not follow the site at the address specified." = "ไม่สามารถติดตามเว็บไซต์ตามที่อยู่ที่ระบุ";
+
+/* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
+"Could not toggle Follow: missing blogURL attribute" = "ไม่สามารถติดตาม toggle : blogURL attribute หายไป";
+
+/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
+"Could not unfollow the site at the address specified." = "ไม่สามารถเลิกติดตามเว็บตามที่อยู่ที่ระบุ";
+
+/* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
+"Could you tell us how we could improve?" = "คุณสามารถบอกว่าเราจะพัฒนาได้อย่างไรหรือไม่?";
+
+/* No comment provided by engineer. */
+"Couldn't Connect" = "ไม่สามารถเชื่อมต่อได้";
+
+/* Period Stats 'Countries' header */
+"Countries" = "ประเทศ";
+
+/* Label for list of countries.
+   Register Domain - Domain contact information field Country */
+"Country" = "ประเทศ";
+
+/* The button title text for creating a new account. */
+"Create Account" = "สร้างบัญชี";
+
+/* Button to progress to the next step
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
+"Create Site" = "สร้างเว็บไซต์";
+
+/* Create WordPress.com site button */
+"Create WordPress.com site" = "สร้างเว็บไซต์ WordPress.com";
+
+/* No comment provided by engineer. */
+"Current" = "ตอนนี้";
+
+/* Current Theme text that appears in Theme Browser Header */
+"Current Theme" = "theme ปัจจุบัน";
+
+/* Customize button that appears in Theme Browser Header
+   Theme Customize action title */
+"Customize" = "ปรับแต่ง";
+
+/* Notification Settings for your own blogs */
+"Customize your site settings for Likes, Comments, Follows, and more." = "ปรับแต่งการตั้งค่าเว็บสำหรับการชื่นชอบ ความเห็น ติดตามและมากกว่าเดิม";
+
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
+"Dashboard" = "หน้าควบคุม";
+
+/* Title of Days stats filter. */
+"Days" = "วัน";
+
+/* Label for selecting the default category of a post
+   Title for selecting a default category for a post */
+"Default Category" = "หมวดหมู่ค่าเริ่มต้น";
+
+/* Label for selecting the default post format
+   Title for screen to select a default post format for a blog */
+"Default Post Format" = "รูปแบบเรื่องค่าเริ่มต้น";
+
+/* Discussion Settings: Posts Section */
+"Defaults for New Posts" = "ค่าเริ่มต้นสำหรับเรื่องใหม่";
+
+/* Delete
+   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
+   Title for button that permanently deletes a media item (photo / video)
+   Title of a delete button
+   Title of the trash confirmation alert. */
+"Delete" = "ลบ";
+
+/* Delete option in the confirmation alert when deleting a post from the trash.
+   Title for button on the comment details page that deletes the comment when tapped. */
+"Delete Permanently" = "ลบอย่างถาวร";
+
+/* Label for the description for a media asset (image / video)
+   Section header for tag name in Tag Details View.
+   Title of section that contains plugins' description */
+"Description" = "คำขยายความ";
+
+/* Details button that appears in the Theme Browser Header
+   Theme Details action title */
+"Details" = "รายละเอียด";
+
+/* Adjective. Comment threading is disabled. */
+"Disabled" = "ปิดใช้งาน";
+
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
+   Menus button title for canceling/discarding changes made. */
+"Discard" = "เพิกเฉย";
+
+/* Menus alert button title to discard changes. */
+"Discard Changes" = "ยกเลิกการเปลี่ยนแปลง";
+
+/* Title for button that disconnects Jetpack from the site
+   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
+   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+"Disconnect" = "ตัดการเชื่อมต่อ";
+
+/* Disconnect from WordPress.com button */
+"Disconnect from WordPress.com" = "ตัดการเชื่อมต่อกับ WordPress.com";
+
+/* Label for selecting the Blog Discussion Settings section
+   Title for the Discussion Settings Screen */
+"Discussion" = "การสนทนา";
+
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
+"Dismiss" = "ยกเลิก";
+
+/* Display Name label text.
+   My Profile display name label
+   User's Display Name */
+"Display Name" = "ชื่อที่แสดง";
+
+/* A done button
+   Accessibility label for the Done button in the Me screen.
+   Button text on site creation epilogue page to proceed to My Sites.
+   Done button title
+   Done editing an image
+   Done. Action.
+   Label for confirm feature image of a post
+   Label for Done button
+   Label on button to dismiss revisions view
+   Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
+   Tapping a button with this label allows the user to exit the Site Creation flow
+   Text displayed by the right navigation button title
+   Title for a Done button.
+   Title for button that will dismiss this view
+   Title for the button that will dismiss this view.
+   Title of the Done button on the me page */
+"Done" = "เสร็จแล้ว";
+
+/* Name for the status of a draft post. */
+"Draft" = "โครงเรื่อง";
+
+/* Editing GIF alert default action button.
+   Edits a Comment
+   Edits the comment
+   User action to edit media details. */
+"Edit" = "แก้ไข";
+
+/* View title when editing a comment. */
+"Edit Comment" = "แก้ไขความเห็น";
+
+/* Moderation Keyword Edition Title */
+"Edit Moderation Word" = "แก้ไขการจัดการคำ";
+
+/* Button label for editing a post
+   Button title. Opens the editor to edit an existing post.
+   Opens the editor to edit an existing post. */
+"Edit Post" = "แก้ไขเรื่อง";
+
+/* Accessibility label for button to edit a comment from a notification */
+"Edit comment" = "แก้ไขความเห็น";
+
+/* Title for the editor settings section */
+"Editor" = "ตัวแก้ไข";
+
+/* Accessibility label for the Email text field.
+   Account Settings Email label
+   Email address text field placeholder
+   Email Notifications Channel
+   Label for email followers
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
+"Email" = "อีเมล์";
+
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "ที่อยู่อีเมล์";
+
+/* Notification Settings Channel */
+"Email from WordPress.com" = "อีเมลจาก WordPress.com";
+
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "URL ว่างเปล่า";
+
+/* No comment provided by engineer. */
+"Enter a password" = "กรุณาใส่รหัสผ่าน";
+
+/* (placeholder) Help enter WordPress password
+   Placeholder of a field to type a password to protect the post. */
+"Enter password" = "ใส่รหัสผ่าน";
+
+/* (placeholder) Help enter WordPress username */
+"Enter username" = "ใส่ชื่อผู้ใช้";
+
+/* Generic error alert title
+   Generic error.
+   Generic popup title for any type of error. */
+"Error" = "ผิดพลาด";
+
+/* Text displayed when load post fails. */
+"Error Loading Post" = "ผิดพลาดในการโหลดเรื่อง";
+
+/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
+"Error occurred\nduring saving" = "ความผิดพลาดเกิดขึ้น\nในขณะกำลังบันทึก";
+
+/* Placeholder text for the tagline of a site */
+"Explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร";
+
+/* Status for Media object that is failed upload or export.
+   The action failed */
+"Failed" = "ล้มเหลว";
+
+/* Label for the Featured Image area in post settings.
+   Title for the Featured Image view */
+"Featured Image" = "รูปภาพพิเศษ";
+
+/* No comment provided by engineer. */
+"Featured Image did not load" = "โหลดรูปพิเศษไม่ได้";
+
+/* Text displayed while fetching themes */
+"Fetching Themes..." = "กำลังดึงธีม...";
+
+/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
+"Fetching comments..." = "กำลังดึงความเห็น...";
+
+/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
+"Fetching pages..." = "กลำังดึงข้อมูลหน้า...";
+
+/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
+"Fetching posts..." = "กำลังดึงข้อมูลเรื่อง...";
+
+/* My Profile first name label
+   Register Domain - Domain contact information field First name
+   User's First Name */
+"First Name" = "ชื่อ";
+
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog. */
+"Follow" = "ติดตาม";
+
+/* Displayed in the Notification Settings View
+   Section title for sites the user has followed. */
+"Followed Sites" = "เว็บที่ติดตาม";
+
+/* Label for list of followers.
+   User role badge */
+"Follower" = "ผู้ติดตาม";
+
+/* Blog Followers
+   Insights 'Followers' header
+   Label for number of followers. */
+"Followers" = "ผู้ติดตาม";
+
+/* User is following the blog. */
+"Following" = "กำลังติดตาม";
+
+/* Filters Follows Notifications */
+"Follows" = "ติดตาม";
+
+/* Next web page */
+"Forward" = "ฟอร์เวิร์ด";
+
+/* Browse free themes selection title */
+"Free" = "ฟรี";
+
+/* Full size image. (default). Should be the same as in core WP. */
+"Full Size" = "ขนาดเต็ม";
+
+/* Add New Stats Card category title
+   Title for the general section in site settings screen */
+"General" = "ทั่วไป";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "ได้รับข้อมูลบัญชี";
+
+/* Cancel */
+"Give Up" = "ยอมแพ้";
+
+/* Button label for going to settings to approve push notifications
+   Opens WPiOS Settings.app Section */
+"Go to iOS Settings" = "ไปที่การตั้งค่า iOS";
+
+/* Accessibility label for HTML button on formatting toolbar.
+   HTML Attachment Label */
+"HTML" = "HTML";
+
+/* Help button
+   Open editor help options */
+"Help" = "ช่วยเหลือ";
+
+/* Link to Help section
+   Open editor help options
+   Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
+"Help & Support" = "ช่วยเหลือและสนับสนุน";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "ซ่อน";
+
+/* Hide All */
+"Hide All" = "ซ่อนทั้งหมด";
+
+/* Hide All Sites */
+"Hide All Sites" = "ซ่อนเว็บทั้งหมด";
+
+/* No comment provided by engineer. */
+"Hide keyboard" = "ซ่อนคีย์บอร์ด";
+
+/* Moderation Keys Title
+   Settings: Comments Moderation */
+"Hold for Moderation" = "กดค้างสำหรับการจัดการ";
+
+/* Ignore action. Verb */
+"Ignore" = "เพิกเฉย";
+
+/* Title of the screen for choosing an image's size. */
+"Image Size" = "ขนาดรูปภาพ";
+
+/* Undated post time label */
+"Immediately" = "ทันที";
+
+/* Explain what is the purpose of the tagline */
+"In a few words, explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร  ด้วยคำสั้น ๆ";
+
+/* WordPress.com Community Footer Text */
+"Information on WordPress.com courses and events (online & in-person)." = "ข้อมูลบนหลักสูตรและเหตุการ์ณ WordPress.com (แบบออนไลน์ & แบบเห็นหน้า)";
+
+/* Default button title used in media picker to insert media (photos / videos) into a post.
+   Label action for inserting a link on the editor */
+"Insert" = "ใส่";
+
+/* Accessibility label for insert link button on formatting toolbar.
+   Discoverability title for insert link keyboard shortcut.
+   Label action for inserting a link on the editor */
+"Insert Link" = "ใส่ลิงก์";
+
+/* Title of Insights stats filter. */
+"Insights" = "ข้อมูลเชิงลึก";
+
+/* No comment provided by engineer. */
+"Invalid Site Address" = "ที่อยู่เว็บไม่ถูกต้อง";
+
+/* No comment provided by engineer. */
+"Invalid Site Title" = "หัวข้อเว็บไซต์นี้ใช้งานไม่ได้";
+
+/* No comment provided by engineer. */
+"Invalid username" = "ชื่อผู้ใช้ใช้งานไม่ได้";
+
+/* Accessibility label for italic button on formatting toolbar.
+   Discoverability title for italic formatting keyboard shortcut. */
+"Italic" = "ตัวเอียง";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "การตั้งค่า Jetpack";
+
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
+   Button shown when the author is asked for publishing confirmation.
+   Goes back to editing the post. */
+"Keep Editing" = "คงการแก้ไขไว้";
+
+/* Autoapprove only from known users */
+"Known Users" = "ผู้ใช้ทีรู้จัก";
+
+/* An option in a list. Automatically approve comments from known users. */
+"Known user's comments" = "ความเห็นของผู้ใช้ที่รู้จัก";
+
+/* Large image size. Should be the same as in core WP. */
+"Large" = "ขนาดใหญ่";
+
+/* My Profile last name label
+   Register Domain - Domain contact information field Last name
+   User's Last Name */
+"Last Name" = "นามสกุล";
+
+/* Insights latest post summary header */
+"Latest Post Summary" = "สรุปเรื่องล่าสุด";
+
+/* A button title.
+   Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
+   Read more button title shown in alert announcing new Create Button feature. */
+"Learn more" = "เรียนรู้เพิ่มเติม";
+
+/* Left alignment for an image. Should be the same as in core WP. */
+"Left" = "ซ้าย";
+
+/* Button title to Like a comment.
+   Like (verb)
+   Like a post.
+   Likes a Comment
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
+"Like" = "ไลค์";
+
+/* A comment is marked as liked */
+"Liked" = "ชื่นชอบแล้ว";
+
+/* Filters Likes Notifications
+   Label for Period Overview likes
+   Label for post likes count.
+   Text for the 'like' button. Tapping removes the 'liked' status from a post.
+   Today's Stats 'Likes' label */
+"Likes" = "ชื่นชอบ";
+
+/* Setting: indicates if Comment Likes will be notified */
+"Likes on my comments" = "ความชื่นชอบบนความเห็นของฉัน";
+
+/* Setting: indicates if Replies to your comments will be notified */
+"Likes on my posts" = "ความชื่นชอบบนเรื่องของฉัน";
+
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
+"Link" = "ลิงก์";
+
+/* Link name field placeholder */
+"Link Name" = "ชื่อลิงก์";
+
+/* Image link option title. */
+"Link To" = "ลิงก์ไปที่";
+
+/* A label title
+   Comments Paging
+   Settings: Comments Approval settings */
+"Links in comments" = "ลิงก์ในความเห็น";
+
+/* A short label.  A call to action to load more posts. */
+"Load more posts" = "โหลดเรื่องเพิ่มเติม";
+
+/* A short message to inform the user the requested stream is being loaded. */
+"Loading stream..." = "กำลังโหลดสตรีม...";
+
+/* Loading tags
+   Loading tags.
+   Loading. Verb
+   Suggestions loading message
+   Text displayed in HUD while a media item is being loaded.
+   Text displayed in HUD while a revision post is loading.
+   Text displayed while loading time zones */
+"Loading..." = "กำลังโหลด...";
+
+/* Status for Media object that is only exists locally. */
+"Local" = "บนเครื่อง";
+
+/* Used when geo-tagging posts, if the geo-tagging failed. */
+"Location unknown" = "ไม่ทราบที่อยู่";
+
+/* No comment provided by engineer. */
+"Log Files By Created Date" = "ไฟล์ log โดยวันที่สร้างขึ้น";
+
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
+"Log In" = "เข้าสู่ระบบ";
+
+/* Login Request Expired */
+"Login Request Expired" = "คำขอเข้าสู่ระบบหมดอายุ";
+
+/* No comment provided by engineer. */
+"Logs" = "log";
+
+/* Title of a button. */
+"Lost your password?" = "จำรหัสผ่านไม่ได้?";
+
+/* No comment provided by engineer. */
+"Main Navigation" = "เมนูนำทางหลัก";
+
+/* Button leading to a screen where users can manage their installed plugins
+   Page title for the screen to manage your list of followed sites.
+   Screen title, where users can see all their installed plugins.
+   Title for the Reader Manage screen.
+   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
+   Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
+"Manage" = "จัดการ";
+
+/* Return to blog screen action when theme activation succeeds */
+"Manage site" = "จัดการเว็บ";
+
+/* Title for the image size settings option. */
+"Max Image Upload Size" = "ขนาดรูปภาพอัปโหลดใหญ่สุด";
+
+/* Accessibility label for the Me button in My Site.
+   Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
+   Title of the 'Me' tab - used for spotlight indexing on iOS. */
+"Me" = "ฉัน";
+
+/* Noun. Title. Links to the blog's Media library.
+   The menu item to select during a guided tour.
+   Title for the media section in site settings screen
+   Title label for the media settings section in the app settings */
+"Media" = "ไฟล์สื่อ";
+
+/* Message to indicate progress of uploading media to server */
+"Media Uploading" = "อัปโหลดไฟล์สื่อ";
+
+/* Medium image size. Should be the same as in core WP. */
+"Medium" = "ขนาดกลาง";
+
+/* The default text used for filling the name of a menu when creating it.
+   Title for the site menu view on the My Site screen */
+"Menu" = "เมนู";
+
+/* Title of Months stats filter. */
+"Months" = "เดือน";
+
+/* Post Stats months and years header. */
+"Months and Years" = "เดือนและปี";
+
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Post List (compact view).
+   Accessibility label for the More button on formatting toolbar.
+   Accessibility label for the More button on Reader Cell
+   Accessibility label for the More button on Reader's post details
+   Action button to display more available options */
+"More" = "เพิ่มเติม";
+
+/* Title for button on the comment details page that moves the comment to trash when tapped.
+   Trash option in the trash confirmation alert.
+   Trashes the comment */
+"Move to Trash" = "ย้ายไปถังขยะ";
+
+/* Link to My Profile section
+   My Profile view title */
+"My Profile" = "ประวัติส่วนตัวของฉัน";
+
+/* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
+   The accessibility value of the my site tab.
+   Title of My Site tab */
+"My Site" = "เว็บของฉัน";
+
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+"My Sites" = "เว็บไซต์ของฉัน";
+
+/* 'Need help?' button label, links off to the WP for iOS FAQ. */
+"Need Help?" = "ต้องการความช่วยเหลือ?";
+
+/* Moderation Keyword Insertion Title */
+"New Moderation Word" = "การจัดการคำแบบใหม่";
+
+/* New Post 3D Touch Shortcut */
+"New Post" = "เรื่องใหม่";
+
+/* Screen title, where users can see the newest plugins */
+"Newest" = "ใหม่สุด";
+
+/* Sort Order */
+"Newest first" = "เรียงตามใหม่สุดก่อน";
+
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
+"Next" = "ต่อไป";
+
+/* Label for a cancel button */
+"No" = "ไม่";
+
+/* Title of error prompt when no internet connection is available. */
+"No Connection" = "ไม่มีการเชื่อมต่อ";
+
+/* List Editor Empty State Message */
+"No Items" = "ไม่มีรายการ";
+
+/* An option in a list. Automatically approve no comments. */
+"No comments" = "ไม่มีความเห็น";
+
+/* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
+   Displayed when there are no comments in the Comments views. */
+"No comments yet" = "ยังไม่มีความเห็น";
+
+/* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
+"No likes yet" = "ยังไม่มีการชื่นชอบ";
+
+/* A message title */
+"No posts" = "ไม่มีเรื่อง";
+
+/* A default message shown when the reader can find no post to display */
+"No posts have been made recently" = "ไม่มีเรื่องที่เขียนเร็ว ๆ นี้";
+
+/* Message shown whent the reader finds no posts for the chosen tag */
+"No posts have been made recently with this tag." = "ไม่มีการเขียนเรื่องใด ๆ ด้วยป้ายกำกับนี้เมื่อเร็ว ๆ มานี้";
+
+/* A message title */
+"No recent posts" = "ไม่มีเรื่องเร็ว ๆ นี้";
+
+/* Disabled
+   No alignment for an image (default). Should be the same as in core WP.
+   No comment will be autoapproved
+   No size class defined for the image. Should be the same as in core WP. */
+"None" = "ไม่มี";
+
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
+"Not Now" = "ไม่ใช่ในตอนนี้";
+
+/* Title displayed in the Notification settings
+   Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
+"Notification Settings" = "การตั้งค่าการเตือน";
+
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
+   Notifications tab bar item accessibility label
+   Notifications View Controller title
+   Noun. Name of the Notifications feature
+   The item to select during a guided tour.
+   Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
+"Notifications" = "คำเตือน";
+
+/* WordPress.com Notifications Timeline */
+"Notifications Tab" = "แท๊บการเตือน";
+
+/* Notifications tab bar item accessibility label, unread notifications state */
+"Notifications Unread" = "คำเตือนที่ยังไม่ได้อ่าน";
+
+/* A button title for closing the dialog.
+   A button title.
+   Accept Action
+   Alert dismissal title
+   Button title. Acknowledges a prompt.
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Default action
+   Dismisses the alert
+   Marks all notifications as read.
+   Menus: button title for finishing editing of a menu item.
+   OK
+   OK button for alert
+   Ok button for dismissing alert helping users understand their site address
+   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
+   OK Button title shown in alert informing users about the Reader Save for Later feature.
+   Submit button on prompt for user information.
+   Title of a button that dismisses a prompt
+   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
+   Title of primary button on alert prompting verify their accounts while attempting to publish */
+"OK" = "ตกลง";
+
+/* Disabled */
+"Off" = "ปิด";
+
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
+"Older than 2 days" = "เก่ากว่า 2 วัน";
+
+/* Comments Months Section Header
+   Notifications Months Section Header */
+"Older than a Month" = "เก่ากว่าหนึ่งเดือน";
+
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
+"Older than a Week" = "เก่ากว่าหนึ่งสัปดาห์";
+
+/* Sort Order */
+"Oldest first" = "เรียงตามเก่าสุดก่อน";
+
+/* An informal exclaimation meaning `something went wrong`.
+   Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
+"Oops!" = "โอ๊ะ";
+
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
+"Open Settings" = "การตั้งค่าแบบเปิด";
+
+/* No comment provided by engineer. */
+"Open in Safari" = "เปิดในซาฟารี";
+
+/* WordPress.com Research Footer Text */
+"Opportunities to participate in WordPress.com research & surveys." = "โอกาสในการเข้าร่วมการสำรวจและวิจัยของ WordPress.com";
+
+/* Placeholder to indicate that filling out the field is optional. */
+"Optional" = "ทางเลือก";
+
+/* Accessibility label for Ordered list button on formatting toolbar. */
+"Ordered List" = "รายชื่อเรียงลำดับ";
+
+/* Indicates a video will use its original size when uploaded.
+   Indicates an image will use its original size when uploaded. */
+"Original" = "ดั้งเดิม";
+
+/* Used to attribute a post back to its original author.  The '%@' characters are a placholder for the author's name. */
+"Originally posted by %@" = "เริ่มเขียนคนแรกโดย  %@";
+
+/* Used to attribute a post back to its original author and blog.  The '%@' characters are placholders for the author's name, and the author's blog repsectively. */
+"Originally posted by %@ on %@" = "เริ่มเขียนคนแรกโดย  %1$@ บน %2$@";
+
+/* Used to attribute a post back to its original blog.  The '%@' characters are a placholder for the blog name. */
+"Originally posted on %@" = "เริ่มเขียนที่แรกบน %@";
+
+/* Displayed in the Notification Settings View
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
+"Other" = "อื่น ๆ";
+
+/* Other Notifications Streams Title
+   Other Sites Notification Settings Title */
+"Other Sites" = "เว็บอื่น";
+
+/* Noun. Title. Links to the blog's Pages screen.
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
+"Pages" = "หน้า";
+
+/* Comments Paging
+   Discussion Settings
+   Settings: Comments Paging preferences */
+"Paging" = "การใส่เลขหน้า";
+
+/* Placeholder to set a parent category for a new category.
+   Title for selecting parent category of a category */
+"Parent Category" = "หมวดหมู่หลัก";
+
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Label for the password field. Should be the same as WP core.
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
+   Title for screen that shows self hosted password editor. */
+"Password" = "รหัสผ่าน";
+
+/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
+"Password protected" = "ใส่รหัสผ่านป้องกันแล้ว";
+
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
+   Title of pending Comments filter. */
+"Pending" = "รอตรวจสอบ";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "รอคอยการตรวจสอบ";
+
+/* Noun. Title of the people management feature.
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
+"People" = "ผู้คน";
+
+/* Label for date periods. */
+"Period" = "ช่วงเวลา";
+
+/* Section title for the personalize table section in the blog details screen. */
+"Personalize" = "ความเป็นส่วนตัว";
+
+/* Politely asks the user to check their internet connection before trying again. */
+"Please check your internet connection and try again." = "โปรดตรวจสอบการเชื่อมต่ออินเตอร์เนทของคุณแล้วลองอีกครั้ง";
+
+/* No comment provided by engineer. */
+"Please enter a site address." = "โปรดใส่ที่อยู่เว็บไซต์";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "กรุณาใส่ชื่อผู้ใช้";
+
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "โปรดใส่ที่อยู่อีเมล์ที่ใช้งานได้";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "โปรดใส่การรับรองของคุณ";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "กรุณากรอกข้อมูลในช่องทั้งหมด";
+
+/* No comment provided by engineer. */
+"Please try entering your login details again." = "กรุณาลองใส่ข้อมูลเข้าสู่ระบบของคุณอีกครั้ง";
+
+/* Asks the usre to wait until the currently running fetch request completes. */
+"Please wait til the current fetch completes." = "โปรดรอจนกว่าการดึงข้อมูลล่าสุดจะสำเร็จ";
+
+/* Header of section in Plugin Directory showing popular plugins
+   Screen title, where users can see the most popular plugins */
+"Popular" = "ยอดนิยม";
+
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
+"Post" = "เรื่อง";
+
+/* Title for selecting categories for a post */
+"Post Categories" = "หมวดหมู่เรื่อง";
+
+/* For setting the format of a post.
+   The post formats available for the post. Should be the same as in core WP. */
+"Post Format" = "รูปแบบเรื่อง";
+
+/* All Time Stats 'Posts' label
+   Insights 'Posts' header
+   Noun. Title. Links to the blog's Posts screen.
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
+"Posts" = "เรื่อง";
+
+/* A message explaining the Posts I Like feature in the reader */
+"Posts that you like will appear here." = "เรื่องที่คุณชื่นชอบจะปรากฎที่นี่";
+
+/* Browse premium themes selection title */
+"Premium" = "พรีเมี่ยม";
+
+/* Label to show while converting and/or resizing media to send to server */
+"Preparing..." = "กำลังเตรียม...";
+
+/* Displays the Post Preview Interface
+   Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design.
+   Title for screen to preview a static content. */
+"Preview" = "ดูก่อน";
+
+/* No comment provided by engineer. */
+"Preview post" = "ดูก่อนเรื่อง";
+
+/* Label for the privacy setting
+   Privacy settings section header */
+"Privacy" = "ส่วนตัว";
+
+/* Title of button that displays the App's privacy policy */
+"Privacy Policy" = "นโยบายความเป็นส่วนตัว";
+
+/* Name for the status of a post that is marked private.
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+"Private" = "ส่วนตัว";
+
+/* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "การทำต่อจะลบข้อมูล WordPress.com ทั้งหมดออกจาอุปกรณ์  และลบฉบับร่างที่บันทึกในอุปกรณ์ด้วย  แต่คุณไม่ได้เสียอะไรเพราะว่าทั้งหมดถูกบันทึกไปที่บล็อก WordPress.com ของคุณแล้ว";
+
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
+"Public" = "สาธารณะ";
+
+/* Button shown when the author is asked for publishing confirmation.
+   Button title. Publishes a post.
+   Label for the publish (verb) button. Tapping publishes a draft post.
+   Publish post action on share extension site picker screen.
+   Section title for the publish table section in the blog details screen
+   Title for the publish settings view */
+"Publish" = "เผยแพร่";
+
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "เผยแพร่ทันที";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
+   Title of the published filter. This filter shows a list of posts that the user has published. */
+"Published" = "เผยแพร่แล้ว";
+
+/* Published on [date] */
+"Published on" = "เผยแพร่บน";
+
+/* Mobile Push Notifications */
+"Push Notifications" = "ส่งการเตือน";
+
+/* Suggests to enable Push Notification Settings in Settings.app */
+"Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
+
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
+   The accessibility value of the reader tab.
+   The default title of the Reader
+   The menu item to select during a guided tour.
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+"Reader" = "ผู้อ่าน";
+
+/* Text for the 'Reblog' button. */
+"Reblog" = "รีบล็อก";
+
+/* Settings: Receiving Pingbacks */
+"Receive Pingbacks" = "รับ Pingbacks";
+
+/* Post Stats recent weeks header. */
+"Recent Weeks" = "สัปดาห์ที่แล้ว";
+
+/* Label for link title in Referrers stat. */
+"Referrer" = "อ้างอิง";
+
+/* Period Stats 'Referrers' header */
+"Referrers" = "การอ้างอิง";
+
+/* Button label to refres a web page
+   The loading view button title displayed when an error occurred */
+"Refresh" = "โหลดใหม่";
+
+/* Label for selecting the related posts options */
+"Related Posts" = "เรื่องที่เกี่ยวข้อง";
+
+/* Alert button to confirm a plugin to be removed
+   Button label when removing a blog
+   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
+   Remove Action
+   Remove an image/posts/etc
+   Removes a self hosted site from the app */
+"Remove" = "ลบ";
+
+/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
+"Remove Featured Image" = "ลบรูปภาพพิเศษ";
+
+/* Label action for removing a link from the editor */
+"Remove Link" = "ลบลิงก์";
+
+/* Button to remove a site from the app */
+"Remove Site" = "ลบเว็บ";
+
+/* Prompt when removing a featured image from a post */
+"Remove this Featured Image?" = "ลบรูปภาพพิเศษนี้";
+
+/* Setting: indicates if Replies to Comments will be notified */
+"Replies to your comments" = "ข้อความตอบกลับมาที่ความเห็นของคุณ";
+
+/* Accessibility label for the reply button
+   Reply to a comment (verb)
+   Reply to a comment.
+   Verb. Button title. Reply to a comment. */
+"Reply" = "ตอบกลับ";
+
+/* The app successfully sent a comment */
+"Reply Sent!" = "ส่งความเห็นแล้ว";
+
+/* An explaination of a setting. */
+"Require manual approval for comments that include more than this number of links." = "ต้องการการอนุมัติด้วยมือสำหรับความเห็นที่ประกอบด้วยลิงก์ที่มากกว่าจำนวนนี้";
+
+/* Explains the effect of the 'No comments' auto approval setting. */
+"Require manual approval for everyone's comments." = "ต้องการการอนุมัติด้วยมือสำหรับความเห็นของทุกคน";
+
+/* Settings: Comments Approval settings */
+"Require name and email" = "ต้องการชื่อและอีเมล";
+
+/* Setting: WordPress.com Surveys */
+"Research" = "การค้นคว้า";
+
+/* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
+   Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
+   Title for Jetpack Restore Status screen
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
+"Restore" = "กู้คืน";
+
+/* A prompt to attempt the failed network request again
+   A prompt to attempt the failed network request again.
+   Button title, displayed when media has failed to upload. Allows the user to try the upload again.
+   Button title. Retries uploading a post.
+   If a user taps the button with this label, the action that evinced this error view will be retried.
+   Opens the media library .
+   Retries the upload of a user's post.
+   Retry updating User's Role
+   Retry. Action
+   Retry. Verb – retry a failed media upload.
+   The Jetpack view button title used when an error occurred
+   Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   User action to retry media upload. */
+"Retry" = "ลองใหม่";
+
+/* No comment provided by engineer. */
+"Retry?" = "ลองใหม่?";
+
+/* Right alignment for an image. Should be the same as in core WP. */
+"Right" = "ขวา";
+
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "ส่ง SMS";
+
+/* Menus save button title
+   Save Action
+   Save button label (saving content, ex: Post, Page, Comment, Category).
+   Save button label (saving content, ex: Post, Page, Comment).
+   Save draft post action on share extension site picker screen.
+   Settings Text save button title
+   Title for the button that will save the site icon
+   Title of action button to save a Reader post to read later. */
+"Save" = "บันทึก";
+
+/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
+"Save Draft" = "บันทึกโครงร่าง";
+
+/* Menus save button title while it is saving a Menu.
+   Text displayed in HUD while a post is being saved as a draft. */
+"Saving..." = "กำลังบันทึก...";
+
+/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
+"Schedule" = "ตารางเวลา";
+
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+"Scheduled" = "เข้าตารางเวลาแล้ว";
+
+/* Scheduled for [date] */
+"Scheduled for" = "เข้าตารางเวลาสำหรับ";
+
+/* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
+   Title of the Reader's search feature */
+"Search" = "ค้นหา";
+
+/* Period Stats 'Search Terms' header */
+"Search Terms" = "เงื่อนไขการค้นหา";
+
+/* Blog Picker's Title */
+"Select Site" = "เลือกเว็บ";
+
+/* Blog list page edit mode header label */
+"Select which sites will be shown in the site picker." = "เลือกเว็บใดที่จะแสดงในตัวเลือกเว็บ";
+
+/* Settings: Sending Pingbacks */
+"Send Pingbacks" = "ส่ง Pingbacks";
+
+/* Label for connected service in Publicize stat. */
+"Service" = "บริการ";
+
+/* Link to plugin's Settings
+   Section title
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
+"Settings" = "ตั้งค่า";
+
+/* Descriptive text for the Notifications Tab Settings */
+"Settings for notifications that appear in the Notifications tab." = "การตั้งค่าสำหรับการเตือนไม่ปรากฎในแทบการเตือน";
+
+/* Descriptive text for the Email Notifications Settings */
+"Settings for notifications that are sent to the email tied to your account." = "การตั้งค่าสำหรับการเตือนถูกส่งไปยังอีเมลที่ผูกกับบัญชีของคุณ";
+
+/* Descriptive text for the Push Notifications Settings */
+"Settings for push notifications that appear on your mobile device." = "การตั้งค่าสำหรับการเตือนแบบพุชที่ปรากฎบนอุปกรณ์มือถือของคุณ";
+
+/* Message to show when setting save failed */
+"Settings update failed" = "อัปเดตการตั้งค่าล้มเหลว";
+
+/* Accessibility label for share buttons in nav bars
+   Button label to share a post
+   Button label to share a web page
+   Shares the comment URL
+   Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
+   Verb. Title of a button. Pressing lets the user share a post to others. */
+"Share" = "แบ่งปัน";
+
+/* Aztec's Text Placeholder
+   Share Extension Content Body Text Placeholder */
+"Share your story here..." = "แบ่งปันเรื่องของคุณที่นี่...";
+
+/* Alert title picking theme type to browse */
+"Show themes:" = "แสดงธีม:";
+
+/* Label for time period in list of followers. */
+"Since" = "ตั้งแต่";
+
+/* Title for the Language Picker View */
+"Site Language" = "ภาษาของเว็บ";
+
+/* Default title for a site
+   Label for site title blog setting
+   The item to select during a guided tour.
+   Title for screen that show site title editor */
+"Site Title" = "หัวข้อเว็บ";
+
+/* The item to select during a guided tour. */
+"Site URL" = "URL เว็บ";
+
+/* Setting: indicates if Achievements will be notified */
+"Site achievements" = "ความสำเร็จของเว็บ";
+
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "ที่อยู่เว็บไซต์ต้องมีอย่างน้อย 4 ตัวอักษร";
+
+/* Setting: indicates if New Follows will be notified */
+"Site follows" = "ติดตามเว็บ";
+
+/* Image size option title. */
+"Size" = "ขนาด";
+
+/* Button that allows the user to skip the prompt and be brought to the app
+   Continue without making a selection
+   Continue without making a selection. */
+"Skip" = "ข้าม";
+
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "ขอโทษครับ  แต่ชื่อผู้ใช้ของคุณประกอบด้วยสัญญลักษณ์ที่ใช้งานไม่ได้ %@";
+
+/* Error title when updating the account password fails */
+"Sorry, can't log in" = "ขอโทษครับ ไม่สามารถเข้าสู่ระบบได้";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "ขอโทษครับ  ที่อยู่เว็บไซต์ต้องประกอบด้วยตัวอักษรเล็ก (a-z) และตัวเลขเท่านั้น";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "ขอโทษครับ  ที่อยู่เว็บต้องไม่มีตัวอักษร &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "ขอโทษครับ  ที่อยู่เว็บต้องมีตัวอักษรด้วย";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "ขอโทษครับ  แต่ที่อยู่อีเมล์นี้ถูกใช้ไปแล้ว";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "ขอโทษครับ  ที่อยู่อีเมล์นี้ไม่อนุญาตให้ใช้งาน";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "ขอโทษครับ  เว็บนั้นมีอยู่แล้ว";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "ขอโทษครับ  ชื่อเว็บนั้นถูกสงวนไว้";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "ขอโทษครับ ชื่อผู้ใช้นั้นมีอยู่แล้ว";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "ขอโทษครับ  ชื่อผู้ใช้นั้นไม่สามารถใช้ได้";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "ขอโทษครับ  ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษรตัวเล็ก(a ถึง z)และตัวเลขเท่านั้น";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "ขอโทษครับ  ชื่อผู้ใช้ต้องไม่มีตัวอักษร &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "ขอโทษครับ ชื่อผู้ใช้ต้องมีตัวอักษร (a ถึง z)  ด้วย";
+
+/* No comment provided by engineer. */
+"Sorry, you cannot access this feature. Please check your User Role on this site." = "ขอโทษครับ คุณไม่สามารถใช้คำสั่งนี้  กรุณาตรวจสอบบทบาทของคุณบนเว็บนี้";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "ขอโทษครับ คุณไม่อาจจะใช้ที่อยู่เว็บนั้นได้";
+
+/* Discussion Settings Title
+   Settings: Comments Sort Order */
+"Sort By" = "เรียงตาม";
+
+/* Title of button that displays the App's source code information */
+"Source Code" = "ซอร์สโค้ด";
+
+/* Button title for Spam comment state.
+   Marks comment as spam.
+   Title of spam Comments filter. */
+"Spam" = "สแปม";
+
+/* Standard post format label */
+"Standard" = "มาตรฐาน";
+
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
+   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
+   Stats 3D Touch Shortcut
+   Stats window title
+   The item to select during a guided tour. */
+"Stats" = "สถิติ";
+
+/* The status of the post. Should be the same as in core WP. */
+"Status" = "สถานะ";
+
+/* Accessibility label for strikethrough button on formatting toolbar. */
+"Strike Through" = "ขีดกลางตัวอักษร";
+
+/* Setting: WordPress.com Suggestions
+   Suggested domains */
+"Suggestions" = "ข้อเสนอแนะ";
+
+/* User role badge */
+"Super Admin" = "ผู้ควบคุมสูงสุด";
+
+/* Support button that appears in the Theme Browser Header
+   Theme Support action title */
+"Support" = "สนับสนุน";
+
+/* Title for back button that leads to the site picker screen. */
+"Switch Site" = "เปลี่ยนเว็บไซต์";
+
+/* Label for tagline blog setting
+   Title for screen that show tagline editor */
+"Tagline" = "คำอธิบาย";
+
+/* Label for selecting the blogs tags
+   Label for the tags field. Should be the same as WP core.
+   Label for the Tags Section in the Blog Settings
+   Tags menu item in share extension.
+   Title for the tag selector view */
+"Tags" = "ป้ายกำกับ";
+
+/* This is a status indicator on the editor */
+"Tap to cancel uploading." = "แตะเพื่อยกเลิกการอัปโหลด";
+
+/* Label for a button to retry loading posts */
+"Tap to retry" = "แตะเพื่อเลิกใหม่";
+
+/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
+"Taxonomy" = "ลำดับขั้น";
+
+/* Title of button that displays the App's terms of service */
+"Terms of Service" = "เงื่อนไขการใช้บริการ";
+
+/* Message of alert when theme activation succeeds */
+"Thanks for choosing %@ by %@" = "ขอบคุณที่เลือกใช้ %1$@ โดย %2$@";
+
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "ที่อยู่อีเมล์นี้ถูกใช้ไปแล้ว  กรุณาตรวจสอบกล่องเมล์เข้าของคุณสำหรับอีเมล์ยืนยัน  ถ้าคุณยังไม่ยืนยัน  คุณสามารถยืนยันได้ภายหลังภายในสองสามวัน";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "ที่อยู่เว็บนั้นไม่อนุญาตให้ใช้งาน";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "ชื่อเว็บนั้นถูกสงวนไว้ แต่อาจจะเปิดให้ใช้งานได้ในไม่กี่วัน";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "ชื่อผู้ใช้นั้นถูกสงวนไว้ แต่อาจจะเปิดให้ใช้งานได้ในไม่กี่วัน ";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "ชื่อผู้ใช้นั้นไม่อนุญาตให้ใช้งาน";
+
+/* Error message shown when a media upload fails because the user isn't connected to the Internet.
+   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+"The Internet connection appears to be offline." = "ดูเหมือนว่าไม่มีการเชื่อมต่ออินเตอร์เนต";
+
+/* Error message describing a problem with a URL. */
+"The URL is missing a valid host." = "URL นั้นขาดโฮสท์ที่ใช้งานได้";
+
+/* No comment provided by engineer. */
+"The app can't recognize the server response. Please, check the configuration of your site." = "แอพไม่สามารถจดจำการตอบสนองของเซิร์ฟเวอร์ กรุณา ตรวจสอบการตั้งค่าเว็บของคุณ";
+
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "การรับรองสำหรับเซิร์ฟเวอร์นี้ใช้งานไม่ได้ คุณอาจจะเชื่อมต่อกับเซิร์ฟเวอร์ที่แกล้งทำเป็น “%@” ซึ่งสามารถทำให้ข้อความความลับของคุณอยู่ในความเสี่ยง\n\nคุณต้องการที่จะเชื่อมั่นการรับรองนี้อยู่หรือไม่?";
+
+/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
+"The internet connection appears to be offline." = "การเชื่อมต่ออินเตอร์เนตเหมือนว่าปิดใช้งานอยู่";
+
+/* WordPress.com Push Authentication Expired message */
+"The login request has expired. Log in to WordPress.com to try again." = "คำขอร้องเข้าสู่ระบบหมดอายุ  ให้คุณเข้าสู่ระบบ WordPress.com แล้วลองอีกครั้ง";
+
+/* No comment provided by engineer. */
+"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "เซิร์ฟเวอร์ตอบสนองค่าว่างกลับมา  นี่อาจเป็นสัญญาณว่าคุณต้องเพิ่มหน่วยความจำสำหรับเว็บของคุณ";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "ที่อยู่เว็บต้องสั้นกว่า 64 ตัวอักษร";
+
+/* No comment provided by engineer. */
+"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "เว็บไซต์ที่ %1$@ ใช้เวิร์ดเพรส %2$@ เราแนะนำให้อัปเดตไปยังรุ่นล่าสุด  หรืออย่างน้อยรุ่น %3$@";
+
+/* No comment provided by engineer. */
+"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "ชื่อผู้ใช้หรือรหัสผ่านที่เก็บอยู่ในแอพ อาจจะเก่าจนใช้ไม่ได้แล้ว กรุณาใส่รหัสผ่านของคุณอีกครั้งในการตั้งค่าและลองใหม่อีกครั้ง";
+
+/* Title of alert when theme activation succeeds */
+"Theme Activated" = "เปิดใช้งานธีมแล้ว";
+
+/* Noun. Name of the Themes feature
+   Themes option in the blog details
+   Title of Themes browser page */
+"Themes" = "Themes";
+
+/* Displayed after Notification Settings failed to load */
+"There has been a problem while loading your Notification Settings" = "มีปัญหาในระหว่างการโหลดการตั้งค่าการเตือนของคุณ";
+
+/* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing your comment" = "มีความผิดพลาดที่ไม่คาดคิดระหว่างการแก้ไขความเห็นของคุณ";
+
+/* Displayed after a failed Notification Settings call */
+"There has been an unexpected error while updating your Notification Settings" = "มีความผิดพลาดที่ไม่ได้คาดคิดในระหว่างการอัปเดตการตั้งค่าการเตือนของคุณ";
+
+/* Displayed whenever a Comment Update Fails */
+"There has been an unexpected error while updating your comment" = "มีความผิดพลาดเหนือความคาดหมายในขณะอัปเดตความเห็นของคุณ";
+
+/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
+"There was a problem blocking posts from the specified site." = "มีปัญหาในการปิดกั้นเรื่องจากเว็บที่กำหนด";
+
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "มีปัญหาในการปิดกั้นสำหรับเว็บที่กำหนด";
+
+/* An error message display if the users device does not have a camera input available */
+"This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "แอพนี้ต้องการการอนุญาตเข้าถึงกล้องเพื่อถ่ายรูป\/วีดีโอใหม่  โปรดเปลี่ยนการตั้งค่าความเป็นส่วนตัวถ้าคุณต้องการที่จะอนุญาตสิ่งนี้";
+
+/* Discussion Settings Title
+   Settings: Comments Threading preferences */
+"Threading" = "การเชื่อมกัน";
+
+/* Thumbnail image size. Should be the same as in core WP. */
+"Thumbnail" = "รูปขนาดย่อ";
+
+/* WordPress.com Marketing Footer Text */
+"Tips for getting the most out of WordPress.com." = "ข้อแนะนำสำหรับเกือบทุกอย่างบน WordPress.com";
+
+/* Accessibility label for web page preview title
+   Label for list of stats by content title.
+   Noun. Label for the title of a media asset (image / video)
+   Placeholder for the post title.
+   Post title
+   Title of the new Category being created. */
+"Title" = "หัวข้อ";
+
+/* Error popup message to indicate that there was no category title filled in. */
+"Title for a category is mandatory." = "จำเป็นต้องใส่หัวข้อสำหรับหมวดหมู่";
+
+/* Comments Today Section Header
+   Insights 'Today' header
+   Notifications Today Section Header */
+"Today" = "วันนี้";
+
+/* Insights Management 'Today's Stats' title */
+"Today's Stats" = "สถิติวันนี้";
+
+/* Shortened version of the main title to be used in back navigation */
+"Topic" = "กระทู้";
+
+/* Label for total followers */
+"Total" = "ทั้งหมด";
+
+/* Label displaying total number of Email followers. %@ is the total. */
+"Total Email Followers: %@" = "อีเมล์ผู้ติดตามทั้งหมด: %@";
+
+/* Label displaying total number of WordPress.com followers. %@ is the total. */
+"Total WordPress.com Followers: %@" = "ผู้ติดตาม WordPress.com ทั้งหมด: %@";
+
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
+   Trashes the comment */
+"Trash" = "ถังขยะ";
+
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+   Title of trashed Comments filter. */
+"Trashed" = "ย้ายไปถังขยะแล้ว";
+
+/* Connect when the SSL certificate is invalid */
+"Trust" = "ไว้ใจได้";
+
+/* Theme Try & Customize action title */
+"Try & Customize" = "ทดลองและปรับแต่ง";
+
+/* Retries an Action
+   Retry
+   Try Again. Action
+   Try to load the list of interests again. */
+"Try Again" = "ลองใหม่อีกครั้ง";
+
+/* Title of button that displays the app's Twitter profile */
+"Twitter" = "Twitter";
+
+/* URL text field placeholder */
+"URL" = "URL";
+
+/* Title of a prompt saying the app needs an internet connection before it can load posts */
+"Unable to Load Posts" = "ไม่สามารถโหลดเรื่อง";
+
+/* Title of error prompt shown when a sync the user initiated fails. */
+"Unable to Sync" = "ไม่สามารถซิงค์";
+
+/* Error reason to display when the writing of a image to a file fails */
+"Unable to write image to file" = "ไม่สามารถบันทึกรูปไปที่ไฟล์";
+
+/* Unapproves a Comment
+   Unapproves a comment */
+"Unapprove" = "ไม่อนุมัติ";
+
+/* Accessibility label for underline button on formatting toolbar.
+   Discoverability title for underline formatting keyboard shortcut. */
+"Underline" = "ขีดเส้นใต้";
+
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
+   Button title. Reverts a comment moderation action.
+   Button title. Reverts the previous notification operation
+   Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
+   Undo action */
+"Undo" = "ย้อนกลับ";
+
+/* Label for size of media when it's not possible to calculate it.
+   Unknown Tag Name */
+"Unknown" = "ไม่รู้จัก";
+
+/* No comment provided by engineer. */
+"Unknown error" = "ความผิดพลาดไม่ทราบสาเหตุ";
+
+/* Search Terms label for 'unknown search terms'. */
+"Unknown search terms" = "ไม่รู้จักเงื่อนไขการค้นหา";
+
+/* Accessibility label for unordered list button on formatting toolbar. */
+"Unordered List" = "รายชื่อไม่เรียงลำดับ";
+
+/* Filters Unread Notifications */
+"Unread" = "ยังไม่ได้อ่าน";
+
+/* No comment provided by engineer. */
+"Unsupported" = "ไม่สนับสนุนแล้ว";
+
+/* Label for an untitled post in the revision browser */
+"Untitled" = "ไม่มีหัวข้อ";
+
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
+   Label action for updating a link on the editor
+   Update button label (saving content, ex: Post, Page, Comment). */
+"Update" = "อัปเดต";
+
+/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
+"Update Draft" = "อัปเดตฉบับร่าง";
+
+/* Message displayed on a post's card when the post has failed to upload
+   System notification displayed to the user when media files have failed to upload. */
+"Upload failed" = "การอัปโหลดล้มเหลว";
+
+/* Label for the date a media asset (image / video) was uploaded
+   Status for Media object that is uploaded and sync with server. */
+"Uploaded" = "อัปโหลดแล้ว";
+
+/* \"Uploading\" Status text
+   Status for Media object that is being uploaded. */
+"Uploading" = "กำลังอัปโหลด";
+
+/* Title for alert when trying to save/exit a post before media upload process is complete. */
+"Uploading media" = "การอัปโหลดไฟล์สื่อ";
+
+/* Label to show while uploading media to server */
+"Uploading..." = "กำลังอัปโหลด...";
+
+/* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
+   Account Settings Username label
+   Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
+   The header and main title
+   Username label text.
+   Username placeholder */
+"Username" = "ชื่อผู้ใช้";
+
+/* Setting: indicates if Mentions will be notified */
+"Username mentions" = "การอ้างถึงชื่อผู้ใช้";
+
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
+
+/* Period Stats 'Videos' header */
+"Videos" = "วีดีโอ";
+
+/* Button title. Displays a summary / sharing screen for a specific post.
+   Opens the post epilogue screen to allow sharing / viewing of a post.
+   Theme View action title
+   Verb. The screen title shown when viewing a post inside the app. */
+"View" = "ดู";
+
+/* Button in the notification presented in Reader when a post is saved for later */
+"View All" = "ดูทั้งหมด";
+
+/* Action title. Opens the user's site in an in-app browser */
+"View Site" = "ดูเว็บไซต์";
+
+/* Displays More Rows */
+"View all…" = "ดูทั้งหมด...";
+
+/* Displays Less Rows */
+"View less…" = "ดูน้อยลง...";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
+   All Time Stats 'Views' label
+   Label for number of views.
+   Label for Period Overview views
+   Label for post views count.
+   Title for chart showing site views from various referrer sources.
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
+   Today's Stats 'Views' label */
+"Views" = "การดู";
+
+/* The visibility settings of the post. Should be the same as in core WP.
+   Visibility label */
+"Visibility" = "การมองเห็นได้";
+
+/* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
+"Visit %@" = "เยี่ยมชม %@";
+
+/* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
+"Visit %@ for more" = "เยี่ยมชม %@ สำหรับข้อมูลเพิ่มเติม";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
+   All Time Stats 'Visitors' label
+   Label for Period Overview visitors
+   This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
+   Today's Stats 'Visitors' label */
+"Visitors" = "ผู้เยี่ยมชม";
+
+/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
+"WP Admin" = "ผู้ควบคุมเวิร์ดเพรส";
+
+/* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
+"Web Display Settings" = "การตั้งค่าการแสดงผลเว็บ";
+
+/* Title of Weeks stats filter. */
+"Weeks" = "สัปดาห์";
+
+/* Post Signup Interstitial Title Text for WordPress iOS */
+"Welcome to WordPress" = "ยินดีต้อนรับสู่เวิร์ดเพรส";
+
+/* Title displayed in the Notification Settings for WordPress.com */
+"We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "เรามักจะส่งอีเมลสำคัญเกี่ยวกับบัญชีของคุณ  แต่คุณสามารถได้ข้อมูลที่มีประโยชน์อย่างอื่นด้วย";
+
+/* Text rendered at the bottom of the Discussion Moderation Keys editor */
+"When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "เมื่อความเห็นประกอบด้วยคำต่อไปนี้ในเนื้อหา, ชื่อ, URL, อีเมล, หรือ IP ของมัน มันจะถูกวางไว้ในคิวการจัดการ คุณสามารถใส่บางส่วนของคำ เช่นคำว่า \"press\" จะตรงกับ \"WordPress\"";
+
+/* Text rendered at the bottom of the Discussion Blocklist Keys editor */
+"When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "เมื่อความเห็นประกอบด้วยคำต่อไปนี้ในเนื้อหา, ชื่อ, URL, อีเมล, หรือ IP ของมัน มันจะถูกบันทึกเป็นสแปม  คุณสามารถใส่บางส่วนของคำ  เช่นคำว่า \"press\" จะตรงกับ \"WordPress\"";
+
+/* Settings for a Wordpress Blog */
+"WordPress Blog" = "บล็อกเวิร์ดเพรส";
+
+/* No comment provided by engineer. */
+"WordPress version too old" = "เวิร์ดเพรสรุ่นนี้เก่าเกินไป";
+
+/* Label for WordPress.com followers */
+"WordPress.com" = "WordPress.com";
+
+/* WordPress.com sign-in/sign-out section header title */
+"WordPress.com Account" = "บัญชี WordPress.com";
+
+/* WordPress.com Notification Settings Title */
+"WordPress.com Updates" = "การอัปเดต WordPress.com";
+
+/* Message offering to hide all WPCom Sites */
+"Would you like to hide all WordPress.com Sites?" = "คุณต้องการที่จะซ่อนเว็บ WordPress.com ทั้งหมด?";
+
+/* Placeholder text for inline compose view */
+"Write a reply…" = "เขียนข้อความตอบกลับ...";
+
+/* Title for the writing section in site settings screen */
+"Writing" = "การเขียน";
+
+/* Title of Years stats filter. */
+"Years" = "ปี";
+
+/* Button title. Confirms that the user wants to proceed with a pending action.
+   Label for a button that clears all old activity logs
+   Yes */
+"Yes" = "ใช่";
+
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
+"Yesterday" = "เมื่อวานนี้";
+
+/* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
+"You are currently uploading media. Please wait until this completes." = "คุณกำลังอัปโหลดไฟล์สื่ออยู่  โปรดรอจนกว่าการอัปโหลดจะสำเร็จ";
+
+/* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
+"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "คุณกำลังอัปโหลดไฟล์สื่ออยู่  การกระทำนี้จะยกเลิกการอัปโหลดที่กำลังทำอยู่\n\nคุณแน่ใจหรือไม่?";
+
+/* Discussion Settings: Footer Text */
+"You can override these settings for individual posts." = "คุณสามารถตั้งค่าเหล่านี้ทับสำหรับแต่ละเรื่อง";
+
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "คุณไม่สามารถใช้ที่อยู่อีเมล์นั้นในการลงทะเบียนได้  เรามีปัญหากับระบบของพวกเขาที่ปิดกั้นอีเมล์บางส่วนของเรา  โปรดใช้เมล์ของผู้ให้บริการอีเมล์อื่น";
+
+/* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
+   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+"You have unsaved changes." = "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก";
+
+/* Error message informing the user that being logged into a WordPress.com account is required. */
+"You must be signed in to a WordPress.com account to perform this action." = "คุณต้องเข้าสู่ระบบด้วยบัญชีของ WordPress.com เพื่อทำสิ่งนี้";
+
+/* Displayed in the Notification Settings View */
+"Your Sites" = "เว็บของคุณ";
+
+/* Age between dates equaling one day. */
+"a day" = "หนึ่งวัน";
+
+/* Age between dates equaling one month. */
+"a month" = "หนึ่งเดือน";
+
+/* Age between dates equaling one year. */
+"a year" = "หสึ่งปี";
+
+/* Age between dates equaling one hour. */
+"an hour" = "หนึ่งชั่วโมง";
+
+/* (placeholder) Help the user enter a URL into the field */
+"http:\/\/my-site-address (URL)" = "http:\/\/ที่อยู่เว็บของฉัน (URL)";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
+
+/* Later today */
+"later today" = "ภายหลังในวันนี้";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "เรื่อง";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "ความเห็น";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "ชื่นชอบ";
+
+/* Title of today widget */
+"widget.today.title" = "วันนี้";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "การดู";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "ผู้เยี่ยมชม";
+

@@ -1,0 +1,57 @@
+{
+  "configurations" : [
+    {
+      "id" : "12D16962-D808-4F96-AF5E-9E4BCA4896F8",
+      "name" : "Foundation",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:WordPress.xcodeproj",
+          "identifier" : "1D6058900D05DD3D006BFB54",
+          "name" : "WordPress"
+        }
+      ]
+    },
+    "environmentVariableEntries" : [
+
+    ],
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPress.xcodeproj",
+      "identifier" : "1D6058900D05DD3D006BFB54",
+      "name" : "WordPress"
+    },
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/WordPressFlux",
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackStatsWidgetsCoreTests",
+        "name" : "JetpackStatsWidgetsCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "E16AB92914D978240047A2E5",
+        "name" : "WordPressTest"
+      }
+    }
+  ],
+  "version" : 1
+}

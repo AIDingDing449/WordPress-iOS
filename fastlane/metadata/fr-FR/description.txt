@@ -1,0 +1,11 @@
+Gérez ou créez votre blog ou site Web WordPress directement à partir de votre appareil iOS : créez et modifiez des articles et des pages, chargez vos photos et vidéos préférées, affichez des statistiques et répondez à des commentaires.
+
+Avec WordPress pour iOS, vous pouvez publier depuis le creux de votre main. Rédigez un haïku spontané depuis votre canapé. Prenez une photo et publiez-la pendant votre pause déjeuner. Répondez à vos derniers commentaires ou consultez vos statistiques pour voir de quels nouveaux pays sont originaires les visiteurs du jour.
+
+WordPress pour iOS est un projet Open Source, ce qui signifie que vous pouvez également contribuer à son développement. Apprenez-en plus à l’adresse https://apps.wordpress.com/contribute/.
+
+WordPress pour iOS prend en charge les sites WordPress.com et WordPress.org auto-hébergés exécutant WordPress 4.0 ou une version supérieure.
+
+Vous avez besoin d’aide pour utiliser l’application ? Visitez les forums à l’adresse https://wordpress.org/support/forum/mobile/ ou envoyez-nous un tweet à @WordPressiOS.
+
+Consultez l’avis de confidentialité pour les utilisateurs californiens à l’adresse https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

@@ -1,0 +1,4 @@
+#include "Version.internal.xcconfig"
+#include "Common.xcconfig"
+
+BUILD_SCHEME=WordPress Internal

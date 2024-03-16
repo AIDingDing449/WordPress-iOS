@@ -1,0 +1,28 @@
+//
+// Prefix header for all source files of the 'WordPress' target in the 'WordPress' project
+//
+
+#ifdef __OBJC__
+	// Core Frameworks
+	#import <UIKit/UIKit.h>
+
+	// 3rd Party    
+    @import CocoaLumberjack;
+
+#ifndef WPCOM_SCHEME
+#warning WPCOM_SCHEME is not defined for this target configuration! Defaulting to "wordpress".
+#define WPCOM_SCHEME @"wordpress"
+#endif
+
+#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+
+#define DDLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+#define DDLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
+
+// CocoaLumberjack Default Logging Level
+#ifndef COCOA_LUMBERJACK
+#define COCOA_LUMBERJACK
+extern DDLogLevel ddLogLevel;
+#endif
+
+#endif

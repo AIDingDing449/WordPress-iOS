@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="62" id="hcM-f1-MHC" customClass="ReaderGapMarkerCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hcM-f1-MHC" id="RWc-RJ-5IV">
+                <frame key="frameInset" width="320" height="61"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mwJ-ag-abH">
+                        <constraints>
+                            <constraint firstAttribute="height" constant="9" id="X0y-jv-BI5"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzd-gs-nwM">
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iu5-0g-eH5">
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="7AJ-lZ-zT3"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gYN-FK-C3p">
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="srv-7s-DDa" customClass="PostMetaButton">
+                                <color key="backgroundColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <inset key="contentEdgeInsets" minX="16" minY="14" maxX="16" maxY="14"/>
+                                <state key="normal" title="Load More Posts"/>
+                            </button>
+                        </subviews>
+                        <edgeInsets key="layoutMargins" top="10" left="16" bottom="10" right="16"/>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Iu5-0g-eH5" firstAttribute="top" secondItem="srv-7s-DDa" secondAttribute="top" id="0yu-9v-pae"/>
+                    <constraint firstItem="gYN-FK-C3p" firstAttribute="leading" secondItem="RWc-RJ-5IV" secondAttribute="leading" id="7il-rZ-gyh"/>
+                    <constraint firstItem="kzd-gs-nwM" firstAttribute="trailing" secondItem="srv-7s-DDa" secondAttribute="trailing" id="B7u-4X-1gn"/>
+                    <constraint firstItem="kzd-gs-nwM" firstAttribute="top" secondItem="srv-7s-DDa" secondAttribute="top" id="HNq-OO-SEo"/>
+                    <constraint firstItem="kzd-gs-nwM" firstAttribute="bottom" secondItem="srv-7s-DDa" secondAttribute="bottom" id="J9j-vY-OPa"/>
+                    <constraint firstAttribute="bottom" secondItem="gYN-FK-C3p" secondAttribute="bottom" id="OLq-pT-ctf"/>
+                    <constraint firstItem="Iu5-0g-eH5" firstAttribute="bottom" secondItem="srv-7s-DDa" secondAttribute="bottom" id="RA5-zF-IqF"/>
+                    <constraint firstItem="mwJ-ag-abH" firstAttribute="leading" secondItem="gYN-FK-C3p" secondAttribute="leading" constant="-8" id="UhL-qz-LWW"/>
+                    <constraint firstItem="gYN-FK-C3p" firstAttribute="trailing" secondItem="mwJ-ag-abH" secondAttribute="trailing" constant="-8" id="aP8-ri-emr"/>
+                    <constraint firstItem="gYN-FK-C3p" firstAttribute="top" secondItem="RWc-RJ-5IV" secondAttribute="top" id="bMK-9Y-Xxv"/>
+                    <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerX" secondItem="Iu5-0g-eH5" secondAttribute="centerX" id="gkk-0D-KMs"/>
+                    <constraint firstItem="Iu5-0g-eH5" firstAttribute="trailing" secondItem="srv-7s-DDa" secondAttribute="trailing" id="iUd-x9-W8G"/>
+                    <constraint firstItem="kzd-gs-nwM" firstAttribute="leading" secondItem="srv-7s-DDa" secondAttribute="leading" id="idP-wk-v2S"/>
+                    <constraint firstItem="Iu5-0g-eH5" firstAttribute="leading" secondItem="srv-7s-DDa" secondAttribute="leading" id="oJe-R2-ztR"/>
+                    <constraint firstItem="mwJ-ag-abH" firstAttribute="centerY" secondItem="gYN-FK-C3p" secondAttribute="centerY" id="tas-v1-jZd"/>
+                    <constraint firstAttribute="trailing" secondItem="gYN-FK-C3p" secondAttribute="trailing" id="vTf-8f-F5g"/>
+                    <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerY" secondItem="Iu5-0g-eH5" secondAttribute="centerY" id="ztr-Ca-fIN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activityView" destination="7AJ-lZ-zT3" id="2Sp-Yu-l1o"/>
+                <outlet property="activityViewBackgroundView" destination="Iu5-0g-eH5" id="Krm-6L-YWx"/>
+                <outlet property="button" destination="srv-7s-DDa" id="fKE-Ox-R1A"/>
+                <outlet property="tearBackgroundView" destination="mwJ-ag-abH" id="Kfg-vw-q2g"/>
+                <outlet property="tearMaskView" destination="kzd-gs-nwM" id="NuQ-H2-Yac"/>
+            </connections>
+            <point key="canvasLocation" x="356" y="252"/>
+        </tableViewCell>
+    </objects>
+</document>
