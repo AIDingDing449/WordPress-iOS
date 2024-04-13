@@ -1,2 +1,3 @@
-Düzenleyicideki ve bireysel blok türlerindeki belirli hataları önleyen bir düzeltmeyi kullanıma sunduk. Bu düzeltme gözden kaçan hataları da kaydeder, bu sayede onları da düzeltebiliriz.
-Ayrıca "Gönderi Yayımlandı" işlem başarılı ekranından düzenleme düğmesini ve "Önizleme" ekranından yayımlama düğmesini kaldırarak önizleme ve yayımlama deneyiminizi de iyileştirdik. Hepsi bir günlük iş.
+Vurgulu metin biçimlendirmesiyle ilgili birkaç sorunu düzelttik. Sizi bilemeyiz ancak bizim haftamızın en önemli olayı buydu.
+Bu sırada Öngörüler ekranında birden fazla hata mesajına sebep olan sorunları çözdük. Dramayla değil sadece verilerle uğraştık.
+Ayrıca okuyucuda sitenizin eski, önbelleğe alınmış sürümünü değil, en güncel sürümünü görmelisiniz. Ne kadar yeni, o kadar iyi.
