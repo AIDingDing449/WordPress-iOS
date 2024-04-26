@@ -1,3 +1,2 @@
-Vi har åtgärdat en handfull problem rörande formatering av markerad text. Resultatet blev riktigt bra, vilket definitivt var en av veckans höjdpunkter.
-Medan vi ändå höll på lyckades vi även lösa de problem som gjorde att flertalet felmeddelanden visades på skärmen Insikter. Inget mer drama, bara data.
-Du bör nu också se den senaste versionen av din webbplats i läsaren – inte en äldre, cachad version. Nytt är alltid bättre.
+Vi har lagt till läsinställningar så att du kan anpassa din läsarskärm. Välj färg, typsnitt och storlek efter eget tycke för en läsupplevelse som passar dig.
+Vi har också uppdaterat fliken Insikter för bättre inläsning och bläddring. Inget flimrande, inga krascher, inga problem.

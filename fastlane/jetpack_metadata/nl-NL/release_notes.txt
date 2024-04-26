@@ -1,3 +1,2 @@
-We hebben een aantal problemen met de opmaak van gemarkeerde tekst opgelost. Dat was echt de highlight van onze week.
-En terwijl we toch bezig waren, hebben we de problemen opgelost die zorgden voor meerdere foutmeldingen op het scherm Inzichten. Geen drama, alleen data.
-Verder zie je nu als het goed is de meest recente versie van je site in de reader, in plaats van een oude, gecachete versie. Nieuwer is altijd beter.
+We hebben leesvoorkeuren toegevoegd zodat je je Reader kan aanpassen. Kies de kleur, het lettertype en de lettergrootte die jij het fijnst vindt, voor een leeservaring die bij jou past.
+We hebben ook het tabblad Inzichten bijgewerkt zodat het beter laadt en scrolt. Geen geknipper, geen gebreken, geen probleem.

@@ -1,3 +1,2 @@
-Kami telah memperbaiki sejumlah masalah terkait pemformatan teks yang disorot. Kami harap ini jadi kabar gembira untuk Anda minggu ini.
-Kami juga berhasil memecahkan masalah yang menyebabkan munculnya beberapa pesan error di layar Wawasan. Apa pun masalahnya, kami punya solusinya.
-Anda kini bisa mengakses versi terkini situs Anda di pembaca, alih-alih versi lama yang tersimpan di cache. Rasakan pengalaman pengguna yang lebih optimal di situs versi terbaru Anda.
+Kami menambahkan preferensi pembaca supaya tampilan Pembaca dapat diatur. Pilih warna, font, dan ukuran yang disukai untuk pengalaman membaca yang sesuai selera.
+Kami juga memperbarui tab Insights agar dapat dimuat dan digulir lebih lancar. Tanpa kedipan, tanpa hambatan, tanpa masalah.
