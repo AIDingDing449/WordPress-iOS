@@ -1,2 +1,1 @@
-Vi har lagt till läsinställningar så att du kan anpassa din läsarskärm. Välj färg, typsnitt och storlek efter eget tycke för en läsupplevelse som passar dig.
-Vi har också uppdaterat fliken Insikter för bättre inläsning och bläddring. Inget flimrande, inga krascher, inga problem.
+Vi har uppdaterat menyn Sidor en aning. Inställningar har fått en egen sektion, precis under Statistik (som vi också har flyttat). Den är tillgänglig för både publicerade och opublicerade inlägg. Häftigt.

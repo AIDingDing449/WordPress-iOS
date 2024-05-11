@@ -1,2 +1,1 @@
-Wir haben Leseeinstellungen hinzugefügt, damit du deinen Reader-Bildschirm anpassen kannst. Wähle deine bevorzugte Farbe, Schriftart und Größe aus, um dein Leseerlebnis ganz nach deinen Wünschen zu gestalten.
-Zudem haben wir den Tab „Einsichten“ für besseres Laden und Scrollen aktualisiert. Kein Flimmern, keine Abstürze, alles läuft super.
+Wir haben das Menü „Seiten“ aktualisiert. Für die Option „Einstellungen“ gibt es jetzt einen eigenen Bereich, direkt unter „Statistiken“, die wir ebenfalls verschoben haben. Sie ist sowohl für veröffentlichte als auch für nicht veröffentlichte Beiträge verfügbar. Abgefahren, oder?
