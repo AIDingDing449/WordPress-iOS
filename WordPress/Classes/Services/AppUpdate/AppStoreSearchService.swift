@@ -10,6 +10,14 @@ struct AppStoreLookupResponse: Decodable {
         let version: String
         let releaseNotes: String
         let minimumOsVersion: String
+        let currentVersionReleaseDate: Date
+
+        func currentVersionHasBeenReleased(for days: Int) -> Bool {
+            guard let daysElapsed = Calendar.current.dateComponents([.day], from: currentVersionReleaseDate, to: Date.now).day else {
+                return false
+            }
+            return daysElapsed > days
+        }
     }
 }
 
@@ -31,7 +39,9 @@ final class AppStoreSearchService: AppStoreSearchProtocol {
         }
         let (data, response) = try await URLSession.shared.data(from: url)
         try validate(response: response)
-        return try JSONDecoder().decode(AppStoreLookupResponse.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(AppStoreLookupResponse.self, from: data)
     }
 
     private func validate(response: URLResponse) throws {

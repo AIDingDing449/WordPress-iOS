@@ -27,14 +27,13 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
         WPAnalytics.track(.inAppUpdateShown, properties: ["type": "flexible"])
-        // Todo: if the notice is dismissed, show notice again after a defined interval
     }
 
     func showBlockingUpdate(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo) {
         guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
               let topViewController = window.topmostPresentedViewController,
               !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {
-            wpAssertionFailure("Failed to show blocking update view")
+            // Don't show if the view is already being displayed
             return
         }
         let viewModel = AppStoreInfoViewModel(appStoreInfo)

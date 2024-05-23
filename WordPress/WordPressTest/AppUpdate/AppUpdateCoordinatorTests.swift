@@ -7,6 +7,16 @@ final class AppUpdateCoordinatorTests: XCTestCase {
     private let service = MockAppStoreSearchService()
     private let presenter = MockAppUpdatePresenter()
     private let remoteConfigStore = RemoteConfigStoreMock()
+    private var store: InMemoryUserDefaults!
+
+    override func setUp() {
+        store = InMemoryUserDefaults()
+        service.didLookup = false
+        presenter.didShowNotice = false
+        presenter.didShowBlockingUpdate = false
+        presenter.didOpenAppStore = false
+        super.setUp()
+    }
 
     func testInAppUpdatesDisabled() async {
         // Given
@@ -50,6 +60,29 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 
+    func testNotEnoughDaysHaveElapsedSinceCurrentVersionHasBeenReleased() async {
+        // Given
+        let coordinator = AppUpdateCoordinator(
+            currentVersion: "24.6",
+            currentOsVersion: "17.0",
+            service: service,
+            presenter: presenter,
+            remoteConfigStore: remoteConfigStore,
+            store: store,
+            isLoggedIn: false,
+            isInAppUpdatesEnabled: true,
+            delayInDays: Int.max
+        )
+
+        // When
+        await coordinator.checkForAppUpdates()
+
+        // Then
+        XCTAssertFalse(service.didLookup)
+        XCTAssertFalse(presenter.didShowNotice)
+        XCTAssertFalse(presenter.didShowBlockingUpdate)
+    }
+
     func testFlexibleUpdateAvailableButOsVersionTooLow() async {
         // Given
         let coordinator = AppUpdateCoordinator(
@@ -58,6 +91,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
@@ -80,6 +114,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
@@ -95,7 +130,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 
-    func testFlexibleUpdateAvailable() async {
+    func testFlexibleUpdateAvailableShownOnce() async {
         // Given
         let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
@@ -103,10 +138,12 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
         )
+        remoteConfigStore.inAppUpdateFlexibleIntervalInDays = 90
 
         // When
         await coordinator.checkForAppUpdates()
@@ -114,6 +151,19 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         // Then
         XCTAssertTrue(service.didLookup)
         XCTAssertTrue(presenter.didShowNotice)
+        XCTAssertFalse(presenter.didShowBlockingUpdate)
+
+        // Reset service and presenter
+        service.didLookup = false
+        presenter.didShowNotice = false
+
+        // When we check for updates again
+        await coordinator.checkForAppUpdates()
+
+        // Then the service doesn't fetch the app store info, and the
+        // presenter doesn't show the flexible notice
+        XCTAssertFalse(service.didLookup)
+        XCTAssertFalse(presenter.didShowNotice)
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 
@@ -125,6 +175,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
@@ -153,7 +204,9 @@ private final class MockAppStoreSearchService: AppStoreSearchProtocol {
 
     private func getMockLookupResponse() throws -> AppStoreLookupResponse {
         let data = try Bundle.test.json(named: "app-store-lookup-response")
-        return try JSONDecoder().decode(AppStoreLookupResponse.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(AppStoreLookupResponse.self, from: data)
     }
 }
 
