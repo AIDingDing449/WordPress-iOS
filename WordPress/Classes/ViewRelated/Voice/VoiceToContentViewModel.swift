@@ -65,6 +65,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func onViewAppeared() {
+        WPAnalytics.track(.voiceToContentSheetShown)
         checkFeatureAvailability()
     }
 
@@ -87,14 +88,10 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         }
         let service = JetpackAIServiceRemote(wordPressComRestApi: api, siteID: blog.dotComID ?? 0)
         do {
-            if #available(iOS 16, *) {
-                try await Task.sleep(for: .seconds(2))
-            }
-
             let info = try await service.getAssistantFeatureDetails()
             didFetchFeatureDetails(info)
         } catch {
-            self.subtitle = Strings.subtitleError
+            self.subtitle = Strings.errorMessageGeneric
             self.loadingState = .failed(message: error.localizedDescription) { [weak self] in
                 self?.checkFeatureAvailability()
             }
@@ -114,6 +111,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func buttonUpgradeTapped() {
+        WPAnalytics.track(.voiceToContentButtonUpgradeTapped)
+
         // TODO: this does not work
         guard let siteURL = blog.url.flatMap(URL.init) else {
             return wpAssertionFailure("invalid blog URL")
@@ -125,11 +124,13 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - Recording
 
     func buttonRecordTapped() {
+        WPAnalytics.track(.voiceToContentButtonStartRecordingTapped)
+
         let recordingSession = AVAudioSession.sharedInstance()
         self.audioSession = recordingSession
 
         self.title = Strings.titleRecoding
-        self.subtitle = "00:00"
+        self.subtitle = Constants.recordingTimeLimit.minuteSecond
 
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
@@ -176,18 +177,29 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private func startRecordingTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true) { [weak self] _ in
-            guard let self else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self, let currentTime = self.audioRecorder?.currentTime else { return }
+
+            let timeRemaining = Constants.recordingTimeLimit - currentTime
+
+            guard timeRemaining > 0 else {
+                WPAnalytics.track(.voiceToContentRecordingLimitReached)
+                startProcessing()
+                return
+            }
+
             if #available(iOS 16.0, *) {
-                self.subtitle = Duration.seconds(self.audioRecorder?.currentTime ?? 0)
-                    .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2, fractionalSecondsLength: 2)))
+                self.subtitle = Duration.seconds(timeRemaining)
+                    .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
             } else {
-                // TODO: Make this feature available on iOS 16+?
+                self.subtitle = timeRemaining.minuteSecond
             }
         }
     }
 
     func buttonDoneRecordingTapped() {
+        WPAnalytics.track(.voiceToContentButtonDoneTapped)
+
         startProcessing()
     }
 
@@ -237,6 +249,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func buttonCancelTapped() {
+        WPAnalytics.track(.voiceToContentButtonCloseTapped)
+
         audioRecorder?.stop()
         audioRecorder = nil
     }
@@ -244,10 +258,10 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - AVAudioRecorderDelegate
 
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        // TODO: Handle error when iOS finished recording due to an interruption
         if !flag {
             audioRecorder?.stop()
             self.step = .welcome
+            showError(VoiceToContentError.generic)
         }
     }
 
@@ -260,18 +274,24 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 }
 
 private enum VoiceToContentError: Error, LocalizedError {
+    case generic
     case cantUnderstandRequest
 
     var errorDescription: String? {
         switch self {
+        case .generic: return Strings.errorMessageGeneric
         case .cantUnderstandRequest: return Strings.errorMessageCantUnderstandRequest
         }
     }
 }
 
+private enum Constants {
+    static let recordingTimeLimit: TimeInterval = 5 * 60 // 5 Minutes
+}
+
 private enum Strings {
     static let title = NSLocalizedString("postFromAudio.title", value: "Post from Audio", comment: "The screen title")
-    static let subtitleError = NSLocalizedString("postFromAudio.subtitleError", value: "Something went wrong", comment: "The screen subtitle in the error state")
+    static let errorMessageGeneric = NSLocalizedString("postFromAudio.errorMessage.generic", value: "Something went wrong", comment: "The screen subtitle in the error state")
     static let errorMessageCantUnderstandRequest = NSLocalizedString("postFromAudio.errorMessage.cantUnderstandRequest", value: "There were some issues processing the request. Please, try again later.", comment: "The AI failed to understand the request for any reasons")
     static let subtitleRequestsAvailable = NSLocalizedString("postFromAudio.subtitleRequestsAvailable", value: "Requests available:", comment: "The screen subtitle")
     static let titleRecoding = NSLocalizedString("postFromAudio.titleRecoding", value: "Recording…", comment: "The screen title when recording")
@@ -296,5 +316,17 @@ extension JetpackAssistantFeatureDetails {
         let requestsLimit = currentTier?.limit ?? requestsLimit
         let requestsCount = usagePeriod?.requestsCount ?? requestsCount
         return max(0, requestsLimit - requestsCount).description
+    }
+}
+
+extension TimeInterval {
+    var minuteSecond: String {
+        String(format: "%02d:%02d", minute, second)
+    }
+    var minute: Int {
+        Int((self / 60).truncatingRemainder(dividingBy: 60))
+    }
+    var second: Int {
+        Int(truncatingRemainder(dividingBy: 60))
     }
 }
