@@ -1,1 +1,2 @@
-Hemos realizado algunas actualizaciones en el menú «Páginas». Ahora encontrarás lo ajustes en su propia sección, y está disponible tanto para las entradas publicadas como para las no publicadas. Genial.
+¿Has notado un gran retraso al guardar las entradas? Esto se podía deber a los bloques de imagen, galería o archivo, pero ya no ocurre. Guardar debería ser rápido y sencillo, independientemente de cuántas fotos o archivos hayas subido.
+También hemos corregido el problema de superposición del botón «Hecho» en la pantalla «Publicar». Pan comido.
