@@ -49,10 +49,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     ///
     func cancelUploadOfAllMedia(for post: AbstractPost)
 
-    /// Whether the editor has failed media or not
-    ///
-    var hasFailedMedia: Bool { get }
-
     var isUploadingMedia: Bool { get }
 
     /// Verification prompt helper
@@ -72,9 +68,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
 
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
-
-    /// Error domain used when reporting error to Crash Logger
-    var errorDomain: String { get }
 
     /// Navigation bar manager for this post editor
     var navigationBarManager: PostEditorNavigationBarManager { get }
@@ -110,20 +103,8 @@ extension PostEditor {
         postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
-    var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
-    }
-
-    var currentBlogCount: Int {
-        return postIsReblogged ? BlogQuery().hostedByWPCom(true).count(in: mainContext) : Blog.count(in: mainContext)
-    }
-
     var alertBarButtonItem: UIBarButtonItem? {
         return navigationBarManager.closeBarButtonItem
-    }
-
-    var prepublishingSourceView: UIView? {
-        return navigationBarManager.publishButton
     }
 }
 
@@ -149,6 +130,12 @@ extension PostEditor where Self: UIViewController {
             .sink { [weak self] notification in
                 self?.postConflictResolved(notification)
             }.store(in: &cancellables)
+
+        let originalPostID = post.original().objectID
+        NotificationCenter.default
+            .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: post.managedObjectContext)
+            .sink { [weak self] in self?.didChangeObjects($0, originalPostID: originalPostID) }
+            .store(in: &cancellables)
 
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
@@ -292,6 +279,17 @@ extension PostEditor where Self: UIViewController {
             nav.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         }
         self.present(nav, animated: true)
+    }
+
+    // MARK: - Notifications
+
+    private func didChangeObjects(_ notification: Foundation.Notification, originalPostID: NSManagedObjectID) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
+            onClose?(false)
+        }
     }
 }
 
