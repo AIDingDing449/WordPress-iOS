@@ -19,6 +19,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
 
+        NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification).sink { [weak self] in
+            guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
+                return wpAssertionFailure("invalid notification")
+            }
+            self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
+        }.store(in: &cancellables)
+
         sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
             self?.configure(for: $0)
         }.store(in: &cancellables)
@@ -29,7 +36,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func configure(for selection: SidebarSelection) {
-        splitVC.preferredSupplementaryColumnWidth = selection == .reader ? 320 : UISplitViewController.automaticDimension
+        switch selection {
+        case .blog, .reader:
+            splitVC.preferredSupplementaryColumnWidth = 320
+        default:
+            splitVC.preferredSupplementaryColumnWidth = UISplitViewController.automaticDimension
+        }
 
         switch selection {
         case .empty:
@@ -61,7 +73,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         let siteMenuVC = SiteMenuViewController(blog: site)
         siteMenuVC.delegate = self
-        let navigationVC = makeRootNavigationController(with: siteMenuVC)
+        let navigationVC = UINavigationController(rootViewController: siteMenuVC)
         splitVC.setViewController(navigationVC, for: .supplementary)
 
         // Reset navigation stack
@@ -80,10 +92,15 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
+        case .allSites:
+            showSitePicker()
+        case .addSite(let selection):
+            showAddSiteScreen(selection: selection)
         case .domains:
 #if JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
 #else
             wpAssertionFailure("domains are not supported in wpios")
@@ -91,11 +108,35 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
             let meVC = MeSplitViewController()
             splitVC.present(meVC, animated: true)
         }
+    }
+
+    private func showSitePicker() {
+        let sitePickerVC = SiteSwitcherViewController(
+            configuration: BlogListConfiguration(shouldHideRecentSites: true),
+            addSiteAction: { [weak self] in
+                self?.showAddSiteScreen(selection: $0)
+            },
+            onSiteSelected: { [weak self] site in
+                self?.splitVC.dismiss(animated: true)
+                RecentSitesService().touch(blog: site)
+                self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
+            }
+        )
+        let navigationVC = UINavigationController(rootViewController: sitePickerVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        self.splitVC.present(navigationVC, animated: true)
+        WPAnalytics.track(.sidebarAllSitesTapped)
+    }
+
+    private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
+        AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
+            .showSiteCreationScreen(selection: selection)
     }
 
     // MARK: – RootViewPresenter
@@ -105,7 +146,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var currentViewController: UIViewController?
 
     func showBlogDetails(for blog: Blog) {
-        fatalError()
+        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
     func getMeScenePresenter() -> any ScenePresenter {
@@ -236,6 +277,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
 extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        splitVC.setViewController(viewController, for: .secondary)
+        if viewController is UINavigationController ||
+            viewController is UISplitViewController {
+            splitVC.setViewController(viewController, for: .secondary)
+        } else {
+            // Reset previous navigation or split stack
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            splitVC.setViewController(navigationVC, for: .secondary)
+        }
     }
 }
