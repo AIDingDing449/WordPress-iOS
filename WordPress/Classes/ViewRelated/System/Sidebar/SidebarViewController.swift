@@ -19,6 +19,7 @@ final class SidebarViewController: UIHostingController<AnyView> {
 private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
+    @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
 
     static let displayedSiteLimit = 4
 
@@ -117,8 +118,18 @@ private struct SidebarView: View {
     @ViewBuilder
     private var more: some View {
 #if JETPACK
-        Label(Strings.notifications, systemImage: "bell")
-            .tag(SidebarSelection.notifications)
+        Label {
+            Text(Strings.notifications)
+        } icon: {
+            if notificationsButtonViewModel.counter > 0 {
+                Image(systemName: "bell.badge")
+                    .foregroundStyle(.red, Color(.brand))
+            } else {
+                Image(systemName: "bell")
+            }
+        }
+        .tag(SidebarSelection.notifications)
+
         Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
         if RemoteFeatureFlag.domainManagement.enabled() {
@@ -141,6 +152,7 @@ private struct SidebarProfileContainerView: View {
         if let account = viewModel.account, !isSearching {
             Button(action: { viewModel.navigate(.profile) }) {
                 SidebarProfileView(account: account)
+                    .containerShape(Rectangle()) // Make entire row interactive
             }
             .buttonStyle(.plain)
             .padding(.horizontal)
