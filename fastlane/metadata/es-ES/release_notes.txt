@@ -1,2 +1,8 @@
-Hemos solucionado un error poco común que hacía que la aplicación se bloqueara al eliminar entradas. Creemos que la basura de una persona sigue siendo basura para otra.
-También hemos solucionado un problema con la barra de navegación en el selector de visibilidad de entradas. Y además, hemos actualizado la pantalla de configuración de entradas del editor para que utilice el nuevo estilo de barra de navegación. Perfecto.
+Este mes tenemos muchas correcciones visuales y una nueva función experimental sobre la que nos encantaría recibir tus comentarios.
+
+Visualmente, hemos:
+- Actualizado el selector de sitios para que sea más sencillo y fácil de usar: añade soporte para menús contextuales y vistas previas.
+- Arreglado un problema por el que algunas barras de navegación de la aplicación eran transparentes.
+- Hemos actualizado docenas de pantallas para evitar errores visuales simplificando el código.
+
+En «Ajustes de la aplicación», ahora puedes probar «Contraseñas de la aplicación», una nueva característica experimental para sitios autoalojados que permite que funcionen con las aplicaciones si utilizan 2FA o SSO.
