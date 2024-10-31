@@ -30,8 +30,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case readingPreferencesFeedback
     case readerAnnouncementCard
     case inAppUpdates
-    case readerTagsFeed
-    case readerFloatingButton
 
     var defaultValue: Bool {
         switch self {
@@ -91,10 +89,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .inAppUpdates:
             return false
-        case .readerTagsFeed:
-            return true
-        case .readerFloatingButton:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -157,10 +151,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "reader_announcement_card"
         case .inAppUpdates:
             return "in_app_updates"
-        case .readerTagsFeed:
-            return "reader_tags_feed"
-        case .readerFloatingButton:
-            return "reader_floating_button"
         }
     }
 
@@ -222,10 +212,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Reader Announcement Card"
         case .inAppUpdates:
             return "In-App Updates"
-        case .readerTagsFeed:
-            return "Reader Tags Feed"
-        case .readerFloatingButton:
-            return "Reader Floating Button"
         }
     }
 
