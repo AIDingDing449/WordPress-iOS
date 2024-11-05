@@ -7,7 +7,7 @@ final class ReaderPostCell: ReaderStreamBaseCell {
 
     private var contentViewConstraints: [NSLayoutConstraint] = []
 
-    static let avatarSize: CGFloat = 28
+    static let avatarSize: CGFloat = SiteIconViewModel.Size.small.width
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
