@@ -14,7 +14,10 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             }
 
             Task { @MainActor in
-                await WordPressDotComAuthenticator().signIn(from: navigationController)
+                let accountID = await WordPressDotComAuthenticator().signIn(from: navigationController, context: .default)
+                if accountID != nil {
+                    WordPressAppDelegate.shared?.presentDefaultAccountPrimarySite(from: navigationController)
+                }
             }
 
             return true
@@ -28,14 +31,6 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             return false
         }
 
-        // TODO: Replce with a remote feature flag.
-        // Enable web-based login for debug builds until the remote feature flag is available.
-        #if DEBUG
-        let webLoginEnabled = true
-        #else
-        let webLoginEnabled = false
-        #endif
-
-        return webLoginEnabled
+        return RemoteFeatureFlag.dotComWebLogin.enabled()
     }
 }

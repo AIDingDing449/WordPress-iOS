@@ -550,7 +550,7 @@ import AutomatticTracks
             if contentType == .saved {
                 title = SharedStrings.Reader.saved
             } else {
-                title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+                title = SharedStrings.Reader.title
             }
             return
         }
@@ -714,11 +714,6 @@ import AutomatticTracks
             return
         }
         streamHeader.configureHeader(topic)
-    }
-
-    func showManageSites(animated: Bool = true) {
-        let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.pushViewController(controller, animated: animated)
     }
 
     // MARK: - Blocking
@@ -1190,8 +1185,8 @@ import AutomatticTracks
             toggleFollowingForTag(topic, completion: completion)
         } else if let topic = topic as? ReaderSiteTopic {
             toggleFollowingForSite(topic, completion: completion)
-        } else if let topic = topic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+        } else {
+            wpAssertionFailure("unexpected topic", userInfo: ["type": String(describing: topic)])
         }
     }
 
@@ -1548,7 +1543,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+        return SharedStrings.Reader.title
     }
 
     var activityKeywords: Set<String>? {
