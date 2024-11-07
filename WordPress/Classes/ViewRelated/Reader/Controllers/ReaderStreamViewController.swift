@@ -346,7 +346,7 @@ import AutomatticTracks
         // the view being fully setup in viewDidLoad.
         // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
         if didSetupView {
-            refreshTableViewHeaderLayout()
+            tableView.sizeToFitHeaderView()
         }
     }
 
@@ -529,7 +529,6 @@ import AutomatticTracks
         configureStreamHeader()
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
-        refreshTableViewHeaderLayout()
 
         if synchronize {
             syncIfAppropriate()
@@ -572,10 +571,7 @@ import AutomatticTracks
 
     private func configureCloseButtonIfNeeded() {
         if isModal() {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross),
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeButtonTapped))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonTapped))
         }
     }
 
@@ -584,56 +580,6 @@ import AutomatticTracks
     }
 
     // MARK: - Instance Methods
-
-    /// Retrieve an instance of the specified post from the main NSManagedObjectContext.
-    ///
-    /// - Parameters:
-    ///     - post: The post to retrieve.
-    ///
-    /// - Returns: The post fetched from the main context or nil if the post does not exist in the context.
-    ///
-    private func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
-        guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
-            DDLogError("Error retrieving an exsting post from the main context by its object ID.")
-            return nil
-        }
-        return post
-    }
-
-    /// Refreshes the layout of the header.  Required for sizing the tableHeaderView according
-    /// to its intrinsic content layout, and after major layout changes on the viewcontroller itself.
-    ///
-    private func refreshTableViewHeaderLayout() {
-        guard let headerView = tableView.tableHeaderView else {
-            return
-        }
-
-        // The tableView may need to layout, run this layout now, if needed.
-        // This ensures the proper margins, such as readable margins, are
-        // inherited and calculated by the headerView.
-        tableView.layoutIfNeeded()
-
-        // Start with the provided UILayoutFittingCompressedSize to let iOS handle its own magic
-        // number for a "compressed" height, meaning we want our fitting size to be the minimal height.
-        var fittingSize = UIView.layoutFittingCompressedSize
-
-        // Set the width to the tableView's width since this is a known width for the headerView.
-        // Otherwise, the layout will try and adopt 'any' width and may break based on the how
-        // the constraints are set up in the nib.
-        fittingSize.width = tableView.frame.size.width
-
-        // Require horizontal fitting since our width is known.
-        // Use the lower fitting size priority as we want to minimize our height consumption
-        // according to the layout's contraints and intrinsic size.
-        let size = headerView.systemLayoutSizeFitting(fittingSize,
-                                                      withHorizontalFittingPriority: .required,
-                                                      verticalFittingPriority: .fittingSizeLevel)
-        // Update the tableHeaderView itself. Classic.
-        var headerFrame = headerView.frame
-        headerFrame.size.height = size.height
-        headerView.frame = headerFrame
-        tableView.tableHeaderView = headerView
-    }
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
@@ -1481,27 +1427,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
             return
         }
-
-        guard let apost = posts[safe: indexPath.row] else {
+        guard let post = posts[safe: indexPath.row] else {
             wpAssertionFailure("invalid_index_path")
             return
         }
-
-        didSelectPost(apost, at: indexPath)
+        didSelectPost(post, at: indexPath)
     }
 
-    func didSelectPost(_ apost: ReaderPost, at indexPath: IndexPath) {
-        guard let post = postInMainContext(apost) else {
-            return
-        }
+    func didSelectPost(_ post: ReaderPost, at indexPath: IndexPath) {
+        wpAssert(post.managedObjectContext == viewContext)
 
         if post.isKind(of: ReaderGapMarker.self) {
             syncFillingGap(indexPath)
             return
         }
 
-        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-            unblockSiteForPost(apost)
+        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
+            unblockSiteForPost(post)
             return
         }
 
@@ -1509,7 +1451,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAppAnalytics.track(.readerSearchResultTapped)
 
             // We can use `if let` when `ReaderPost` adopts nullability.
-            let railcar = apost.railcarDictionary()
+            let railcar = post.railcarDictionary()
             if railcar != nil {
                 WPAppAnalytics.trackTrainTracksInteraction(.readerSearchResultTapped, withProperties: railcar)
             }
