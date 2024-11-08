@@ -112,6 +112,10 @@ extension BlogDetailsViewController {
         return blog.supports(.people)
     }
 
+    @objc func shouldAddUsersRow() -> Bool {
+        FeatureFlag.selfHostedSiteUserManagement.enabled && blog.isSelfHosted
+    }
+
     @objc func shouldAddPluginsRow() -> Bool {
         return blog.supports(.pluginManagement)
     }
@@ -150,6 +154,19 @@ extension BlogDetailsViewController {
             let service = ApplicationPasswordService(api: client, currentUserId: userId)
             let viewModel = ApplicationTokenListViewModel(dataProvider: service)
             return ApplicationTokenListView(viewModel: viewModel)
+        }
+        presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
+    }
+
+    @objc func showUsers() {
+        guard let presentationDelegate, let userId = self.blog.userID?.intValue else {
+            return
+        }
+
+        let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "User Management", comment: "Feature name for managing users in the app")
+        let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
+            let service = UserService(api: client, currentUserId: userId)
+            return UserListView(userProvider: service, actionDispatcher: service.actionDispatcher)
         }
         presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
     }
