@@ -177,12 +177,6 @@ import AutomatticTracks
 
     private var showConfirmation = true
 
-    lazy var selectInterestsVC = ReaderSelectInterestsViewController(configuration: .discover)
-
-    /// Tracks whether or not we should force sync
-    /// This is set to true after the Reader Manage view is dismissed
-    var shouldForceRefresh = false
-
     var isEmbeddedInDiscover = false
 
     private var isCompact = true {
@@ -197,7 +191,11 @@ import AutomatticTracks
             oldValue?.removeFromSuperview()
             if let emptyStateView {
                 view.addSubview(emptyStateView)
-                emptyStateView.pinEdges(to: view.safeAreaLayoutGuide)
+                emptyStateView.pinEdges(.horizontal, to: view.safeAreaLayoutGuide)
+                NSLayoutConstraint.activate([
+                    emptyStateView.topAnchor.constraint(equalTo: tableView.tableHeaderView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor),
+                    emptyStateView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                ])
 
                 footerView.isHidden = true
                 hideGhost()
@@ -523,7 +521,7 @@ import AutomatticTracks
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
         configureStreamHeader()
-        tableView.setContentOffset(CGPoint.zero, animated: false)
+        tableView.setContentOffset(CGPoint(x: 0, y: -(tableView.adjustedContentInset.top)), animated: false)
         content.refresh()
 
         if synchronize {
@@ -577,16 +575,9 @@ import AutomatticTracks
 
     // MARK: - Instance Methods
 
-    /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        guard tableView.numberOfRows(inSection: .zero) > 0 else {
-            tableView.setContentOffset(.zero, animated: true)
-            return
-        }
-
-        /// `scrollToRow` somehow works better when the first cell has dynamic height. With `setContentOffset`,
-        /// sometimes it doesn't perfectly scroll to the top, thus making the top cell appear clipped.
-        tableView.scrollToRow(at: IndexPath(row: .zero, section: .zero), at: .top, animated: true)
+        // Uses `contentInset.top` to accomodate for the safe area insets
+        tableView.setContentOffset(CGPoint(x: 0, y: -(tableView.adjustedContentInset.top)), animated: true)
     }
 
     /// Returns the analytics property dictionary for the current topic.
@@ -1550,48 +1541,7 @@ extension ReaderStreamViewController {
         emptyStateView = makeEmptyStateView(.noFollowedSites)
     }
 
-    func showSelectInterestsView() {
-        guard selectInterestsVC.parent == nil else {
-            return
-        }
-
-        selectInterestsVC.view.frame = self.view.bounds
-        self.add(selectInterestsVC)
-
-        selectInterestsVC.didSaveInterests = { [weak self] _ in
-            guard let self else {
-                return
-            }
-            self.hideSelectInterestsView()
-        }
-    }
-
-    func hideSelectInterestsView(showLoadingStream: Bool = true) {
-        guard selectInterestsVC.parent != nil else {
-            if shouldForceRefresh {
-                scrollViewToTop()
-                displayLoadingStream()
-                syncIfAppropriate(forceSync: true)
-                shouldForceRefresh = false
-            }
-
-            return
-        }
-
-        scrollViewToTop()
-        displayLoadingStream()
-        syncIfAppropriate(forceSync: true)
-
-        UIView.animate(withDuration: 0.2, animations: {
-            self.selectInterestsVC.view.alpha = 0
-        }) { _ in
-            self.selectInterestsVC.remove()
-            self.selectInterestsVC.view.alpha = 1
-        }
-    }
-
     func hideResultsStatus() {
-        hideSelectInterestsView()
         emptyStateView = nil
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
