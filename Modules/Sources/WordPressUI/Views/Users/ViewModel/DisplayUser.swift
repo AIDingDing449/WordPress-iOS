@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-public struct DisplayUser: Identifiable, Codable {
+public struct DisplayUser: Identifiable, Codable, Hashable {
     public let id: Int32
     public let handle: String
     public let username: String
