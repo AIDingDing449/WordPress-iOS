@@ -1350,7 +1350,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                      callback:^{
                                          [weakSelf showMe];
                                      }];
-        [self downloadGravatarImageFor:row];
+        [self downloadGravatarImageFor:row forceRefresh: NO];
         self.meRow = row;
         [rows addObject:row];
     }
