@@ -277,7 +277,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func navigateToCommentIfNecessary() {
-        if let post = post,
+        if let post,
            let commentID = coordinator?.commentID,
            !hasAutomaticallyTriggeredCommentAction {
             hasAutomaticallyTriggeredCommentAction = true
@@ -318,7 +318,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             }
         }
 
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -401,7 +401,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-        guard let post = post else {
+        guard let post else {
             DDLogError("Missing post when updating Reader post detail comments.")
             return
         }
@@ -423,7 +423,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateFollowButtonState() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -585,7 +585,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func fetchLikes() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -614,7 +614,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc private func fetchComments() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -1216,7 +1216,7 @@ extension ReaderDetailViewController {
 // For the `View All Comments` button.
 extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
     func buttonTapped() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 

@@ -191,7 +191,7 @@ private extension ReaderCommentsNotificationSheetViewController {
 
     func switchValueChanged(_ sender: UISwitch) {
         // nil delegate is most likely an implementation bug. For now, revert the changes on the switch button when this happens.
-        guard let delegate = delegate else {
+        guard let delegate else {
             wpAssertionFailure("missing delegate")
             isNotificationEnabled = !sender.isOn
             return
