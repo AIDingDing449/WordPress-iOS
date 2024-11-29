@@ -8,17 +8,10 @@ import WordPressUI
 actor UserService: UserServiceProtocol {
     private let client: WordPressClient
 
-    private var fetchUsersTask: Task<[DisplayUser], Error>?
-
-    private(set) var users: [DisplayUser]? {
-        didSet {
-            if let users {
-                usersUpdatesContinuation.yield(users)
-            }
-        }
+    private let _dataStore: InMemoryUserDataStore = .init()
+    var dataStore: any UserDataStore {
+        _dataStore
     }
-    nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
-    private nonisolated let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
 
     private var _currentUser: UserWithEditContext?
     private var currentUser: UserWithEditContext? {
@@ -32,34 +25,20 @@ actor UserService: UserServiceProtocol {
 
     init(client: WordPressClient) {
         self.client = client
-        (usersUpdates, usersUpdatesContinuation) = AsyncStream<[DisplayUser]>.makeStream()
     }
 
-    deinit {
-        usersUpdatesContinuation.finish()
-        fetchUsersTask?.cancel()
-    }
+    func fetchUsers() async throws {
+        let sequence = await client.api.users.sequenceWithEditContext(params: .init(perPage: 100))
+        var started = false
+        for try await users in sequence {
+            if !started {
+                try await dataStore.delete(query: .all)
+            }
 
-    func fetchUsers() async throws -> [DisplayUser] {
-        let users = try await createFetchUsersTaskIfNeeded().value
-        self.users = users
-        return users
-    }
+            try await dataStore.store(users.compactMap { DisplayUser(user: $0) })
 
-    private func createFetchUsersTaskIfNeeded() -> Task<[DisplayUser], Error> {
-        if let fetchUsersTask {
-            return fetchUsersTask
+            started = true
         }
-        let task = Task { [client] in
-            try await client
-                .api
-                .users
-                .listWithEditContext(params: UserListParams(perPage: 100))
-                .data
-                .compactMap { DisplayUser(user: $0) }
-        }
-        fetchUsersTask = task
-        return task
     }
 
     func isCurrentUserCapableOf(_ capability: String) async -> Bool {
@@ -73,8 +52,8 @@ actor UserService: UserServiceProtocol {
         ).data
 
         // Remove the deleted user from the cached users list.
-        if result.deleted, let index = users?.firstIndex(where: { $0.id == id }) {
-            users?.remove(at: index)
+        if result.deleted {
+            try await dataStore.delete(query: .id([id]))
         }
     }
 

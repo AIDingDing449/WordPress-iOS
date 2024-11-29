@@ -13,7 +13,7 @@ public struct UserListView: View {
         self.currentUserId = currentUserId
         self.userService = userService
         self.applicationTokenListDataProvider = applicationTokenListDataProvider
-        _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService))
+        _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService, currentUserId: currentUserId))
     }
 
     public var body: some View {
@@ -24,11 +24,9 @@ public struct UserListView: View {
             Group {
                 if let error = viewModel.error {
                     EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
-                } else if viewModel.isLoadingItems {
-                    ProgressView()
                 } else {
                     List(viewModel.sortedUsers) { section in
-                        Section(section.role) {
+                        Section(section.headerText) {
                             if section.users.isEmpty {
                                 Text(Strings.noUsersFound)
                                     .font(.body)
@@ -49,6 +47,20 @@ public struct UserListView: View {
             }
         }
         .navigationTitle(Strings.usersListTitle)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack {
+                    if viewModel.isRefreshing {
+                        ProgressView()
+                    }
+                    Text(Strings.usersListTitle)
+                        .font(.headline)
+                }
+            }
+        }
+        .task(id: viewModel.query) {
+            await viewModel.performQuery()
+        }
         .task { await viewModel.onAppear() }
     }
 

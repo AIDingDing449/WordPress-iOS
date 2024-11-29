@@ -441,6 +441,7 @@
 		4A266B91282B13A70089CF3D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */; };
 		4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */; };
 		4A2C73F72A9585B000ACE79E /* PostRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */; };
+		4A2ED63B2CF86A0E009E0821 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2ED63A2CF86A0E009E0821 /* DataStoreTests.swift */; };
 		4A5598852B05AC180083C220 /* PagesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5598842B05AC180083C220 /* PagesListTests.swift */; };
 		4A5EDD812CE58B9900A605FC /* ZendeskUtilsTests+A8CEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5EDD802CE58B9900A605FC /* ZendeskUtilsTests+A8CEmail.swift */; };
 		4A690C152BA791B100A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */; };
@@ -456,7 +457,7 @@
 		4A76A4BB29D4381100AABF4B /* CommentService+LikesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */; };
 		4A76A4BD29D43BFD00AABF4B /* CommentService+MorderationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */; };
 		4A76A4BF29D4F0A500AABF4B /* reader-post-comments-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */; };
-		4A76F9112CE207FA0025F7FA /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76F9102CE207FA0025F7FA /* UserServiceTests.swift */; };
+		4A76F9112CE207FA0025F7FA /* UserListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76F9102CE207FA0025F7FA /* UserListViewModelTests.swift */; };
 		4A9314DC297790C300360232 /* PeopleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314DB297790C300360232 /* PeopleServiceTests.swift */; };
 		4A9948E229714EF1006282A9 /* AccountSettingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9948E129714EF1006282A9 /* AccountSettingsServiceTests.swift */; };
 		4AA7EE0F2ADF7367007D261D /* PostRepositoryPostsListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */; };
@@ -2332,6 +2333,7 @@
 		4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedManagedObjectIDTests.swift; sourceTree = "<group>"; };
 		4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRepositoryTests.swift; sourceTree = "<group>"; };
+		4A2ED63A2CF86A0E009E0821 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPressAuthenticatorTests.xcconfig; sourceTree = "<group>"; };
 		4A5598842B05AC180083C220 /* PagesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesListTests.swift; sourceTree = "<group>"; };
 		4A5EDD802CE58B9900A605FC /* ZendeskUtilsTests+A8CEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+A8CEmail.swift"; sourceTree = "<group>"; };
@@ -2344,7 +2346,7 @@
 		4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentService+LikesTests.swift"; sourceTree = "<group>"; };
 		4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentService+MorderationTests.swift"; sourceTree = "<group>"; };
 		4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "reader-post-comments-success.json"; sourceTree = "<group>"; };
-		4A76F9102CE207FA0025F7FA /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
+		4A76F9102CE207FA0025F7FA /* UserListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewModelTests.swift; sourceTree = "<group>"; };
 		4A9314DB297790C300360232 /* PeopleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleServiceTests.swift; sourceTree = "<group>"; };
 		4A98A9022C2274E100A2CE58 /* WordPressKitTests.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WordPressKitTests.xcconfig; sourceTree = "<group>"; };
 		4A98A9032C2274E100A2CE58 /* WordPressKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WordPressKit.xcconfig; sourceTree = "<group>"; };
@@ -6061,6 +6063,7 @@
 				4AD862E42AFAEF1700A07557 /* PostsListAPIStub.swift */,
 				0C1DB60A2B0A9A570028F200 /* ImageDownloaderTests.swift */,
 				4A5598842B05AC180083C220 /* PagesListTests.swift */,
+				4A2ED63A2CF86A0E009E0821 /* DataStoreTests.swift */,
 				93B853211B44165B0064FE72 /* Analytics */,
 				DC06DFF727BD52A100969974 /* BackgroundTasks */,
 				FE32E7EF284496F500744D80 /* Blogging Prompts */,
@@ -6412,7 +6415,7 @@
 				4A9314DB297790C300360232 /* PeopleServiceTests.swift */,
 				FEAA6F78298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift */,
 				1D91080629F847A2003F9A5E /* MediaServiceUpdateTests.m */,
-				4A76F9102CE207FA0025F7FA /* UserServiceTests.swift */,
+				4A76F9102CE207FA0025F7FA /* UserListViewModelTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -10197,7 +10200,7 @@
 				4AB6A3602B7C3EB500769115 /* PinghubWebSocketTests.swift in Sources */,
 				F46546352AF550A20017E3D1 /* AllDomainsListItem+Helpers.swift in Sources */,
 				FEA312842987FB0100FFD405 /* BlogJetpackTests.swift in Sources */,
-				4A76F9112CE207FA0025F7FA /* UserServiceTests.swift in Sources */,
+				4A76F9112CE207FA0025F7FA /* UserListViewModelTests.swift in Sources */,
 				0C35FFF429CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift in Sources */,
 				7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
@@ -10348,6 +10351,7 @@
 				019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */,
 				B09879792B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift in Sources */,
 				D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */,
+				4A2ED63B2CF86A0E009E0821 /* DataStoreTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				0CD6299B2B9AAA9A00325EA4 /* Foundation+Extensions.swift in Sources */,
 				1DF7A0D32BA0B1810003CBA3 /* GutenbergContentParser.swift in Sources */,
