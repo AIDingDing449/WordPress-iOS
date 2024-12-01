@@ -58,7 +58,7 @@ public struct UserListView: View {
                 }
             }
         }
-        .task(id: viewModel.query) {
+        .task(id: viewModel.mode) {
             await viewModel.performQuery()
         }
         .task { await viewModel.onAppear() }
