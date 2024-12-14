@@ -1,10 +1,5 @@
-Deze maand hebben we een heleboel visuele oplossingen en één nieuwe experimentele functie waarover we je feedback erg op prijs stellen.
-
-De visuele updates:
-- De sitekiezer is eenvoudiger en makkelijker te gebruiken gemaakt en ondersteunt nu testsites, contextmenu's en voorbeeldweergaven.
-- Er is een probleem opgelost waarbij sommige navigatiebalken in de app doorzichtig waren.
-- Er is een probleem opgelost waarbij pictogrammen van privésites niet laadden.
-- Tientallen schermen zijn bijgewerkt om visuele bugs te verhelpen door de code te vereenvoudigen.
-- Er is een probleem opgelost waarbij de grafiek over abonnees de verkeerde achtergrondkleur weergaf.
-
-Bij App-instellingen kan je nu applicatiewachtwoorden uitproberen. Dit is een nieuwe experimentele functie voor zelfgehoste sites, waardoor deze werken met de apps als ze 2FA of SSO gebruiken.
+Deze maand hebben we:
+- een aantal crashes in de reader opgelost, zoeken verbeterd en ervoor gezorgd dat berichter soepeler geladen worden.
+- TikTok-insluitingen in de reader mogelijk gemaakt.
+- de stabiliteit verbeterd aan de hand van de experimentele editor (probeer deze eens als je dat nog niet hebt gedaan!)
+- aangepast hoe gebruikers inloggen bij WordPress.com: we hopen dat dit het voor veel mensen veel eenvoudiger maakt om aan de slag te gaan.
