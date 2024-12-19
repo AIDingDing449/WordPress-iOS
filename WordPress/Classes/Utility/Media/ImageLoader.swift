@@ -2,10 +2,12 @@ import MobileCoreServices
 import AlamofireImage
 import AutomatticTracks
 import WordPressShared
+import WordPressMedia
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.
 ///
+/// - warning: Deprecated, please use `AsyncImageView` or `.wp` extensions for `UIImageView`.
 @objc class ImageLoader: NSObject {
     typealias ImageLoaderSuccessBlock = () -> Void
     typealias ImageLoaderFailureBlock = (Error?) -> Void
@@ -91,10 +93,7 @@ import WordPressShared
     @objc(loadImageWithURL:fromReaderPost:preferredSize:placeholder:success:error:)
     func loadImage(with url: URL, from readerPost: ReaderPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
-        let host = MediaHost(with: readerPost, failure: { error in
-            WordPressAppDelegate.crashLogging?.logError(error)
-        })
-
+        let host = MediaHost(with: readerPost)
         loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
     }
 

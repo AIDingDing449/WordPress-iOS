@@ -1,7 +1,8 @@
 import UIKit
+import WordPressMedia
 
 protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
-    func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
+    func didTapFeaturedImage(_ sender: AsyncImageView)
 }
 
 protocol UpdatableStatusBarStyle: UIViewController {
@@ -18,8 +19,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             static let maxPadPortaitHeight: CGFloat = 0.50
             static let maxLandscapeHeight: CGFloat = 0.30
         }
-
-        static let imageLoadingTimeout: TimeInterval = 4
     }
 
     struct Style {
@@ -38,7 +37,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: IBOutlets
 
-    @IBOutlet private weak var imageView: CachedAnimatedImageView!
+    @IBOutlet private weak var imageView: AsyncImageView!
     @IBOutlet private weak var gradientView: UIView!
     @IBOutlet private weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var loadingView: UIView!
@@ -92,13 +91,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: Properties
 
-    /// Image loader for the featured image
-    ///
-    private lazy var imageLoader: ImageLoader = {
-        // Allow for large GIFs to animate on the detail page
-        return ImageLoader(imageView: imageView, gifStrategy: .largeGIFs)
-    }()
-
     /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
 
@@ -128,7 +120,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private var imageSize: CGSize?
-    private var timeoutTimer: Timer?
 
     // MARK: - View Methods
 
@@ -206,18 +197,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         isLoading = true
         isLoaded = true
 
-        var timedOut = false
-
         let completionHandler: (CGSize) -> Void = { [weak self] size in
             guard let self else {
                 return
             }
 
-            self.timeoutTimer?.invalidate()
-            self.timeoutTimer = nil
-
             self.imageSize = size
-            self.didFinishLoading(timedOut: timedOut)
+            self.didFinishLoading()
             self.isLoading = false
 
             completion()
@@ -229,30 +215,30 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             completion()
         }
 
-        // Times out if the loading is taking too long
-        // this prevents the user from being stuck on the loading view for too long
-        timeoutTimer = Timer.scheduledTimer(withTimeInterval: Constants.imageLoadingTimeout, repeats: false, block: { _ in
-            timedOut = true
-            failureHandler()
-        })
-
-        self.imageLoader.imageDimensionsHandler = { _, size in
-            completionHandler(size)
+        // TODO: refactor.
+        // This code replaced ImageDimensionsFetcher. It pretends that the image
+        // the app is about the download perfectly matches the standard expectefd
+        // aspect ratio. `DispatchQueue.main.async` is required for now.
+        DispatchQueue.main.async {
+            completionHandler(CGSize(width: 1000, height: 1000 * ReaderPostCell.coverAspectRatio))
         }
 
-        self.imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
-            // If we haven't loaded the image size yet
-            // trigger the handler to update the height, etc.
-            if self?.imageSize == nil {
-                if let size = self?.imageView.image?.size {
-                    self?.imageSize = size
-                    completionHandler(size)
+        imageView.setImage(with: imageURL, host: MediaHost(with: post)) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                // If we haven't loaded the image size yet
+                // trigger the handler to update the height, etc.
+                if self.imageSize == nil {
+                    if let size = self.imageView.image?.size {
+                        self.imageSize = size
+                        completionHandler(size)
+                    }
                 }
+                self.hideLoading()
+            case .failure:
+                failureHandler()
             }
-
-            self?.hideLoading()
-        }) { _ in
-            failureHandler()
         }
     }
 
@@ -325,10 +311,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        let offsetY = scrollView.contentOffset.y
-
-        updateFeaturedImageHeight(with: offsetY)
-        updateNavigationBar(with: offsetY)
+        updateFeaturedImageHeight(with: scrollView.contentOffset.y)
+        updateNavigationBar(in: scrollView)
     }
 
     private func hideLoading() {
@@ -356,7 +340,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         heightConstraint.constant = max(y, 0)
     }
 
-    private func updateNavigationBar(with offset: CGFloat) {
+    private func updateNavigationBar(in scrollView: UIScrollView) {
         /// Navigation bar is only updated in light color themes, so that the tint color can be reverted
         /// to the original color after scrolling past the featured image.
         ///
@@ -364,16 +348,12 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         guard usesAdaptiveNavigationBar else {
             return
         }
-
-        let fullProgress = (offset / heightConstraint.constant)
-        let progress = fullProgress.clamp(min: 0, max: 1)
-
-        let tintColor = UIColor.interpolate(from: style.startTintColor,
-                                            to: style.endTintColor,
-                                            with: progress)
-
-        currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
-        navBarTintColor = tintColor
+        let isScrolledTop = scrollView.contentInset.top + scrollView.contentOffset.y > 5.0
+        let barStyle: UIStatusBarStyle = isScrolledTop ? .darkContent : .lightContent
+        if currentStatusBarStyle != barStyle {
+            currentStatusBarStyle = barStyle
+            navBarTintColor = barStyle == .darkContent ? style.endTintColor : style.startTintColor
+        }
     }
 
     private func applyTransparentNavigationBarAppearance() {
@@ -388,10 +368,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: Network Helpers
 
-    private func didFinishLoading(timedOut: Bool = false) {
-        // Don't reset the scroll position if we timed out to prevent a jump
-        // if the user has started reading / scrolling
-        updateInitialHeight(resetContentOffset: !timedOut)
+    private func didFinishLoading() {
+        updateInitialHeight(resetContentOffset: true)
         update()
 
         isHidden = false

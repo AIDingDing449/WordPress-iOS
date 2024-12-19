@@ -1,27 +1,64 @@
 import UIKit
 import Gifu
+import WordPressMedia
 
 /// A simple image view that supports rendering both static and animated images
 /// (see ``AnimatedImage``).
 @MainActor
 final class AsyncImageView: UIView {
-    let imageView = GIFImageView()
-
+    private let imageView = GIFImageView()
     private var errorView: UIImageView?
     private var spinner: UIActivityIndicatorView?
     private let controller = ImageViewController()
 
     enum LoadingStyle {
+        /// Shows a secondary background color during the download.
         case background
+        /// Shows a spinner during the download.
         case spinner
     }
 
-    var isErrorViewEnabled = true
-    var loadingStyle = LoadingStyle.background
+    struct Configuration {
+        /// Image tint color.
+        var tintColor: UIColor?
+
+        /// Image view content mode.
+        var contentMode: UIView.ContentMode?
+
+        /// Enabled by default and shows an error icon on failures.
+        var isErrorViewEnabled = true
+
+        /// By default, `background`.
+        var loadingStyle = LoadingStyle.background
+    }
+
+    var configuration = Configuration() {
+        didSet { didUpdateConfiguration(configuration) }
+    }
+
+    /// The currently displayed image. If the image is animated, returns an
+    /// instance of ``AnimatedImage``.
+    var image: UIImage? {
+        didSet {
+            if let image {
+                imageView.configure(image: image)
+            } else {
+                imageView.prepareForReuse()
+            }
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupView()
+    }
 
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+
+    private func setupView() {
         controller.onStateChanged = { [weak self] in self?.setState($0) }
 
         addSubview(imageView)
@@ -35,18 +72,10 @@ final class AsyncImageView: UIView {
         backgroundColor = .secondarySystemBackground
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
+    /// Removes the current image and stops the outstanding downloads.
     func prepareForReuse() {
         controller.prepareForReuse()
-
-        if imageView.isAnimatingGIF {
-            imageView.prepareForReuse()
-        } else {
-            imageView.image = nil
-        }
+        image = nil
     }
 
     /// - parameter size: Target image size in pixels.
@@ -66,20 +95,29 @@ final class AsyncImageView: UIView {
 
         switch state {
         case .loading:
-            switch loadingStyle {
+            switch configuration.loadingStyle {
             case .background:
                 backgroundColor = .secondarySystemBackground
             case .spinner:
                 makeSpinner().startAnimating()
             }
         case .success(let image):
-            imageView.configure(image: image)
+            self.image = image
             imageView.isHidden = false
             backgroundColor = .clear
         case .failure:
-            if isErrorViewEnabled {
+            if configuration.isErrorViewEnabled {
                 makeErrorView().isHidden = false
             }
+        }
+    }
+
+    private func didUpdateConfiguration(_ configuration: Configuration) {
+        if let tintColor = configuration.tintColor {
+            imageView.tintColor = tintColor
+        }
+        if let contentMode = configuration.contentMode {
+            imageView.contentMode = contentMode
         }
     }
 
@@ -117,6 +155,14 @@ extension GIFImageView {
             self.animate(withGIFData: data)
         } else {
             self.image = image
+        }
+    }
+
+    private func prepareForReuse() {
+        if isAnimatingGIF {
+            prepareForReuse()
+        } else {
+            image = nil
         }
     }
 }

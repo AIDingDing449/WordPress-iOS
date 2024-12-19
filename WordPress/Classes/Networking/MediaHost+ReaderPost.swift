@@ -1,14 +1,11 @@
 import Foundation
+import WordPressMedia
 
 /// Extends `MediaRequestAuthenticator.MediaHost` so that we can easily
 /// initialize it from a given `Blog`.
 ///
 extension MediaHost {
-    enum ReaderPostError: Swift.Error {
-        case baseInitializerError(error: Error)
-    }
-
-    init(with post: ReaderPost, failure: (ReaderPostError) -> ()) {
+    init(with post: ReaderPost) {
         let isAccessibleThroughWPCom = post.isWPCom || post.isJetpack
 
         // This is the only way in which we can obtain the username and authToken here.
@@ -28,7 +25,7 @@ extension MediaHost {
             username: username,
             authToken: authToken,
             failure: { error in
-                failure(ReaderPostError.baseInitializerError(error: error))
+                WordPressAppDelegate.crashLogging?.logError(error)
             }
         )
     }

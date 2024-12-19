@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import DesignSystem
+import WordPressMedia
 
 protocol LatestPostSummaryConfigurable {
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?)
@@ -18,14 +19,10 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     private let viewCountLabel = UILabel()
     private let likeCountLabel = UILabel()
     private let commentCountLabel = UILabel()
-    private let postImageView = CachedAnimatedImageView()
+    private let postImageView = AsyncImageView()
 
     private let noDataLabel = UILabel()
     private let createPostButton = UIButton(type: .system)
-
-    lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: postImageView, gifStrategy: .mediumGIFs)
-    }()
 
     // MARK: - Initialization
 
@@ -237,8 +234,9 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
             let host = MediaHost(with: blog, failure: { error in
                 DDLogError("Failed to create media host: \(error.localizedDescription)")
             })
-
-            imageLoader.loadImage(with: url, from: host, preferredSize: CGSize(width: Metrics.thumbnailSize, height: Metrics.thumbnailSize))
+            let targetSize = CGSize(width: Metrics.thumbnailSize, height: Metrics.thumbnailSize)
+                .scaled(by: traitCollection.displayScale)
+            postImageView.setImage(with: url, host: host, size: targetSize)
         } else {
             postImageView.isHidden = true
         }

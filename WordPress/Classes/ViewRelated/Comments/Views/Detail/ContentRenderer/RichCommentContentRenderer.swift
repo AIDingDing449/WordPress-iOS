@@ -1,3 +1,6 @@
+import UIKit
+import WordPressMedia
+
 /// Renders the comment body through `WPRichContentView`.
 ///
 class RichCommentContentRenderer: NSObject, CommentContentRenderer {
@@ -76,10 +79,7 @@ private extension RichCommentContentRenderer {
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
         } else if let post = comment.post as? ReaderPost, post.isBlogPrivate {
-            return MediaHost(with: post, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                WordPressAppDelegate.crashLogging?.logError(error)
-            })
+            return MediaHost(with: post)
         }
 
         return .publicSite
