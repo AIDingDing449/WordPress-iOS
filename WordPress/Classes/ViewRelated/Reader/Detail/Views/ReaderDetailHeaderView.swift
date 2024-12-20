@@ -1,9 +1,8 @@
-import UIKit
-import AutomatticTracks
+import SwiftUI
+import WordPressUI
 
 protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapBlogName()
-    func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
     func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
@@ -11,281 +10,470 @@ protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapComments()
 }
 
-class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var blavatarImageView: UIImageView!
-    @IBOutlet weak var blogURLLabel: UILabel!
-    @IBOutlet weak var blogNameButton: UIButton!
-    @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var titleBottomPaddingView: UIView!
-    @IBOutlet weak var byLabel: UILabel!
-    @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var authorSeparatorLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var followButton: UIButton!
-    @IBOutlet weak var iPadFollowButton: UIButton!
+final class ReaderDetailHeaderHostingView: UIView {
+    weak var delegate: ReaderDetailHeaderViewDelegate? {
+        didSet {
+            viewModel.headerDelegate = delegate
+        }
+    }
 
-    @IBOutlet weak var collectionViewPaddingView: UIView!
-    @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
+    var displaySetting: ReaderDisplaySetting = .standard {
+        didSet {
+            viewModel.displaySetting = displaySetting
+            Task { @MainActor in
+                refreshContainerLayout()
+            }
+        }
+    }
 
-    /// Temporary work around until white headers are shipped app-wide,
-    /// allowing Reader Detail to use a blue navbar.
-    var useCompatibilityMode: Bool = false
+    private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
 
-    /// The post to show details in the header
-    ///
-    private var post: ReaderPost?
+    // TODO: Populate this with values from the ReaderPost.
+    private lazy var viewModel: ReaderDetailHeaderViewModel = {
+        $0.topicDelegate = self
+        return $0
+    }(ReaderDetailHeaderViewModel(displaySetting: displaySetting))
 
-    /// Any interaction with the header is sent to the delegate
-    ///
-    weak var delegate: ReaderDetailHeaderViewDelegate?
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
+    init() {
+        super.init(frame: .zero)
+        setupView()
+    }
+
+    func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
+
+        let headerView = ReaderDetailHeaderView(viewModel: viewModel) { [weak self] in
+            self?.refreshContainerLayout()
+        }
+
+        let view = UIView.embedSwiftUIView(headerView)
+        addSubview(view)
+        pinSubviewToAllEdges(view)
+    }
+
+    func refreshContainerLayout() {
+        guard let swiftUIView = subviews.first else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            swiftUIView.invalidateIntrinsicContentSize()
+            self.layoutIfNeeded()
+        }
+    }
+}
+
+// MARK: ReaderDetailHeader
+
+extension ReaderDetailHeaderHostingView {
     func configure(for post: ReaderPost) {
-        self.post = post
-
-        configureSiteImage()
-        configureURL()
-        configureBlogName()
-        configureTitle()
-        configureByLabel()
-        configureAuthorLabel()
-        configureDateLabel()
-        configureFollowButton()
-        configureNotifications()
-        configureTopicsCollectionView()
-
-        prepareForVoiceOver()
-        prepareMenuForVoiceOver()
-        preparePostTitleForVoiceOver()
+        viewModel.configure(with: TaggedManagedObjectID(post),
+                            completion: refreshContainerLayout)
     }
 
     func refreshFollowButton() {
-        configureFollowButton()
+        viewModel.refreshFollowState()
     }
-
-    @IBAction func didTapBlogName(_ sender: Any) {
-        delegate?.didTapBlogName()
-    }
-
-    @IBAction func didTapMenuButton(_ sender: UIButton) {
-        delegate?.didTapMenuButton(sender)
-    }
-
-    @IBAction func didTapFollowButton(_ sender: Any) {
-        followButton.isSelected = !followButton.isSelected
-        iPadFollowButton.isSelected = !followButton.isSelected
-        followButton.isUserInteractionEnabled = false
-
-        delegate?.didTapFollowButton() { [weak self] in
-            self?.followButton.isUserInteractionEnabled = true
-        }
-    }
-
-    @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
-        if gesture.state != .ended {
-            return
-        }
-
-        delegate?.didTapHeaderAvatar()
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        WPStyleGuide.applyReaderCardBylineLabelStyle(blogURLLabel)
-        WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
-
-        titleLabel.backgroundColor = .systemBackground
-        blogNameButton.setTitleColor(WPStyleGuide.readerCardBlogNameLabelTextColor(), for: .normal)
-        blogNameButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        configureFollowButton()
-    }
-
-    private func configureSiteImage() {
-        let placeholder = UIImage(named: "post-blavatar-placeholder")
-        blavatarImageView.image = placeholder
-
-        let size = blavatarImageView.frame.size.width * UIScreen.main.scale
-        if let url = post?.siteIconForDisplay(ofSize: Int(size)) {
-            blavatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        }
-    }
-
-    private func configureURL() {
-        guard let siteURL = post?.siteURLForDisplay() as NSString? else {
-            return
-        }
-
-        blogURLLabel.text = siteURL.components(separatedBy: "//").last
-    }
-
-    private func configureBlogName() {
-        let blogName = post?.blogNameForDisplay()
-        blogNameButton.setTitle(blogName, for: UIControl.State())
-        blogNameButton.setTitle(blogName, for: .highlighted)
-        blogNameButton.setTitle(blogName, for: .disabled)
-        blogNameButton.isAccessibilityElement = false
-        blogNameButton.naturalContentHorizontalAlignment = .leading
-
-        // Enable button only if not previewing a site.
-        if let topic = post?.topic {
-            blogNameButton.isEnabled = !ReaderHelpers.isTopicSite(topic)
-        }
-
-        // If the button is enabled also listen for taps on the avatar.
-        if blogNameButton.isEnabled {
-            let tgr = UITapGestureRecognizer(target: self, action: #selector(didTapHeaderAvatar(_:)))
-            blavatarImageView.addGestureRecognizer(tgr)
-        }
-    }
-
-    private func configureTitle() {
-        if let title = post?.titleForDisplay() {
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: WPStyleGuide.readerDetailTitleAttributes())
-            titleLabel.isHidden = false
-
-        } else {
-            titleLabel.attributedText = nil
-            titleLabel.isHidden = true
-        }
-    }
-
-    private func configureByLabel() {
-        byLabel.text = NSLocalizedString("By ", comment: "Label for the post author in the post detail.")
-    }
-
-    private func configureAuthorLabel() {
-        guard
-            let displayName = post?.authorDisplayName,
-            !displayName.isEmpty
-        else {
-            authorLabel.isHidden = true
-            authorSeparatorLabel.isHidden = true
-            byLabel.isHidden = true
-            return
-        }
-
-        authorLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
-        authorLabel.text = displayName
-
-        authorLabel.isHidden = false
-        authorSeparatorLabel.isHidden = false
-        byLabel.isHidden = false
-
-    }
-
-    private func configureDateLabel() {
-        dateLabel.text = post?.dateForDisplay()?.toMediumString()
-    }
-
-    private func configureFollowButton() {
-        followButton.isSelected = post?.isFollowing() ?? false
-        iPadFollowButton.isSelected = post?.isFollowing() ?? false
-
-        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(AppStyleGuide.primary), for: .normal)
-        followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(AppStyleGuide.gray(.shade20)), for: .selected)
-        WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
-
-        let isCompact = traitCollection.horizontalSizeClass == .compact
-        followButton.isHidden = !isCompact
-        iPadFollowButton.isHidden = isCompact
-    }
-
-    private func configureNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(preferredContentSizeChanged), name: UIContentSizeCategory.didChangeNotification, object: nil)
-    }
-
-    func configureTopicsCollectionView() {
-        guard
-            let post = post,
-            let tags = post.tagsForDisplay(),
-            !tags.isEmpty
-        else {
-            topicsCollectionView.isHidden = true
-            collectionViewPaddingView.isHidden = true
-            return
-        }
-
-        let featuredImageIsDisplayed = useCompatibilityMode || ReaderDetailFeaturedImageView.shouldDisplayFeaturedImage(with: post)
-        collectionViewPaddingView.isHidden = !featuredImageIsDisplayed
-
-        topicsCollectionView.topicDelegate = self
-        topicsCollectionView.topics = tags
-        topicsCollectionView.isHidden = false
-    }
-
-    @objc private func preferredContentSizeChanged() {
-        configureTitle()
-    }
-
-    private func prepareForVoiceOver() {
-        guard let post = post else {
-            blogNameButton.isAccessibilityElement = false
-            return
-        }
-
-        blogNameButton.isAccessibilityElement = true
-        blogNameButton.accessibilityTraits = [.staticText, .button]
-        blogNameButton.accessibilityHint = NSLocalizedString(
-            "reader.blog.name.accessibility.hint",
-            value: "Shows the blog's posts.",
-            comment: "Accessibility hint for the blog name and URL button on Reader's Post Details."
-        )
-        if let label = blogNameLabel(post) {
-            blogNameButton.accessibilityLabel = label
-        }
-    }
-
-    private func prepareMenuForVoiceOver() {
-        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader's post details")
-        menuButton.accessibilityTraits = UIAccessibilityTraits.button
-        menuButton.accessibilityHint = NSLocalizedString("Shows more options.", comment: "Accessibility hint for the More button on Reader's post details")
-    }
-
-    private func blogNameLabel(_ post: ReaderPost) -> String? {
-        guard let postedIn = post.blogNameForDisplay(),
-            let postedBy = post.authorDisplayName,
-            let postedAtURL = post.siteURLForDisplay()?.components(separatedBy: "//").last else {
-                return nil
-        }
-
-        guard let postedOn = post.dateCreated?.toMediumString() else {
-            let format = NSLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
-            return String(format: format, postedIn, postedAtURL, postedBy)
-        }
-
-        let format = NSLocalizedString("Posted in %@, at %@, by %@, %@", comment: "Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date")
-        return String(format: format, postedIn, postedAtURL, postedBy, postedOn)
-    }
-
-    private func preparePostTitleForVoiceOver() {
-        guard let title = post?.titleForDisplay() else {
-            return
-        }
-        isAccessibilityElement = false
-
-        titleLabel.accessibilityLabel = title
-        titleLabel.accessibilityTraits = .header
-    }
-
 }
 
-extension ReaderDetailHeaderView: ReaderTopicCollectionViewCoordinatorDelegate {
-    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
-        self.layoutIfNeeded()
-    }
+// MARK: ReaderTopicCollectionViewCoordinatorDelegate
 
+extension ReaderDetailHeaderHostingView: ReaderTopicCollectionViewCoordinatorDelegate {
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
         delegate?.didSelectTopic(topic)
+    }
+
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
+        // no op
+    }
+}
+
+// MARK: - SwiftUI View Model
+
+class ReaderDetailHeaderViewModel: ObservableObject {
+    private let coreDataStack: CoreDataStackSwift
+    private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
+
+    weak var headerDelegate: ReaderDetailHeaderViewDelegate?
+    weak var topicDelegate: ReaderTopicCollectionViewCoordinatorDelegate?
+
+    // Follow/Unfollow states
+    @Published var isFollowingSite = false
+    @Published var isFollowButtonInteractive = true
+
+    @Published var siteIconURL: URL? = nil
+    @Published var authorAvatarURL: URL? = nil
+    @Published var authorName = String()
+    @Published var relativePostTime = String()
+    @Published var siteName = String()
+    @Published var postTitle: String? = nil // post title can be empty.
+    @Published var likeCount: Int? = nil
+    @Published var commentCount: Int? = nil
+    @Published var tags: [String] = []
+
+    @Published var showsAuthorName: Bool = true
+
+    @Published var displaySetting: ReaderDisplaySetting
+
+    var likeCountString: String? {
+        guard let count = likeCount, count > 0 else {
+            return nil
+        }
+        return WPStyleGuide.likeCountForDisplay(count)
+    }
+
+    var commentCountString: String? {
+        guard let count = commentCount, count > 0 else {
+            return nil
+        }
+        return WPStyleGuide.commentCountForDisplay(count)
+    }
+
+    init(displaySetting: ReaderDisplaySetting, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+        self.displaySetting = displaySetting
+        self.coreDataStack = coreDataStack
+    }
+
+    func configure(with objectID: TaggedManagedObjectID<ReaderPost>, completion: (() -> Void)?) {
+        postObjectID = objectID
+        coreDataStack.performQuery { [weak self] context -> Void in
+            guard let self,
+                  let post = try? context.existingObject(with: objectID) else {
+                return
+            }
+
+            self.isFollowingSite = post.isFollowing
+
+            self.siteIconURL = post.getSiteIconURL(size: Int(ReaderDetailHeaderView.Constants.siteIconLength))
+            self.authorAvatarURL = post.avatarURLForDisplay() ?? nil
+
+            if let authorName = post.authorForDisplay(), !authorName.isEmpty {
+                self.authorName = authorName
+            }
+
+            if let relativePostTime = post.dateForDisplay()?.toMediumString() {
+                self.relativePostTime = relativePostTime
+            }
+
+            if let siteName = post.blogNameForDisplay(), !siteName.isEmpty {
+                self.siteName = siteName
+            }
+
+            // hide the author name if it exactly matches the site name.
+            // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
+            self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
+
+            self.postTitle = post.titleForDisplay() ?? nil
+            self.likeCount = post.likeCount?.intValue
+            self.commentCount = post.commentCount?.intValue
+            self.tags = post.tagsForDisplay() ?? []
+        }
+
+        DispatchQueue.main.async {
+            completion?()
+        }
+    }
+
+    func refreshFollowState() {
+        guard let postObjectID else {
+            return
+        }
+
+        isFollowingSite = coreDataStack.performQuery { context in
+            guard let post = try? context.existingObject(with: postObjectID) else {
+                return false
+            }
+            return post.isFollowing
+        }
+    }
+
+    func didTapAuthorSection() {
+        headerDelegate?.didTapBlogName()
+    }
+
+    func didTapFollowButton() {
+        guard let headerDelegate else {
+            return
+        }
+
+        isFollowButtonInteractive = false
+        isFollowingSite.toggle()
+
+        headerDelegate.didTapFollowButton { [weak self] in
+            self?.isFollowButtonInteractive = true
+        }
+    }
+
+    func didTapLikes() {
+        headerDelegate?.didTapLikes()
+    }
+
+    func didTapComments() {
+        headerDelegate?.didTapComments()
+    }
+}
+
+// MARK: - SwiftUI
+
+/// The updated header version for Reader Details.
+struct ReaderDetailHeaderView: View {
+
+    @Environment(\.layoutDirection) var direction
+    @Environment(\.colorScheme) var colorScheme
+
+    @ObservedObject var viewModel: ReaderDetailHeaderViewModel
+
+    /// A callback for the parent to react to content size changes.
+    var onContentSizeChanged: (() -> Void)? = nil
+
+    /// Used for the inward border. We want the color to be inverted, such that the avatar can "preserve" its shape
+    /// when the image has low or almost no contrast with the background (imagine white avatar on white background).
+    var avatarInnerBorderColor: UIColor {
+        let color = viewModel.displaySetting.color.background
+        return colorScheme == .light ? color.darkVariant() : color.lightVariant()
+    }
+
+    var primaryTextColor: UIColor {
+        viewModel.displaySetting.color.foreground
+    }
+
+    var innerBorderOpacity: CGFloat {
+        return colorScheme == .light ? 0.1 : 0.2
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16.0) {
+            headerRow
+            if let postTitle = viewModel.postTitle {
+                Text(postTitle)
+                    .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
+                    .foregroundStyle(Color(primaryTextColor))
+                    .lineLimit(nil)
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+            }
+            if viewModel.likeCountString != nil || viewModel.commentCountString != nil {
+                postCounts
+            }
+            if !viewModel.tags.isEmpty {
+                tagsView
+            }
+        }
+        // Added an extra 4.0 to top padding to account for a legacy layout issue with featured image.
+        // Bottom padding is 0 as there's already padding between the header container and the webView in the storyboard.
+        .padding(EdgeInsets(top: 20.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
+        .background {
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear {
+                        onContentSizeChanged?()
+                    }
+                    .onChange(of: proxy.size) { _ in
+                        onContentSizeChanged?()
+                    }
+            }
+        }
+    }
+
+    var headerRow: some View {
+        HStack(alignment: .top, spacing: 12) {
+            if let siteIconURL = viewModel.siteIconURL,
+               let avatarURL = viewModel.authorAvatarURL {
+                avatarView(with: siteIconURL, avatarURL: avatarURL)
+            }
+            VStack(alignment: .leading, spacing: 4.0) {
+                Text(viewModel.siteName)
+                    .font(Font(viewModel.displaySetting.font(with: .callout, weight: .semibold)))
+                    .foregroundStyle(Color(primaryTextColor))
+                    .lineLimit(1)
+                authorAndTimestampView
+                if !viewModel.isFollowingSite || !viewModel.isFollowButtonInteractive {
+                    Button(WPStyleGuide.FollowButton.Text.followStringForDisplay) {
+                        viewModel.didTapFollowButton()
+                    }
+                    .font(.footnote)
+                    .disabled(!viewModel.isFollowButtonInteractive)
+                }
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits([.isButton])
+        .accessibilityHint(Constants.authorStackAccessibilityHint)
+        .onTapGesture {
+            viewModel.didTapAuthorSection()
+        }
+    }
+
+    @ViewBuilder
+    func avatarView(with siteIconURL: URL, avatarURL: URL) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            CachedAsyncImage(url: siteIconURL) { image in
+                image.resizable()
+            } placeholder: {
+                Image("post-blavatar-default").resizable()
+            }
+            .frame(width: Constants.siteIconLength, height: Constants.siteIconLength)
+            .clipShape(Circle())
+            .overlay {
+                // adds an inward border with low opacity to preserve the avatar's shape.
+                Circle()
+                    .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
+                    .opacity(innerBorderOpacity)
+            }
+
+            CachedAsyncImage(url: avatarURL) { image in
+                image.resizable()
+            } placeholder: {
+                Image("blavatar-default").resizable()
+            }
+            .frame(width: Constants.authorImageLength, height: Constants.authorImageLength)
+            .clipShape(Circle())
+            .overlay {
+                // adds an inward border with low opacity to preserve the avatar's shape.
+                Circle()
+                    .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
+                    .opacity(innerBorderOpacity)
+            }
+            .background {
+                // adds a border between the the author avatar and the site icon.
+                Circle()
+                    .stroke(Color(uiColor: viewModel.displaySetting.color.background), lineWidth: 1.0)
+            }
+            .offset(x: 2.0, y: 2.0)
+        }
+    }
+
+    var postCounts: some View {
+        HStack(spacing: 0) {
+            if let likeCount = viewModel.likeCountString {
+                Group {
+                    Button(action: viewModel.didTapLikes) {
+                        Text(likeCount)
+                    }
+                    if viewModel.commentCountString != nil {
+                        Text(" • ")
+                    }
+                }
+            }
+            if let commentCount = viewModel.commentCountString {
+                Button(action: viewModel.didTapComments) {
+                    Text(commentCount)
+                }
+            }
+        }
+        .font(Font(viewModel.displaySetting.font(with: .footnote)))
+        .foregroundStyle(Color(viewModel.displaySetting.color.secondaryForeground))
+    }
+
+    var tagsView: some View {
+        ReaderDetailTagsWrapperView(topics: viewModel.tags, displaySetting: viewModel.displaySetting, delegate: viewModel.topicDelegate)
+            .background(GeometryReader { geometry in
+                // The host view does not react properly after the collection view finished its layout.
+                // This informs any size changes to the host view so that it can readjust correctly.
+                Color.clear
+                    .onChange(of: geometry.size) { _ in
+                        onContentSizeChanged?()
+                    }
+            })
+    }
+
+    var authorAndTimestampView: some View {
+        HStack(spacing: 0) {
+            if viewModel.showsAuthorName {
+                Text(viewModel.authorName)
+                    .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                    .foregroundStyle(Color(primaryTextColor))
+                    .lineLimit(1)
+
+                Text(" • ")
+                    .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                    .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
+                    .lineLimit(1)
+                    .layoutPriority(1)
+            }
+
+            timestampText
+                .lineLimit(1)
+                .layoutPriority(1)
+
+            Spacer()
+        }
+        .accessibilityElement()
+        .accessibilityLabel(authorAccessibilityLabel)
+    }
+
+    var timestampText: Text {
+        Text(viewModel.relativePostTime)
+            .font(Font(viewModel.displaySetting.font(with: .footnote)))
+            .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
+    }
+}
+
+// MARK: Private Helpers
+
+fileprivate extension ReaderDetailHeaderView {
+
+    struct Constants {
+        static let siteIconLength: CGFloat = 40.0
+        static let authorImageLength: CGFloat = 20.0
+
+        static let authorStackAccessibilityHint = NSLocalizedString(
+            "reader.detail.header.authorInfo.a11y.hint",
+            value: "Views posts from the site",
+            comment: "Accessibility hint to inform that the author section can be tapped to see posts from the site."
+        )
+    }
+
+    var authorAccessibilityLabel: String {
+        var labels = [viewModel.relativePostTime]
+
+        if viewModel.showsAuthorName {
+            labels.insert(viewModel.authorName, at: .zero)
+        }
+
+        return labels.joined(separator: ", ")
+    }
+}
+
+// MARK: - TopicCollectionView UIViewRepresentable Wrapper
+
+fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
+    private let topics: [String]
+    private let displaySetting: ReaderDisplaySetting
+    private weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
+
+    init(topics: [String], displaySetting: ReaderDisplaySetting, delegate: ReaderTopicCollectionViewCoordinatorDelegate?) {
+        self.topics = topics
+        self.displaySetting = displaySetting
+        self.delegate = delegate
+    }
+
+    func makeUIView(context: Context) -> UICollectionView {
+        let view = TopicsCollectionView(frame: .zero, collectionViewLayout: ReaderInterestsCollectionViewFlowLayout())
+        view.topics = topics
+        view.topicDelegate = delegate
+
+        if ReaderDisplaySetting.customizationEnabled {
+            view.coordinator?.displaySetting = displaySetting
+        }
+
+        // ensure that the collection view hugs its content.
+        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        return view
+    }
+
+    func updateUIView(_ uiView: UICollectionView, context: Context) {
+        if let view = uiView as? TopicsCollectionView,
+           ReaderDisplaySetting.customizationEnabled {
+            view.coordinator?.displaySetting = displaySetting
+        }
+
+        uiView.reloadData()
+        uiView.layoutIfNeeded()
     }
 }

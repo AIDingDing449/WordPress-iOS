@@ -1,6 +1,7 @@
 import Gutenberg
+import ImagePlayground
 
-class GutenbergExternalMediaPicker {
+class GutenbergExternalMediaPicker: NSObject {
     private var mediaPickerCallback: MediaPickerDidPickMediaCallback?
     private let mediaInserter: GutenbergMediaInserterHelper
     private unowned var gutenberg: Gutenberg
@@ -9,6 +10,14 @@ class GutenbergExternalMediaPicker {
     init(gutenberg: Gutenberg, mediaInserter: GutenbergMediaInserterHelper) {
         self.mediaInserter = mediaInserter
         self.gutenberg = gutenberg
+        super.init()
+    }
+
+    func presentImagePlayground(origin: UIViewController, post: AbstractPost, callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerCallback = callback
+
+        MediaPickerMenu(viewController: origin)
+            .showImagePlayground(delegate: self)
     }
 
     func presentTenorPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -88,5 +97,15 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
                 self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.largeURL, type: .image)
             }
         }
+    }
+}
+
+extension GutenbergExternalMediaPicker: ImagePlaygroundPickerDelegate {
+    func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
+        if let callback = mediaPickerCallback {
+            let itemProvider = MediaPickerMenu.makeItemProvider(with: imageURL)
+            mediaInserter.insertFromDevice([itemProvider], callback: callback)
+        }
+        viewController.presentingViewController?.dismiss(animated: true)
     }
 }
