@@ -1,5 +1,5 @@
 {
-  "originHash" : "8a87409582dec4bc7c7f6ee5d6a6761cead545bd116f82237fc9e6a881e7c3fb",
+  "originHash" : "4cacb81eb20e7d20d1b25f261d9303a24f725104ed3b36743fc2707b7473a93d",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "b4f63edd2f81c37025817b23fee83721d034c320",
-        "version" : "3.1.0"
+        "revision" : "e7c6606015bab7258c4de9dde9d87736677ddc73",
+        "version" : "3.1.1"
       }
     },
     {
@@ -150,7 +150,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "4476d597b271778d001a26c50d74e527b54ebfef"
+        "revision" : "5a43a1b8ab5034e5be4b4eb93c30885cc41227b2"
       }
     },
     {
