@@ -5,7 +5,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "UIView+Subviews.h"
-#import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
 #import "SuggestionsTableView.h"
 #import "WordPress-Swift.h"
@@ -917,6 +916,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
         [weakSelf displayNoticeWithTitle:successMessage message:nil];
 
+        [weakSelf.replyTextView setShowingLoadingIndicator:NO];
+        weakSelf.replyTextView.text = @"";
+
         [weakSelf trackReplyTo:replyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
@@ -932,10 +934,15 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         DDLogError(@"Error sending reply: %@", error);
         [generator notificationOccurred:UINotificationFeedbackTypeError];
         NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", "Reply Failure Message");
-        [weakSelf displayNoticeWithTitle:message message:nil];
+        [weakSelf.replyTextView setShowingLoadingIndicator:NO];
+        [weakSelf displayNoticeWithTitle:message message:[error localizedDescription]];
+
+        [weakSelf.replyTextView becomeFirstResponder];
 
         [weakSelf refreshTableViewAndNoResultsView:NO];
     };
+
+    [self.replyTextView setShowingLoadingIndicator:YES];
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
@@ -1269,30 +1276,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)richContentView:(WPRichContentView *)richContentView didReceiveImageAction:(WPRichTextImage *)image
 {
-    UIViewController *controller = nil;
-    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:image.linkURL];
-
-    if (image.imageView.animatedGifData) {
-        controller = [[WPImageViewController alloc] initWithGifData:image.imageView.animatedGifData];
-    } else if (isSupportedNatively) {
-        controller = [[WPImageViewController alloc] initWithImage:image.imageView.image andURL:image.linkURL];
-    } else if (image.linkURL) {
-        [self presentWebViewControllerWithURL:image.linkURL];
-        return;
-    } else if (image.imageView.image) {
-        controller = [[WPImageViewController alloc] initWithImage:image.imageView.image];
-    }
-
-    if (controller) {
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-    }
+    [self showFullScreenImage:image from:richContentView];
 }
 
 - (void)interactWithURL:(NSURL *)URL
 {
-    [self presentWebViewControllerWithURL:URL];
+    [self presentWebViewControllerWith:URL];
 }
 
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
@@ -1308,22 +1297,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)richContentViewDidUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {
     [self updateTableViewForAttachments];
-}
-
-- (void)presentWebViewControllerWithURL:(NSURL *)URL
-{
-    NSURL *linkURL = URL;
-    NSURLComponents *components = [NSURLComponents componentsWithString:[URL absoluteString]];
-    if (!components.host) {
-        linkURL = [components URLRelativeToURL:[NSURL URLWithString:self.post.blogURL]];
-    }
-
-    WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:linkURL];
-    [configuration authenticateWithDefaultAccount];
-    [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments"];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView

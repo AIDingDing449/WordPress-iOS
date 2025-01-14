@@ -5,7 +5,7 @@ import AutomatticTracks
 import AutomatticEncryptedLogs
 import WordPressAuthenticator
 import WordPressShared
-import WordPressMedia
+import AsyncImageKit
 import AutomatticAbout
 import UIDeviceIdentifier
 import WordPressUI

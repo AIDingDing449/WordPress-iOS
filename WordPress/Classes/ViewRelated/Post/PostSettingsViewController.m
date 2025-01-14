@@ -1,16 +1,10 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
-#import "FeaturedImageViewController.h"
 #import "Media.h"
-#import "PostFeaturedImageCell.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
-#import "WPTableViewActivityCell.h"
 #import "CoreDataStack.h"
 #import "MediaService.h"
-#import "WPProgressTableViewCell.h"
-#import <Photos/Photos.h>
-#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
@@ -28,9 +22,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowVisibility,
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
-    PostSettingsRowFeaturedImageAdd,
-    PostSettingsRowFeaturedImageRemove,
-    PostSettingsRowFeaturedLoading,
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
     PostSettingsRowSlug,
@@ -40,12 +31,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowParentPage
 };
 
-static CGFloat CellHeight = 44.0f;
-static CGFloat LoadingIndicatorHeight = 28.0f;
-
 static NSString *const PostSettingsAnalyticsTrackingSource = @"post_settings";
-static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
-static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 static NSString *const TableViewToggleCellIdentifier = @"TableViewToggleCellIdentifier";
 static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
@@ -53,22 +39,19 @@ static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellId
 
 @interface PostSettingsViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate,
-PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
-FeaturedImageViewControllerDelegate>
+PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *formatsList;
-@property (nonatomic, strong) UIImage *featuredImage;
-@property (nonatomic, strong) NSData *animatedFeaturedImageData;
-
-@property (nonatomic, readonly) CGSize featuredImageSize;
 
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
 @property (nonatomic, strong) NSMutableArray<NSNumber *> *enabledConnections;
 
 @property (nonatomic, strong) NSDateFormatter *postDateFormatter;
+
+@property (nonatomic, strong) PostSettingsFeaturedImageViewModel *featuredImageViewModel;
 
 #pragma mark - Properties: Services
 
@@ -88,8 +71,6 @@ FeaturedImageViewControllerDelegate>
 - (void)dealloc
 {
     [self.internetReachability stopNotifier];
-
-    [self removeMediaObserver];
 }
 
 - (instancetype)initWithPost:(AbstractPost *)aPost
@@ -99,6 +80,7 @@ FeaturedImageViewControllerDelegate>
         self.apost = aPost;
         self.unsupportedConnections = @[];
         self.enabledConnections = [NSMutableArray array];
+        self.featuredImageViewModel = [[PostSettingsFeaturedImageViewModel alloc] initWithPost:aPost];
     }
     return self;
 }
@@ -123,9 +105,7 @@ FeaturedImageViewControllerDelegate>
     [self setupFormatsList];
     [self setupPublicizeConnections];
 
-    [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
-    [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
-    [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
     [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewToggleCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
 
@@ -135,7 +115,9 @@ FeaturedImageViewControllerDelegate>
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
     self.tableView.accessibilityIdentifier = @"SettingsTable";
-    self.isUploadingMedia = NO;
+
+    self.featuredImageViewModel.tableView = self.tableView;
+    self.featuredImageViewModel.delegate = self.featuredImageDelegate;
 
     _blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
@@ -441,18 +423,6 @@ FeaturedImageViewControllerDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
-
-    if (sectionId == PostSettingsSectionFeaturedImage) {
-        if ([self isUploadingMedia]) {
-            return CellHeight + (2.f * PostFeaturedImageCellMargin);
-        } else if (self.featuredImage) {
-            return self.featuredImageSize.height + 2.f * PostFeaturedImageCellMargin;
-        } else {
-            return LoadingIndicatorHeight + 2.f * PostFeaturedImageCellMargin;
-        }
-    }
-
     return UITableViewAutomaticDimension;
 }
 
@@ -467,7 +437,7 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionMeta) {
         cell = [self configureMetaPostMetaCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
-        cell = [self configureFeaturedImageCellForIndexPath:indexPath];
+        cell = [self makeFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
@@ -502,12 +472,6 @@ FeaturedImageViewControllerDelegate>
         [self showPostAuthorSelector];
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
-    } else if (cell.tag == PostSettingsRowFeaturedImage) {
-        [self showFeaturedImageSelector];
-    } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
-        [self showFeaturedImageSelector];
-    } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
-        [self showFeaturedImageRemoveOrRetryActionAtIndexPath:indexPath];
     } else if (sec == PostSettingsSectionDisabledTwitter) {
         [self showShareDetailForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
@@ -651,31 +615,12 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)makeFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.apost.featuredImage && !self.isUploadingMedia) {
-        return [self cellForSetFeaturedImage];
-
-    } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
-        // Is featured Image set on the post and it's being pushed to the server?
-        if (!self.isUploadingMedia) {
-            self.isUploadingMedia = YES;
-            [self setupObservingOfMedia:self.apost.featuredImage];
-        }
-        self.featuredImage = nil;
-        return [self cellForFeaturedImageUploadProgressAtIndexPath:indexPath];
-
-    } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
-        // Do we have an feature image set and for some reason the upload failed?
-        return [self cellForFeaturedImageError];
-    } else {
-        NSURL *featuredURL = [self urlForFeaturedImage];
-        if (!featuredURL) {
-            return [self cellForSetFeaturedImage];
-        }
-
-        return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
-    }
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+    [self configureFeaturedImageCellWithCell:cell viewModel:self.featuredImageViewModel];
+    cell.tag = PostSettingsRowFeaturedImage;
+    return cell;
 }
 
 - (UITableViewCell *)configureStickyPostCellForIndexPath:(NSIndexPath *)indexPath
@@ -690,54 +635,6 @@ FeaturedImageViewControllerDelegate>
         weakSelf.post.isStickyPost = newValue;
     };
     return cell;
-}
-
-- (UITableViewCell *)cellForSetFeaturedImage
-{
-    UITableViewCell *cell = [self makeSetFeaturedImageCell];
-    cell.tag = PostSettingsRowFeaturedImageAdd;
-    return cell;
-}
-
-- (UITableViewCell *)cellForFeaturedImageError
-{
-    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-    activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
-    activityCell.tag = PostSettingsRowFeaturedImageRemove;
-    return activityCell;
-}
-
-- (UITableViewCell *)cellForFeaturedImageUploadProgressAtIndexPath:(NSIndexPath *)indexPath
-{
-    self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-    [WPStyleGuide configureTableViewCell:self.progressCell];
-    [self.progressCell setProgress:self.featuredImageProgress];
-    self.progressCell.tag = PostSettingsRowFeaturedLoading;
-    return self.progressCell;
-}
-
-- (UITableViewCell *)cellForFeaturedImageWithURL:(nonnull NSURL *)featuredURL atIndexPath:(NSIndexPath *)indexPath
-{
-    PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-    featuredImageCell.delegate = self;
-    [WPStyleGuide configureTableViewCell:featuredImageCell];
-
-    [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
-    featuredImageCell.tag = PostSettingsRowFeaturedImage;
-    return featuredImageCell;
-}
-
-- (nullable NSURL *)urlForFeaturedImage {
-    NSURL *featuredURL = self.apost.featuredImage.absoluteLocalURL;
-
-    if (!featuredURL || ![featuredURL checkResourceIsReachableAndReturnError:nil]) {
-        featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
-    }
-
-    if (!featuredURL) {
-        featuredURL = self.apost.featuredImageURLForDisplay;
-    }
-    return featuredURL;
 }
 
 - (UITableViewCell *)configureSocialCellForIndexPath:(NSIndexPath *)indexPath
@@ -866,17 +763,6 @@ FeaturedImageViewControllerDelegate>
     }
     cell.accessoryView = nil;
     cell.imageView.image = nil;
-    cell.tag = 0;
-    return cell;
-}
-
-- (WPTableViewActivityCell *)getWPTableViewActivityCell
-{
-    WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier];
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    [WPStyleGuide configureTableViewActionCell:cell];
-
     cell.tag = 0;
     return cell;
 }
@@ -1030,21 +916,6 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showFeaturedImageSelector
-{
-    if (self.apost.featuredImage && self.featuredImage) {
-        FeaturedImageViewController *featuredImageVC;
-        if (self.animatedFeaturedImageData) {
-            featuredImageVC = [[FeaturedImageViewController alloc] initWithGifData:self.animatedFeaturedImageData];
-        } else {
-            featuredImageVC = [[FeaturedImageViewController alloc] initWithImage:self.featuredImage];
-        }
-        featuredImageVC.delegate = self;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
-        [self presentViewController:navigationController animated:YES completion:nil];
-    }
-}
-
 - (void)showEditSlugController
 {
     SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.slugForDisplay
@@ -1104,21 +975,6 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController pushViewController:tagsPicker animated:YES];
 }
 
-- (CGSize)featuredImageSize
-{
-    CGFloat width = CGRectGetWidth(self.view.frame);
-    width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
-    CGFloat height = ceilf(width * 0.66);
-    return CGSizeMake(width, height);
-}
-
-- (void)featuredImageFailedLoading:(NSIndexPath *)indexPath withError:(NSError *)error
-{
-    DDLogError(@"Error loading featured image: %@", error);
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
-}
-
 #pragma mark - Jetpack Social
 
 - (UITableViewCell *)configureGenericCellWith:(UIView *)view {
@@ -1154,12 +1010,6 @@ FeaturedImageViewControllerDelegate>
     }
 }
 
-- (void)reloadFeaturedImageCell {
-    NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
-    [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
-                          withRowAnimation:UITableViewRowAnimationFade];
-}
-
 // MARK: - Page Attributes
 
 - (UITableViewCell *)configurePageAttributesCellForIndexPath:(NSIndexPath *)indexPath
@@ -1188,54 +1038,6 @@ FeaturedImageViewControllerDelegate>
     if (!self.isStandalone) {
         [self.post save];
     }
-}
-
-#pragma mark - PostFeaturedImageCellDelegate
-
-- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingAnimatedImageWithData:(NSData *)animationData
-{
-    if (self.animatedFeaturedImageData == nil) {
-        self.animatedFeaturedImageData = animationData;
-        [self updateFeaturedImageCell:cell];
-    }
-}
-
-- (void)postFeatureImageCellDidFinishLoadingImage:(PostFeaturedImageCell *)cell
-{
-    self.animatedFeaturedImageData = nil;
-    if (!self.featuredImage) {
-        [self updateFeaturedImageCell:cell];
-    }
-}
-
-- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingImageWithError:(NSError *)error
-{
-    self.featuredImage = nil;
-    if (error) {
-        NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
-        [self featuredImageFailedLoading:featureImageCellPath withError:error];
-    }
-}
-
-- (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
-{
-    self.featuredImage = cell.image;
-    NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
-    NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
-    [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
-}
-
-#pragma mark - FeaturedImageViewControllerDelegate
-
-- (void)FeaturedImageViewControllerOnRemoveImageButtonPressed:(FeaturedImageViewController *)controller
-{
-    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"removed"}];
-    self.featuredImage = nil;
-    self.animatedFeaturedImageData = nil;
-    [self.apost setFeaturedImage:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
-    [self.tableView reloadData];
-    [self.featuredImageDelegate gutenbergDidRequestFeaturedImageId:nil];
 }
 
 @end

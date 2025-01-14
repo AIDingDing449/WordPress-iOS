@@ -16,8 +16,6 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
 
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timezoneLabel: UILabel!
-    @IBOutlet weak var backArrow: UIImageView!
-    @IBOutlet weak var forwardArrow: UIImageView!
     @IBOutlet weak var bottomSeparatorLine: UIView! {
         didSet {
             bottomSeparatorLine.isGhostableDisabled = true
@@ -134,6 +132,9 @@ private extension SiteStatsTableHeaderView {
     func applyStyles() {
         backgroundColor = .secondarySystemGroupedBackground
 
+        backButton.configuration = makeNavigationButtonConfiguraiton(systemImage: "chevron.backward")
+        forwardButton.configuration = makeNavigationButtonConfiguraiton(systemImage: "chevron.forward")
+
         Style.configureLabelAsCellRowTitle(dateLabel)
         dateLabel.font = Metrics.dateLabelFont
         dateLabel.adjustsFontForContentSizeCategory = true
@@ -149,6 +150,14 @@ private extension SiteStatsTableHeaderView {
         // Required as the Style separator configure method clears all
         // separators for the Stats Revamp in Insights.
         bottomSeparatorLine.backgroundColor = .separator
+    }
+
+    private func makeNavigationButtonConfiguraiton(systemImage: String) -> UIButton.Configuration {
+        var configuration = UIButton.Configuration.plain()
+        configuration.buttonSize = .small
+        configuration.baseForegroundColor = .label
+        configuration.image = UIImage(systemName: systemImage)
+        return configuration
     }
 
     func displayDate() -> String? {
@@ -261,20 +270,13 @@ private extension SiteStatsTableHeaderView {
         guard let date, let period else {
             forwardButton.isEnabled = false
             backButton.isEnabled = false
-            updateArrowStates()
             return
         }
 
         let helper = StatsPeriodHelper()
         forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period, mostRecentDate: mostRecentDate)
         backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit, mostRecentDate: mostRecentDate)
-        updateArrowStates()
         prepareForVoiceOver()
-    }
-
-    func updateArrowStates() {
-        forwardArrow.image = Style.imageForGridiconType(.chevronRight, withTint: (forwardButton.isEnabled ? .darkGrey : .grey))
-        backArrow.image = Style.imageForGridiconType(.chevronLeft, withTint: (backButton.isEnabled ? .darkGrey : .grey))
     }
 
     func postAccessibilityPeriodLabel() {

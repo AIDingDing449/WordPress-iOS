@@ -1,5 +1,5 @@
 {
-  "originHash" : "4cacb81eb20e7d20d1b25f261d9303a24f725104ed3b36743fc2707b7473a93d",
+  "originHash" : "cc23994fa7cdcf18782712f28e823bb56a70994e186e61bb5ba912f1386d66a7",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
         "version" : "5.9.1"
-      }
-    },
-    {
-      "identity" : "alamofireimage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Alamofire/AlamofireImage",
-      "state" : {
-        "revision" : "1eaf3b6c6882bed10f6e7b119665599dd2329aa1",
-        "version" : "4.3.0"
       }
     },
     {
@@ -315,6 +306,15 @@
       }
     },
     {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
+        "version" : "1.1.4"
+      }
+    },
+    {
       "identity" : "swift-log",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
@@ -383,7 +383,7 @@
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
         "branch" : "wpios-edition",
-        "revision" : "77b3f5e98da1e837e3983615c9fd1b38d66e3084"
+        "revision" : "a9a057ea6fba8080c146497336951dc805409771"
       }
     },
     {

@@ -59,7 +59,7 @@ struct NoSitesView: View {
                 makeGravatarIcon(size: 40)
                 accountAndSettingsStackView
                 Spacer()
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .tint(.secondary)
             }
             .padding(.horizontal, 16)

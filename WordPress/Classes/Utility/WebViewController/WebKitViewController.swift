@@ -1,5 +1,3 @@
-import Foundation
-import Gridicons
 import UIKit
 @preconcurrency import WebKit
 import WordPressShared
@@ -39,7 +37,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     let analyticsSource: String?
 
     @objc lazy var backButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
                                style: .plain,
                                target: self,
                                action: #selector(goBack))
@@ -47,7 +45,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         return button
     }()
     @objc lazy var forwardButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.chevronRight),
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.forward"),
                                style: .plain,
                                target: self,
                                action: #selector(goForward))
@@ -55,15 +53,15 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         return button
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.shareiOS),
+        let button = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
                                style: .plain,
                                target: self,
                                action: #selector(share))
-        button.title = NSLocalizedString("Share", comment: "Button label to share a web page")
+        button.title = NSLocalizedString("webKit.button.share", value: "Share", comment: "Button label to share a web page")
         return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.globe),
+        let button = UIBarButtonItem(image: UIImage(systemName: "safari"),
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
@@ -72,12 +70,12 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         return button
     }()
     @objc lazy var refreshButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        let button = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
         button.title = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
         return button
     }()
     @objc lazy var closeButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(WebKitViewController.close))
         button.title = NSLocalizedString("webKit.button.dismiss", value: "Dismiss", comment: "Verb. Dismiss the web view screen.")
         return button
     }()
@@ -178,7 +176,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
-            ])
+        ])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
@@ -329,6 +327,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             space,
             safariButton
         ]
+        for item in items {
+            item.tintColor = UIAppColor.tint
+        }
         setToolbarItems(items, animated: false)
     }
 

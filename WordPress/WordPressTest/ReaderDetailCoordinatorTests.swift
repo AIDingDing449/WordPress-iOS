@@ -194,7 +194,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.handle(URL(string: "https://wordpress.com/image.png")!)
 
-        expect(viewMock.didCallPresentWith).to(beAKindOf(WPImageViewController.self))
+        expect(viewMock.didCallPresentWith).to(beAKindOf(LightboxViewController.self))
     }
 
     /// Present an URL in a new Reader Detail screen

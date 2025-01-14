@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import WordPressMedia
+import AsyncImageKit
 
 /// The purpose of this class is to provide a simple API to download assets from the web.
 /// Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.

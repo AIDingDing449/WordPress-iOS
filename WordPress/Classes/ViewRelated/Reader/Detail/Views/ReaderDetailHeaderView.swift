@@ -1,4 +1,5 @@
 import SwiftUI
+import AsyncImageKit
 import WordPressUI
 
 protocol ReaderDetailHeaderViewDelegate: AnyObject {

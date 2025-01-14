@@ -2,7 +2,7 @@ import Foundation
 import GravatarUI
 import WordPressShared
 import WordPressAuthenticator
-import WordPressMedia
+import AsyncImageKit
 
 @MainActor
 struct GravatarQuickEditorPresenter {

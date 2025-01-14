@@ -1,7 +1,9 @@
 import SwiftUI
 import UIKit
 import Combine
+import WordPressUI
 import WordPressShared
+import AsyncImageKit
 
 final class ReaderPostCell: ReaderStreamBaseCell {
     private let view = ReaderPostCellView()
@@ -50,6 +52,18 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         contentViewConstraints = view.pinEdges(.horizontal, to: isCompact ? contentView : contentView.readableContentGuide)
         super.updateConstraints()
     }
+
+    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> ImageSize {
+        var coverWidth = ReaderPostCell.regularCoverWidth
+        if isCompact {
+            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
+        }
+        return ImageSize(scaling: CGSize(width: coverWidth, height: coverWidth), in: window)
+    }
+
+    func getViewForZoomTransition() -> UIView {
+        view
+    }
 }
 
 private final class ReaderPostCellView: UIView {
@@ -57,6 +71,7 @@ private final class ReaderPostCellView: UIView {
     let avatarView = ReaderAvatarView()
     let buttonAuthor = makeAuthorButton()
     let timeLabel = UILabel()
+    let seenCheckmark = UIImageView()
     let buttonMore = makeButton(systemImage: "ellipsis", font: .systemFont(ofSize: 13))
 
     // Content
@@ -86,6 +101,7 @@ private final class ReaderPostCellView: UIView {
 
     private var toolbarViewHeightConstraint: NSLayoutConstraint?
     private var imageViewConstraints: [NSLayoutConstraint] = []
+    private var isSeenCheckmarkConfigured = false
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
@@ -130,7 +146,7 @@ private final class ReaderPostCellView: UIView {
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
 
-        buttonMore.configuration?.baseForegroundColor = UIColor.opaqueSeparator
+        buttonMore.configuration?.baseForegroundColor = UIColor.secondaryLabel.withAlphaComponent(0.5)
         buttonMore.configuration?.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 20)
     }
 
@@ -141,7 +157,8 @@ private final class ReaderPostCellView: UIView {
 
         // These seems to be an issue with `lineBreakMode` in `UIButton.Configuration`
         // and `.firstLineBaseline`, so reserving to `.center`.
-        let headerView = UIStackView(alignment: .center, [buttonAuthor, dot, timeLabel])
+        let headerView = UIStackView(alignment: .center, [buttonAuthor, dot, timeLabel, seenCheckmark])
+        headerView.setCustomSpacing(4, after: timeLabel)
 
         for view in [avatarView, headerView, postPreview, buttonMore, toolbarView] {
             addSubview(view)
@@ -154,7 +171,7 @@ private final class ReaderPostCellView: UIView {
             avatarView.widthAnchor.constraint(equalToConstant: ReaderPostCell.avatarSize),
             avatarView.heightAnchor.constraint(equalToConstant: ReaderPostCell.avatarSize),
             avatarView.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-            avatarView.trailingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: -8),
+            avatarView.trailingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: -9),
 
             headerView.topAnchor.constraint(equalTo: topAnchor, constant: 6),
             headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
@@ -294,6 +311,13 @@ private final class ReaderPostCellView: UIView {
             imageView.setImage(with: imageURL, size: preferredCoverSize)
         }
 
+        if viewModel.isSeen == true {
+            configureSeenCheckmarkIfNeeded()
+            seenCheckmark.isHidden = false
+        } else {
+            seenCheckmark.isHidden = true
+        }
+
         if !viewModel.isToolbarHidden {
             configureToolbar(with: viewModel.toolbar)
             configureToolbarAccessibility(with: viewModel.toolbar)
@@ -305,25 +329,16 @@ private final class ReaderPostCellView: UIView {
         }
     }
 
-    private var preferredCoverSize: CGSize? {
+    private var preferredCoverSize: ImageSize? {
         guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
-        return Self.preferredCoverSize(in: window, isCompact: isCompact)
-    }
-
-    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
-        var coverWidth = ReaderPostCell.regularCoverWidth
-        if isCompact {
-            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
-        }
-        return CGSize(width: coverWidth, height: coverWidth)
-            .scaled(by: min(2, window.traitCollection.displayScale))
+        return ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
     }
 
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {
         buttons.bookmark.configuration = {
             var configuration = buttons.bookmark.configuration ?? .plain()
             configuration.image = UIImage(systemName: viewModel.isBookmarked ? "bookmark.fill" : "bookmark")
-            configuration.baseForegroundColor = viewModel.isBookmarked ? UIAppColor.brand : .secondaryLabel
+            configuration.baseForegroundColor = viewModel.isBookmarked ? UIAppColor.primary : .secondaryLabel
             return configuration
         }()
 
@@ -345,8 +360,7 @@ private final class ReaderPostCellView: UIView {
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
-        let avatarSize = CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize)
-            .scaled(by: UITraitCollection.current.displayScale)
+        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize))
         if let avatarURL = viewModel.avatarURL {
             avatarView.setImage(with: avatarURL, size: avatarSize)
         } else {
@@ -354,6 +368,17 @@ private final class ReaderPostCellView: UIView {
                 self?.avatarView.setImage(with: $0, size: avatarSize)
             }.store(in: &cancellables)
         }
+    }
+
+    private func configureSeenCheckmarkIfNeeded() {
+        guard !isSeenCheckmarkConfigured else { return }
+        isSeenCheckmarkConfigured = true
+
+        seenCheckmark.image = UIImage(
+            systemName: "checkmark",
+            withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .caption1).withWeight(.medium))
+        )
+        seenCheckmark.tintColor = .secondaryLabel
     }
 
     private static let authorAttributes = AttributeContainer([

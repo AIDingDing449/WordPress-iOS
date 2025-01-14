@@ -299,7 +299,7 @@ class NoticeView: UIView {
     }
 
     private func configureNextArrow() -> UIImageView {
-        guard let image = UIImage(named: "disclosure-chevron")?.withTintColor(.invertedLink).imageFlippedForRightToLeftLayoutDirection() else {
+        guard let image = UIImage(systemName: "chevron.forward")?.withTintColor(.invertedLink) else {
             return UIImageView()
         }
 

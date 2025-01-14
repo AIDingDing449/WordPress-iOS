@@ -22,6 +22,8 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
         scrollView.addSubview(channelsStackView)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.clipsToBounds = false
+        scrollView.decelerationRate = .fast
+
         channelsStackView.pinEdges()
         scrollView.heightAnchor.constraint(equalTo: channelsStackView.heightAnchor).isActive = true
 
@@ -65,7 +67,7 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
 
     private func updateScrollViewInsets() {
         scrollView.contentInset.left = contentView.frame.minX - (isCompact ? 0 : 10)
-        scrollView.contentInset.right = frame.maxX - contentView.frame.maxX
+        scrollView.contentInset.right = frame.maxX - contentView.frame.maxX + 10
         scrollView.contentOffset = CGPoint(x: -scrollView.contentInset.left, y: 0)
     }
 
@@ -213,7 +215,7 @@ enum ReaderDiscoverChannel: Hashable {
         case .dailyPrompts:
             NSLocalizedString("reader.discover.channel.dailyPrompts", value: "Daily Prompts", comment: "Header view channel (filter)")
         case .tag(let tag):
-            tag.title.localizedCapitalized
+            tag.formattedTitle
         }
     }
 

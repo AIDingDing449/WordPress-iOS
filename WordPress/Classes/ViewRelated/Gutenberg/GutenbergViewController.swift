@@ -1,8 +1,10 @@
 import UIKit
+import AsyncImageKit
 import Gutenberg
 import Aztec
 import WordPressFlux
 import WordPressShared
+import WordPressUI
 import React
 import AutomatticTracks
 import Combine
@@ -90,7 +92,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var editorSession: PostEditorAnalyticsSession
 
-    var onClose: ((Bool) -> Void)?
+    var onClose: (() -> Void)?
 
     var postIsReblogged: Bool = false
 
@@ -897,19 +899,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
-        navigationController?.definesPresentationContext = true
-
-        let controller: WPImageViewController
-        if let image = AnimatedImageCache.shared.cachedStaticImage(url: fullSizeUrl) {
-            controller = WPImageViewController(image: image)
-        } else {
-            controller = WPImageViewController(externalMediaURL: fullSizeUrl)
-        }
-
-        controller.post = self.post
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .overCurrentContext
-        self.present(controller, animated: true)
+        let lightboxVC = LightboxViewController(sourceURL: fullSizeUrl, host: MediaHost(post))
+        lightboxVC.configureZoomTransition()
+        present(lightboxVC, animated: true)
     }
 
     func gutenbergDidRequestUnsupportedBlockFallback(for block: Block) {

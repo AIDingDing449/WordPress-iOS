@@ -1068,13 +1068,15 @@ private extension CommentDetailViewController {
             return
         }
 
+        replyTextView?.setShowingLoadingIndicator(true)
+
         commentService.createReply(for: comment, content: content) { reply in
             self.commentService.uploadComment(reply, success: { [weak self] in
-                self?.displayReplyNotice(success: true)
+                self?.didSendReply(success: true)
                 self?.refreshCommentReplyIfNeeded()
             }, failure: { [weak self] error in
                 DDLogError("Failed uploading comment reply: \(String(describing: error))")
-                self?.displayReplyNotice(success: false)
+                self?.didSendReply(success: false, error: error)
             })
         }
     }
@@ -1084,21 +1086,30 @@ private extension CommentDetailViewController {
             return
         }
 
+        replyTextView?.setShowingLoadingIndicator(true)
+
         commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
                                                   post: post,
                                                   content: content,
                                                   success: { [weak self] in
-            self?.displayReplyNotice(success: true)
+            self?.didSendReply(success: true)
             self?.refreshCommentReplyIfNeeded()
         }, failure: { [weak self] error in
             DDLogError("Failed creating post comment reply: \(String(describing: error))")
-            self?.displayReplyNotice(success: false)
+            self?.didSendReply(success: false, error: error)
         })
     }
 
-    func displayReplyNotice(success: Bool) {
+    func didSendReply(success: Bool, error: Error? = nil) {
+        replyTextView?.setShowingLoadingIndicator(false)
+        if success {
+            replyTextView?.text = ""
+        } else {
+            replyTextView?.becomeFirstResponder()
+        }
+
         let message = success ? ReplyMessages.successMessage : ReplyMessages.failureMessage
-        displayNotice(title: message)
+        displayNotice(title: message, message: error?.localizedDescription)
     }
 
     func configureSuggestionsView() {

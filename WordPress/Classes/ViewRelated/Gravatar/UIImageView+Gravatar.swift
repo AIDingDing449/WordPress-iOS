@@ -1,4 +1,5 @@
 import Foundation
+import AsyncImageKit
 import GravatarUI
 import WordPressUI
 
@@ -114,10 +115,12 @@ fileprivate struct GravatarDefaults {
 
 extension AvatarURL {
 
-    public static func url(for email: String,
-                           preferredSize: ImageSize? = nil,
-                           gravatarRating: Rating? = nil,
-                           defaultAvatarOption: DefaultAvatarOption? = .status404) -> URL? {
+    public static func url(
+        for email: String,
+        preferredSize: Gravatar.ImageSize? = nil,
+        gravatarRating: Rating? = nil,
+        defaultAvatarOption: DefaultAvatarOption? = .status404
+    ) -> URL? {
         AvatarURL(
             with: .email(email),
             // Passing GravatarDefaults.imageSize to keep the previous default.

@@ -1,5 +1,4 @@
 import UIKit
-import DesignSystem
 
 class StatsBaseCell: UITableViewCell {
 
@@ -15,23 +14,17 @@ class StatsBaseCell: UITableViewCell {
     }()
 
     private lazy var showDetailsButton: UIButton = {
-        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: "chevron.forward")
+        configuration.buttonSize = .small
+        configuration.imagePadding = 4
+        configuration.baseForegroundColor = .secondaryLabel
+        configuration.imagePlacement = .trailing
+        configuration.titleLineBreakMode = .byTruncatingTail
+
+        let button = UIButton(configuration: configuration)
         button.translatesAutoresizingMaskIntoConstraints = true
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.tintColor = .secondaryLabel
-        button.setTitleColor(.secondaryLabel, for: .normal)
-        button.setImage(UIImage.gridicon(.chevronRight).withTintColor(UIColor(color: WPStyleGuide.greyLighten20())), for: .normal)
-
-        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-            button.semanticContentAttribute = .forceLeftToRight
-            button.titleEdgeInsets = Metrics.rtlButtonTitleInsets
-        } else {
-            button.semanticContentAttribute = .forceRightToLeft
-            button.titleEdgeInsets = Metrics.buttonTitleInsets
-        }
-
         button.accessibilityHint = LocalizedText.buttonAccessibilityHint
         return button
     }()
@@ -39,7 +32,7 @@ class StatsBaseCell: UITableViewCell {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Metrics.stackSpacing
+        stackView.spacing = 8
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
@@ -79,7 +72,7 @@ class StatsBaseCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Metrics.padding),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Metrics.padding),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Metrics.padding)
         ])
 
@@ -113,11 +106,11 @@ class StatsBaseCell: UITableViewCell {
 
             switch statSection {
             case .insightsViewsVisitors:
-                showDetailsButton.setTitle(LocalizedText.buttonTitleThisWeek, for: .normal)
+                showDetailsButton.configuration?.title = LocalizedText.buttonTitleThisWeek
             case .insightsFollowerTotals, .insightsCommentsTotals, .insightsLikesTotals:
-                showDetailsButton.setTitle(LocalizedText.buttonTitleViewMore, for: .normal)
+                showDetailsButton.configuration?.title = LocalizedText.buttonTitleViewMore
             default:
-                showDetailsButton.setTitle("", for: .normal)
+                showDetailsButton.configuration?.title = nil
             }
 
             headingWidthConstraint?.isActive = true
@@ -179,11 +172,8 @@ class StatsBaseCell: UITableViewCell {
     }
 
     enum Metrics {
-        static let padding: CGFloat = .DS.Padding.double
-        static let bottomSpacing: CGFloat = .DS.Padding.split
-        static let stackSpacing: CGFloat = .DS.Padding.single
-        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -.DS.Padding.single, bottom: 0, right: .DS.Padding.single)
-        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: .DS.Padding.single, bottom: 0, right: -.DS.Padding.single)
+        static let padding: CGFloat = 16
+        static let bottomSpacing: CGFloat = 12
     }
 
     private enum LocalizedText {

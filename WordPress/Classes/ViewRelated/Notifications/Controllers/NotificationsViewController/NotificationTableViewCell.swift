@@ -66,7 +66,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         }
         return NotificationsTableViewCellContent.InlineAction.Configuration(
             icon: Image.DS.icon(named: .blockShare),
-            accessibilityLabel: Strings.shareButtonAccessibilityLabel,
+            accessibilityLabel: SharedStrings.Button.share,
             accessibilityHint: Strings.tapToShareThisPost,
             action: action
         )
@@ -131,7 +131,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     private func likeInlineActionIcon(filled: Bool) -> (image: Image, color: Color?) {
         let image: Image = Image.DS.icon(named: filled ? .starFill : .starOutline)
-        let color: Color? = filled ? AppColor.brand: nil
+        let color: Color? = filled ? AppColor.primary: nil
         return (image: image, color: color)
     }
 
@@ -152,12 +152,6 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
             "notifications.accessibility-like-button-off",
             value: "Not liked",
             comment: "The user has not previously tapped 'Like' on this post or comment"
-        )
-
-        static let shareButtonAccessibilityLabel = NSLocalizedString(
-            "notifications.accessibility-share-button",
-            value: "Share",
-            comment: "A label for screenreader users"
         )
 
         static let tapToLikeThisPost = NSLocalizedString(

@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import Combine
-import WordPressMedia
+import AsyncImageKit
 
 final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
 
@@ -62,9 +62,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
-            let host = MediaHost(with: viewModel.page) { error in
-                WordPressAppDelegate.crashLogging?.logError(error)
-            }
+            let host = MediaHost(viewModel.page)
             let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.page.blog, size: Constants.imageSize.scaled(by: UIScreen.main.scale))
             featuredImageView.setImage(with: thumbnailURL, host: host)
         }

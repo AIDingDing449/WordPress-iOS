@@ -86,7 +86,7 @@ struct DebugMenuView: View {
                 HStack {
                     Text(Strings.encryptedLogging)
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.forward")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.secondary.opacity(0.5))
                 }

@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 import WordPressShared
-import WordPressMedia
+import AsyncImageKit
 
 /// A service for retrieval and caching of thumbnails for ``Media`` objects.
 final class MediaImageService {
@@ -110,7 +110,7 @@ final class MediaImageService {
         }
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
-            return RemoteImageInfo(imageURL: remoteURL, host: MediaHost(with: blog))
+            return RemoteImageInfo(imageURL: remoteURL, host: MediaHost(blog))
         }
     }
 
@@ -266,7 +266,7 @@ final class MediaImageService {
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
             guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize, blog: blog) else { return nil }
-            return RemoteImageInfo(imageURL: imageURL, host: MediaHost(with: blog))
+            return RemoteImageInfo(imageURL: imageURL, host: MediaHost(blog))
         }
     }
 

@@ -6,7 +6,7 @@ import Gridicons
 import WordPressShared
 import MobileCoreServices
 import WordPressEditor
-import WordPressMedia
+import AsyncImageKit
 import AVKit
 import AutomatticTracks
 import MediaEditor
@@ -23,7 +23,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Closure to be executed when the editor gets closed.
     ///
-    var onClose: ((_ changesSaved: Bool) -> ())?
+    var onClose: (() -> ())?
 
     /// Verification Prompt Helper
     ///
@@ -2775,7 +2775,7 @@ extension AztecPostViewController {
 
     func displayUnableToPlayVideoAlert() {
         let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        alertController.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default, handler: nil))
         present(alertController, animated: true)
         return
     }
@@ -3088,10 +3088,10 @@ extension AztecPostViewController {
     }
 
     struct Assets {
-        static let closeButtonModalImage    = UIImage.gridicon(.cross)
-        static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
-        static let defaultMissingImage      = UIImage.gridicon(.image)
-        static let linkPlaceholderImage     = UIImage.gridicon(.pages)
+        static let closeButtonModalImage = UIImage.gridicon(.cross)
+        static let closeButtonRegularImage = UIImage(systemName: "chevron.backward")
+        static let defaultMissingImage = UIImage.gridicon(.image)
+        static let linkPlaceholderImage = UIImage.gridicon(.pages)
     }
 
     struct Constants {

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 final class DashboardQuickActionCell: UITableViewCell {
     private let iconView = UIImageView()
@@ -42,8 +43,7 @@ final class DashboardQuickActionCell: UITableViewCell {
         stackView.isUserInteractionEnabled = false
 
         contentView.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16))
+        stackView.pinEdges(insets: UIEdgeInsets(horizontal: 16, vertical: 12))
     }
 
     func configure(_ viewModel: DashboardQuickActionItemViewModel) {
@@ -65,7 +65,7 @@ final class DashboardQuickActionCell: UITableViewCell {
             separatorInset = UIEdgeInsets(top: 0, left: bounds.width, bottom: 0, right: 0)
         } else {
             let titleLabelFrame = contentView.convert(titleLabel.frame, from: titleLabel.superview)
-            separatorInset = UIEdgeInsets(top: 0, left: titleLabelFrame.origin.x, bottom: 0, right: 0)
+            separatorInset = UIEdgeInsets(top: 0, left: traitCollection.layoutDirection == .rightToLeft ? contentView.bounds.width - titleLabelFrame.maxX : titleLabelFrame.origin.x, bottom: 0, right: 0)
         }
     }
 }

@@ -22,6 +22,8 @@ final class MediaPreviewController: UIViewController, UIPageViewControllerDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
+
         configureNavigationItems()
         configurePageViewController()
         updateNavigationForCurrentViewController()
@@ -52,26 +54,27 @@ final class MediaPreviewController: UIViewController, UIPageViewControllerDataSo
         }
     }
 
-    private func makePageViewController(at index: Int) -> MediaPreviewItemViewController? {
+    private func makePageViewController(at index: Int) -> LightboxViewController? {
         guard index >= 0 && index < numberOfItems,
               let item = dataSource?.previewController(self, previewItemAt: index) else {
             return nil
         }
-        let viewController = MediaPreviewItemViewController(externalMediaURL: item.url)
-        viewController.shouldDismissWithGestures = false
-        viewController.index = index
+        let viewController = LightboxViewController(sourceURL: item.url)
+        viewController.configuration.showsCloseButton = false
+        viewController.configuration.backgroundColor = .systemBackground
+        viewController.view.tag = index
         return viewController
     }
 
     // MARK: - UIPageViewControllerDataSource
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        let index = (viewController as! MediaPreviewItemViewController).index
+        let index = (viewController as! LightboxViewController).view.tag
         return makePageViewController(at: index - 1)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let index = (viewController as! MediaPreviewItemViewController).index
+        let index = (viewController as! LightboxViewController).view.tag
         return makePageViewController(at: index + 1)
     }
 
@@ -82,15 +85,11 @@ final class MediaPreviewController: UIViewController, UIPageViewControllerDataSo
     }
 
     private func updateNavigationForCurrentViewController() {
-        guard let viewController = pageViewController.viewControllers?.first as? MediaPreviewItemViewController else {
+        guard let viewController = pageViewController.viewControllers?.first as? LightboxViewController else {
             return
         }
-        navigationItem.title = String(format: Strings.title, String(viewController.index + 1), String(numberOfItems))
+        navigationItem.title = String(format: Strings.title, String(viewController.view.tag + 1), String(numberOfItems))
     }
-}
-
-private final class MediaPreviewItemViewController: WPImageViewController {
-    var index = 0
 }
 
 private enum Strings {

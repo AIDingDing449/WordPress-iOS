@@ -1,7 +1,7 @@
 import Foundation
 import WordPressUI
 import Gravatar
-import WordPressMedia
+import AsyncImageKit
 
 extension WPTabBarController {
 

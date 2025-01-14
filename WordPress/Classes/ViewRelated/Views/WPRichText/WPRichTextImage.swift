@@ -1,22 +1,17 @@
 import UIKit
-import WordPressMedia
+import AsyncImageKit
+import Gifu
 
-open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
+class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Properties
 
     var contentURL: URL?
     var linkURL: URL?
 
-    @objc fileprivate(set) var imageView: CachedAnimatedImageView
+    @objc fileprivate(set) var imageView: AsyncImageView
 
-    fileprivate lazy var imageLoader: ImageLoader = {
-        let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .largeGIFs)
-        imageLoader.photonQuality = Constants.readerPhotonQuality
-        return imageLoader
-    }()
-
-    override open var frame: CGRect {
+    override var frame: CGRect {
         didSet {
             // If Voice Over is enabled, the OS will query for the accessibilityPath
             // to know what region of the screen to highlight. If the path is nil
@@ -28,12 +23,9 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Lifecycle
 
-    deinit {
-        imageView.clean()
-    }
-
     override init(frame: CGRect) {
-        imageView = CachedAnimatedImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        imageView = AsyncImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        imageView.configuration.passTouchesToSuperview = true
         imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         imageView.contentMode = .scaleAspectFit
         imageView.isAccessibilityElement = true
@@ -43,26 +35,8 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
         addSubview(imageView)
     }
 
-    required public init?(coder aDecoder: NSCoder) {
-        imageView = aDecoder.decodeObject(forKey: UIImage.classNameWithoutNamespaces()) as! CachedAnimatedImageView
-        contentURL = aDecoder.decodeObject(forKey: "contentURL") as! URL?
-        linkURL = aDecoder.decodeObject(forKey: "linkURL") as! URL?
-
-        super.init(coder: aDecoder)
-    }
-
-    override open func encode(with aCoder: NSCoder) {
-        aCoder.encode(imageView, forKey: UIImage.classNameWithoutNamespaces())
-
-        if let url = contentURL {
-            aCoder.encode(url, forKey: "contentURL")
-        }
-
-        if let url = linkURL {
-            aCoder.encode(url, forKey: "linkURL")
-        }
-
-        super.encode(with: aCoder)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Public Methods
@@ -83,33 +57,22 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
             return
         }
 
-        let successHandler: (() -> Void)? = {
-            onSuccess?()
+        imageView.setImage(with: ImageRequest(url: contentURL, host: host)) { result in
+            switch result {
+            case .success: onSuccess?()
+            case .failure(let error): onError?(error)
+            }
         }
-
-        let errorHandler: ((Error?) -> Void)? = { error in
-            onError?(error)
-        }
-
-        imageLoader.loadImage(with: contentURL, from: host, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
     }
 
     func contentSize() -> CGSize {
-        let size = imageView.intrinsicContentSize
-        guard size.height > 0, size.width > 0 else {
-            return CGSize(width: 1.0, height: 1.0)
+        guard let size = imageView.image?.size, size.height > 0, size.width > 0 else {
+            return CGSize(width: 44.0, height: 44.0)
         }
-        return imageView.intrinsicContentSize
+        return size
     }
 
     func clean() {
-        imageView.clean()
-        imageView.prepForReuse()
-    }
-}
-
-private extension WPRichTextImage {
-    enum Constants {
-        static let readerPhotonQuality: UInt = 65
+        imageView.prepareForReuse()
     }
 }

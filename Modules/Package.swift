@@ -8,18 +8,18 @@ let package = Package(
         .iOS(.v16),
     ],
     products: XcodeSupport.products + [
-        .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
+        .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
+        .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
-        .library(name: "WordPressMedia", targets: ["WordPressMedia"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
-        .package(url: "https://github.com/Alamofire/AlamofireImage", from: "4.3.0"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
+        .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.4.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.4"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.1.1"),
@@ -52,23 +52,34 @@ let package = Package(
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
     ],
     targets: XcodeSupport.targets + [
-        .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "AsyncImageKit", dependencies: [
+            .product(name: "Collections", package: "swift-collections"),
+            .product(name: "Gifu", package: "Gifu"),
+        ]),
         .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressMedia"),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
-        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "WordPressUI",
+            dependencies: [
+                "AsyncImageKit",
+                .target(name: "WordPressShared")
+            ],
+            resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "WordPressMediaTests", dependencies: [
-            .target(name: "WordPressMedia"),
+        .testTarget(name: "AsyncImageKitTests", dependencies: [
+            .target(name: "AsyncImageKit"),
             .target(name: "WordPressTesting"),
             .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
         ]),
@@ -143,10 +154,9 @@ enum XcodeSupport {
                 "JetpackStatsWidgetsCore",
                 "WordPressFlux",
                 "WordPressShared",
-                "WordPressMedia",
+                "AsyncImageKit",
                 "WordPressUI",
                 .product(name: "Alamofire", package: "Alamofire"),
-                .product(name: "AlamofireImage", package: "AlamofireImage"),
                 .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
                 .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
@@ -191,6 +201,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "JetpackStatsWidgetsCore",
                 "WordPressShared",
+                "WordPressUI",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
                 .product(name: "ColorStudio", package: "color-studio"),

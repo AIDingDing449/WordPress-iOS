@@ -2,7 +2,7 @@ import AutomatticTracks
 import UIKit
 import WordPressShared
 import WordPressUI
-import WordPressMedia
+import AsyncImageKit
 
 final class PostCompactCell: UITableViewCell, Reusable {
     private let titleLabel = UILabel()
@@ -78,12 +78,8 @@ final class PostCompactCell: UITableViewCell, Reusable {
         if let post, let url = post.featuredImageURL {
             featuredImageView.isHidden = false
 
-            let host = MediaHost(with: post, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                WordPressAppDelegate.crashLogging?.logError(error)
-            })
-
-            let targetSize = Constants.imageSize.scaled(by: traitCollection.displayScale)
+            let host = MediaHost(post)
+            let targetSize = ImageSize(scaling: Constants.imageSize, in: self)
             featuredImageView.setImage(with: url, host: host, size: targetSize)
         } else {
             featuredImageView.isHidden = true

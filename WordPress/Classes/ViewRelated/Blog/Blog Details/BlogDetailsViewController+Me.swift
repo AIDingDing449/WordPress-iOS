@@ -1,6 +1,6 @@
-import Foundation
+import UIKit
 import WordPressUI
-import WordPressMedia
+import AsyncImageKit
 import Gravatar
 
 extension BlogDetailsViewController {

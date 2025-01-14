@@ -782,7 +782,6 @@ public protocol ThemePresenter: AnyObject {
                 let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
 
                 self?.updateActivateButton(isLoading: false)
 
@@ -794,14 +793,13 @@ public protocol ThemePresenter: AnyObject {
                     handler: { [weak self] (action: UIAlertAction) in
                         _ = self?.navigationController?.popViewController(animated: true)
                     })
-                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+            alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
             },
             failure: { [weak self] (error) in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
 
                 self?.activityIndicator.stopAnimating()
                 self?.activateButton?.customView = nil
@@ -809,7 +807,7 @@ public protocol ThemePresenter: AnyObject {
                 let alertController = UIAlertController(title: errorTitle,
                     message: error?.localizedDescription,
                     preferredStyle: .alert)
-                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+            alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
         })
     }
@@ -852,7 +850,13 @@ public protocol ThemePresenter: AnyObject {
         presentUrlForTheme(theme, url: theme?.viewUrl(), onClose: onWebkitViewControllerClose)
     }
 
-    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true, modalStyle: UIModalPresentationStyle = .pageSheet, onClose: (() -> Void)? = nil) {
+    @objc open func presentUrlForTheme(
+        _ theme: Theme?,
+        url: String?,
+        activeButton: Bool = true,
+        modalStyle: UIModalPresentationStyle = .pageSheet,
+        onClose: (() -> Void)? = nil
+    ) {
         guard let theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
@@ -872,8 +876,14 @@ public protocol ThemePresenter: AnyObject {
 
         let webViewController = WebViewControllerFactory.controller(configuration: configuration, source: "theme_browser")
         webViewController.navigationItem.rightBarButtonItem = activateButton
+
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
+        if #available(iOS 18, *), let indexPath = collectionView.indexPathsForSelectedItems?.first {
+            navigation.preferredTransition = .zoom(sourceViewProvider: { [weak self] _ in
+                self?.collectionView.cellForItem(at: indexPath)?.contentView
+            })
+        }
 
         if searchController != nil && searchController.isActive {
             searchController.dismiss(animated: true, completion: {

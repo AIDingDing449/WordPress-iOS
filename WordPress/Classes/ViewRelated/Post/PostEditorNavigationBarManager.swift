@@ -54,10 +54,8 @@ class PostEditorNavigationBarManager {
     }()
 
     lazy var closeButton: UIButton = {
-        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
-        let closeImage = UIImage(named: "editor-chevron-left")
         let button = UIButton(type: .system)
-        button.setImage(isRTL ? closeImage?.withHorizontallyFlippedOrientation() : closeImage, for: .normal)
+        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)

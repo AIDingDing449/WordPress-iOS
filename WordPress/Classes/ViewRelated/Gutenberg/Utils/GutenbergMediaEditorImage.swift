@@ -1,6 +1,6 @@
 import Foundation
 import MediaEditor
-import WordPressMedia
+import AsyncImageKit
 
 /**
  This is a struct to be given to MediaEditor that represent the image.
@@ -32,7 +32,7 @@ class GutenbergMediaEditorImage: AsyncImage {
     init(url: URL, post: AbstractPost) {
         originalURL = url
         self.post = post
-        thumb = AnimatedImageCache.shared.cachedStaticImage(url: originalURL)
+        thumb = ImageDownloader.shared.cachedImage(for: originalURL)
     }
 
     /**

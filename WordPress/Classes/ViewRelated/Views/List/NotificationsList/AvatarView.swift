@@ -1,5 +1,6 @@
 import SwiftUI
 import Gravatar
+import AsyncImageKit
 import DesignSystem
 import WordPressUI
 

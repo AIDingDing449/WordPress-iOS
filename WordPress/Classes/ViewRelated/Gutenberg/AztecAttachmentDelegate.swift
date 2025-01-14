@@ -1,5 +1,5 @@
 import Aztec
-import WordPressMedia
+import AsyncImageKit
 
 class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     private let post: AbstractPost

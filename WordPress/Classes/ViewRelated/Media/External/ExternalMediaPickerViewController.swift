@@ -1,4 +1,5 @@
 import UIKit
+import AsyncImageKit
 
 protocol ExternalMediaPickerViewDelegate: AnyObject {
     /// If the user cancels the flow, the selection is empty.
@@ -222,6 +223,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         let viewController = MediaPreviewController()
         viewController.dataSource = self
         let navigation = UINavigationController(rootViewController: viewController)
+        navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
     }
 
@@ -234,7 +236,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath) as! ExternalMediaPickerCollectionCell
         let item = dataSource.assets[indexPath.item]
-        cell.configure(imageURL: item.thumbnailURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
+        cell.configure(imageURL: item.thumbnailURL, size: ImageSize(scaling: flowLayout.itemSize))
         return cell
     }
 

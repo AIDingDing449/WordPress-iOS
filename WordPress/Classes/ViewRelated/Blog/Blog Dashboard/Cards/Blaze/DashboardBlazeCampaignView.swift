@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import WordPressKit
-import WordPressMedia
+import AsyncImageKit
 
 final class DashboardBlazeCampaignView: UIView {
     private let statusView = BlazeCampaignStatusView()
@@ -61,11 +61,8 @@ final class DashboardBlazeCampaignView: UIView {
         imageView.prepareForReuse()
         imageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
-            let host = MediaHost(with: blog, failure: { error in
-                WordPressAppDelegate.crashLogging?.logError(error)
-            })
-            let targetSize = Constants.imageSize
-                .scaled(by: UITraitCollection.current.displayScale)
+            let host = MediaHost(blog)
+            let targetSize = ImageSize(scaling: Constants.imageSize, in: self)
             imageView.setImage(with: imageURL, host: host, size: targetSize)
         }
 

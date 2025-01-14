@@ -22,7 +22,7 @@ struct ReaderPostMenu {
             share,
             copyPostLink,
             viewPostInBrowser,
-
+            post.isSeenSupported ? toggleSeen : nil
         ].compactMap { $0 })
     }
 
@@ -51,7 +51,7 @@ struct ReaderPostMenu {
     // MARK: Actions
 
     private var share: UIAction {
-        UIAction(Strings.share, systemImage: "square.and.arrow.up") {
+        UIAction(SharedStrings.Button.share, systemImage: "square.and.arrow.up") {
             guard let viewController else { return }
             ReaderShareAction().execute(with: post, anchor: anchor ?? viewController.view, vc: viewController)
             track(.share)
@@ -71,7 +71,7 @@ struct ReaderPostMenu {
 
     private var copyPostLink: UIAction? {
         guard let postURL = post.permaLink.flatMap(URL.init) else { return nil }
-        return UIAction(Strings.copyLink, systemImage: "link") {
+        return UIAction(SharedStrings.Button.copyLink, systemImage: "link") {
             UIPasteboard.general.string = postURL.absoluteString
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             track(.copyPostLink)
@@ -79,7 +79,7 @@ struct ReaderPostMenu {
     }
 
     private var goToBlog: UIAction {
-        UIAction(Strings.goToBlog, systemImage: "chevron.right") {
+        UIAction(Strings.goToBlog, systemImage: "chevron.forward") {
             guard let viewController else { return }
             ReaderHeaderAction().execute(post: post, origin: viewController)
             track(.goToBlog)
@@ -87,7 +87,7 @@ struct ReaderPostMenu {
     }
 
     private var subscribe: UIAction {
-        UIAction(Strings.subscribe, systemImage: "plus.circle") {
+        UIAction(SharedStrings.Reader.subscribe, systemImage: "plus.circle") {
             ReaderSubscriptionHelper().toggleSiteSubscription(forPost: post)
             track(.subscribe)
         }
@@ -102,7 +102,7 @@ struct ReaderPostMenu {
     }
 
     private var ubsubscribe: UIAction {
-        UIAction(Strings.unsubscribe, systemImage: "minus.circle", attributes: [.destructive]) {
+        UIAction(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", attributes: [.destructive]) {
             ReaderSubscriptionHelper().toggleSiteSubscription(forPost: post)
             track(.unsubscribe)
         }
@@ -113,6 +113,17 @@ struct ReaderPostMenu {
             guard let viewController else { return }
             NotificationSiteSubscriptionViewController.show(forSiteID: siteID, sourceItem: anchor ?? viewController.view, from: viewController)
             track(.manageNotifications)
+        }
+    }
+
+    private var toggleSeen: UIAction {
+        UIAction(post.isSeen ? Strings.markUnread : Strings.markRead, systemImage: post.isSeen ? "circle" : "checkmark.circle") {
+            track(post.isSeen ? .markUnread : .markRead)
+            ReaderSeenAction().execute(with: post, context: context, completion: {
+                NotificationCenter.default.post(name: .ReaderPostSeenToggled, object: nil, userInfo: [ReaderNotificationKeys.post: post])
+            }, failure: { _ in
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            })
         }
     }
 
@@ -195,20 +206,20 @@ private enum ReaderPostMenuAnalyticsButton: String {
     case blockUser = "block_user"
     case reportPost = "report_post"
     case reportUser = "report_user"
+    case markRead = "mark_read"
+    case markUnread = "mark_unread"
 }
 
 private enum Strings {
-    static let share = NSLocalizedString("reader.postContextMenu.share", value: "Share", comment: "Context menu action")
     static let viewInBrowser = NSLocalizedString("reader.postContextMenu.viewInBrowser", value: "View in Browser", comment: "Context menu action")
-    static let copyLink = NSLocalizedString("reader.postContextMenu.copyLink", value: "Copy Link", comment: "Context menu action")
     static let blockOrReport = NSLocalizedString("reader.postContextMenu.blockOrReportMenu", value: "Block or Report", comment: "Context menu action")
     static let goToBlog = NSLocalizedString("reader.postContextMenu.showBlog", value: "Go to Blog", comment: "Context menu action")
-    static let subscribe = NSLocalizedString("reader.postContextMenu.subscribeT", value: "Subscribe", comment: "Context menu action")
-    static let unsubscribe = NSLocalizedString("reader.postContextMenu.unsubscribe", value: "Unsubscribe", comment: "Context menu action")
     static let manageNotifications = NSLocalizedString("reader.postContextMenu.manageNotifications", value: "Manage Notifications", comment: "Context menu action")
     static let blogDetails = NSLocalizedString("reader.postContextMenu.blogDetails", value: "Blog Details", comment: "Context menu action (placeholder value when blog name not available – should never happen)")
     static let blockSite = NSLocalizedString("reader.postContextMenu.blockSite", value: "Block Site", comment: "Context menu action")
     static let blockUser = NSLocalizedString("reader.postContextMenu.blockUser", value: "Block User", comment: "Context menu action")
     static let reportPost = NSLocalizedString("reader.postContextMenu.reportPost", value: "Report Post", comment: "Context menu action")
     static let reportUser = NSLocalizedString("reader.postContextMenu.reportUser", value: "Report User", comment: "Context menu action")
+    static let markRead = NSLocalizedString("reader.postContextMenu.markRead", value: "Mark as Read", comment: "Context menu action")
+    static let markUnread = NSLocalizedString("reader.postContextMenu.markUnread", value: "Mark as Unread", comment: "Context menu action")
 }

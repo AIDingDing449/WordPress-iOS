@@ -1,5 +1,5 @@
 import UIKit
-import WordPressMedia
+import AsyncImageKit
 
 /// Renders the comment body through `WPRichContentView`.
 ///
@@ -74,12 +74,9 @@ private extension RichCommentContentRenderer {
 
     var mediaHost: MediaHost {
         if let blog = comment.blog {
-            return MediaHost(with: blog, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                WordPressAppDelegate.crashLogging?.logError(error)
-            })
+            return MediaHost(blog)
         } else if let post = comment.post as? ReaderPost, post.isBlogPrivate {
-            return MediaHost(with: post)
+            return MediaHost(post)
         }
 
         return .publicSite

@@ -1,9 +1,9 @@
-import Foundation
+import UIKit
 import WordPressUI
 import Gravatar
-import WordPressMedia
+import AsyncImageKit
 
-extension WordPressMedia.ImageDownloader {
+extension AsyncImageKit.ImageDownloader {
 
     nonisolated func downloadGravatarImage(with email: String, forceRefresh: Bool = false, completion: @escaping (UIImage?) -> Void) {
 

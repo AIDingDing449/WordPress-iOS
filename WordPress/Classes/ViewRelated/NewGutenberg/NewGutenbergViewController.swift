@@ -1,4 +1,6 @@
 import UIKit
+import WordPressUI
+import AsyncImageKit
 import AutomatticTracks
 import GutenbergKit
 import SafariServices
@@ -33,7 +35,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     var analyticsEditorSource: String { Analytics.editorSource }
     var editorSession: PostEditorAnalyticsSession
-    var onClose: ((Bool) -> Void)?
+    var onClose: (() -> Void)?
 
     // MARK: - Set content
 
@@ -316,7 +318,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
-        onClose?(false)
+        onClose?()
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
@@ -453,19 +455,9 @@ extension NewGutenbergViewController {
 
     // TODO: are we going to show this natively?
     func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
-        navigationController?.definesPresentationContext = true
-
-        let controller: WPImageViewController
-        if let image = AnimatedImageCache.shared.cachedStaticImage(url: fullSizeUrl) {
-            controller = WPImageViewController(image: image)
-        } else {
-            controller = WPImageViewController(externalMediaURL: fullSizeUrl)
-        }
-
-        controller.post = self.post
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .overCurrentContext
-        self.present(controller, animated: true)
+        let lightboxVC = LightboxViewController(sourceURL: fullSizeUrl, host: MediaHost(post))
+        lightboxVC.configureZoomTransition()
+        present(lightboxVC, animated: true)
     }
 
     // TODO: reimplement

@@ -1,5 +1,6 @@
 import UIKit
-import WordPressMedia
+import AsyncImageKit
+import WordPressUI
 
 protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
     func didTapFeaturedImage(_ sender: AsyncImageView)
@@ -9,12 +10,12 @@ protocol UpdatableStatusBarStyle: UIViewController {
     func updateStatusBarStyle(to style: UIStatusBarStyle)
 }
 
-class ReaderDetailFeaturedImageView: UIView, NibLoadable {
+final class ReaderDetailFeaturedImageView: UIView {
 
     // MARK: - Constants
 
     struct Constants {
-        struct multipliers {
+        struct Multipliers {
             static let maxPortaitHeight: CGFloat = 0.70
             static let maxPadPortaitHeight: CGFloat = 0.50
             static let maxLandscapeHeight: CGFloat = 0.30
@@ -37,10 +38,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: IBOutlets
 
-    @IBOutlet private weak var imageView: AsyncImageView!
-    @IBOutlet private weak var gradientView: UIView!
-    @IBOutlet private weak var heightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var loadingView: UIView!
+    private let imageView = AsyncImageView()
+    private let gradientView = LinearGradientView()
+    private lazy var heightConstraint = heightAnchor.constraint(equalToConstant: 230)
 
     // MARK: - Public: Properties
 
@@ -127,13 +127,33 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewObserver?.invalidate()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-        loadingView.backgroundColor = .placeholderText
+        translatesAutoresizingMaskIntoConstraints = false
+        heightConstraint.isActive = true
+
+        gradientView.backgroundColor = UIColor.clear
+        gradientView.startColor = UIColor.black.withAlphaComponent(0.66)
+        gradientView.endColor = UIColor.clear
+
+        addSubview(imageView)
+        imageView.pinEdges()
+
+        addSubview(gradientView)
+        gradientView.pinEdges([.top, .horizontal])
+        NSLayoutConstraint.activate([
+            gradientView.heightAnchor.constraint(equalToConstant: 120).withPriority(999),
+            gradientView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor) // Make sure it collapses
+        ])
+
         isUserInteractionEnabled = false
 
         reset()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     func viewWillDisappear() {
@@ -192,8 +212,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        loadingView.isHidden = false
-
         isLoading = true
         isLoaded = true
 
@@ -223,7 +241,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             completionHandler(CGSize(width: 1000, height: 1000 * ReaderPostCell.coverAspectRatio))
         }
 
-        imageView.setImage(with: imageURL, host: MediaHost(with: post)) { [weak self] result in
+        imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post))) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:
@@ -235,7 +253,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
                         completionHandler(size)
                     }
                 }
-                self.hideLoading()
             case .failure:
                 failureHandler()
             }
@@ -281,7 +298,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         scrollView.addGestureRecognizer(tapGesture)
@@ -313,15 +330,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         updateFeaturedImageHeight(with: scrollView.contentOffset.y)
         updateNavigationBar(in: scrollView)
-    }
-
-    private func hideLoading() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.loadingView.alpha = 0.0
-        }) { (_) in
-            self.loadingView.isHidden = true
-            self.loadingView.alpha = 1.0
-        }
     }
 
     private func scrollViewDidScroll() {
@@ -396,8 +404,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         resetStatusBarStyle()
         heightConstraint.constant = 0
         isHidden = true
-
-        loadingView.isHidden = true
     }
 
     private func resetStatusBarStyle() {
@@ -418,10 +424,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Calculations
 
     private func featuredImageHeight() -> CGFloat {
-        guard
-            let imageSize = self.imageSize,
-            let superview = self.superview
-        else {
+        guard let imageSize, let superview else {
             return 0
         }
 
@@ -429,7 +432,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let height = bounds.width / aspectRatio
 
         let isLandscape = UIDevice.current.orientation.isLandscape
-        let maxHeightMultiplier: CGFloat = isLandscape ? Constants.multipliers.maxLandscapeHeight : UIDevice.isPad() ? Constants.multipliers.maxPadPortaitHeight : Constants.multipliers.maxPortaitHeight
+        let maxHeightMultiplier: CGFloat = isLandscape ? Constants.Multipliers.maxLandscapeHeight : UIDevice.isPad() ? Constants.Multipliers.maxPadPortaitHeight : Constants.Multipliers.maxPortaitHeight
 
         let result = min(height, superview.bounds.height * maxHeightMultiplier)
 

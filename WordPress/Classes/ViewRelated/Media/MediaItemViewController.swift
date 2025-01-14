@@ -150,7 +150,7 @@ final class MediaItemViewController: UITableViewController {
                                         style: .plain,
                                         target: self,
                                         action: #selector(shareTapped))
-        shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
+        shareItem.accessibilityLabel = SharedStrings.Button.share
 
         let trashItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
                                         style: .plain,
@@ -179,11 +179,10 @@ final class MediaItemViewController: UITableViewController {
     }
 
     private func presentImageViewControllerForMedia() {
-        let controller = WPImageViewController(media: self.media)
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .fullScreen
-
-        self.present(controller, animated: true)
+        let controller = LightboxViewController(media: media)
+        controller.thumbnail = headerView.imageView.image
+        controller.configureZoomTransition(sourceView: headerView.imageView)
+        present(controller, animated: true)
     }
 
     private func presentVideoViewControllerForMedia() {

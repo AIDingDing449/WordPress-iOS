@@ -8,7 +8,7 @@ extension NSNotification.Name {
     static let ReaderCommentModifiedNotification = NSNotification.Name(rawValue: "ReaderCommentModifiedNotification")
 }
 
-@objc public extension ReaderCommentsViewController {
+@objc extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
         guard let siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
         return SuggestionService.shared.shouldShowSuggestions(for: blog)
@@ -24,6 +24,32 @@ extension NSNotification.Name {
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.shouldHideComments = true
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    @objc func showFullScreenImage(_ image: WPRichTextImage, from contentView: WPRichContentView) {
+        if let contentURL = image.contentURL {
+            let lightboxVC = LightboxViewController(sourceURL: contentURL)
+            lightboxVC.configureZoomTransition()
+            present(lightboxVC, animated: true)
+        } else if let linkURL = image.linkURL {
+            presentWebViewController(with: linkURL)
+        }
+    }
+
+    @objc func presentWebViewController(with url: URL) {
+        var linkURL = url
+        if let components = URLComponents(string: url.absoluteString), components.host == nil {
+            linkURL = components.url(relativeTo: URL(string: self.post.blogURL)) ?? linkURL
+        }
+        let configuration = WebViewControllerConfiguration(url: linkURL)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let webVC = WebViewControllerFactory.controller(
+            configuration: configuration,
+            source: "reader_comments"
+        )
+        let navigationVC = UINavigationController(rootViewController: webVC)
+        self.present(navigationVC, animated: true, completion: nil)
     }
 
     // MARK: New Comment Threads
@@ -351,7 +377,7 @@ enum ReaderCommentMenu {
         case .edit:
             return NSLocalizedString("Edit", comment: "Edits the comment")
         case .share:
-            return NSLocalizedString("Share", comment: "Shares the comment URL")
+            return SharedStrings.Button.share
         }
     }
 

@@ -8,9 +8,9 @@ struct VoiceToContentView: View {
     var body: some View {
         contents
             .onAppear(perform: viewModel.onViewAppeared)
-            .tint(Color(uiColor: UIAppColor.brand))
+            .tint(Color(uiColor: UIAppColor.primary))
             .alert(viewModel.errorAlertMessage ?? "", isPresented: $viewModel.isShowingErrorAlert, actions: {
-                Button(Strings.ok, action: buttonCancelTapped)
+                Button(SharedStrings.Button.ok, action: buttonCancelTapped)
             })
     }
 
@@ -150,7 +150,7 @@ private struct RecordButton: View {
 
     private var backgroundColor: Color {
         if !isRecording {
-            return viewModel.isButtonRecordEnabled ? Color(uiColor: UIAppColor.brand) : Color.secondary.opacity(0.5)
+            return viewModel.isButtonRecordEnabled ? Color(uiColor: UIAppColor.primary) : Color.secondary.opacity(0.5)
         }
         return .black
     }
@@ -189,6 +189,5 @@ private enum Strings {
     static let retry = NSLocalizedString("postFromAudio.retry", value: "Retry", comment: "Button title")
     static let notEnoughRequests = NSLocalizedString("postFromAudio.notEnoughRequestsMessage", value: "You don't have enough requests available to create a post from audio.", comment: "Message for 'not eligible' state view")
     static let upgrade = NSLocalizedString("postFromAudio.buttonUpgrade", value: "Upgrade for more requests", comment: "Button title")
-    static let ok = NSLocalizedString("postFromAudio.ok", value: "OK", comment: "Button title")
     static let close = NSLocalizedString("postFromAudio.close", value: "Close", comment: "Button close title (only used as an accessibility identifier)")
 }

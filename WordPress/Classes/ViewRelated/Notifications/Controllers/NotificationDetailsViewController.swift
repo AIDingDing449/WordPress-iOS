@@ -417,12 +417,15 @@ extension NotificationDetailsViewController {
         replyTextView.accessibilityIdentifier = .replyTextViewAccessibilityId
         replyTextView.accessibilityLabel = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
-        replyTextView.onReply = { [weak self] content in
-            let group = self?.note.contentGroup(ofKind: .comment)
+        replyTextView.onReply = { [weak self, weak replyTextView] content in
+            guard let self, let replyTextView else {
+                return
+            }
+            let group = self.note.contentGroup(ofKind: .comment)
             guard let block: FormattableCommentContent = group?.blockOfKind(.comment) else {
                 return
             }
-            self?.replyCommentWithBlock(block, content: content)
+            self.replyCommentWithBlock(block, content: content, textView: replyTextView)
         }
 
         replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -1085,26 +1088,30 @@ private extension NotificationDetailsViewController {
         _ = navigationController?.popToRootViewController(animated: true)
     }
 
-    func replyCommentWithBlock(_ block: FormattableCommentContent, content: String) {
+    func replyCommentWithBlock(_ block: FormattableCommentContent, content: String, textView: ReplyTextView) {
         guard let replyAction = block.action(id: ReplyToCommentAction.actionIdentifier()) else {
             return
         }
 
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
-        generator.notificationOccurred(.success)
 
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
+            textView.setShowingLoadingIndicator(false)
             if success {
+                generator.notificationOccurred(.success)
                 WPAppAnalytics.track(.notificationsCommentRepliedTo)
+                textView.text = ""
                 let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
                 self?.displayNotice(title: message)
             } else {
                 generator.notificationOccurred(.error)
+                textView.becomeFirstResponder()
                 self?.displayReplyError(with: block, content: content)
             }
         }
 
+        textView.setShowingLoadingIndicator(true)
         replyAction.execute(context: actionContext)
     }
 

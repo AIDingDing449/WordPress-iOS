@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,16 +43,17 @@
                         <rect key="frame" x="0.0" y="197.5" width="342" height="44.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7G-gg-9QM" userLabel="View More Label">
-                                <rect key="frame" x="16" y="12" width="286" height="20.5"/>
+                                <rect key="frame" x="16" y="12" width="285" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="T5g-sS-mGT" userLabel="Disclosure Image">
-                                <rect key="frame" x="318" y="16" width="8" height="13"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.forward" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="T5g-sS-mGT" userLabel="Disclosure Image">
+                                <rect key="frame" x="317" y="16" width="9" height="12.5"/>
+                                <color key="tintColor" systemColor="secondaryLabelColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="13" id="Mdf-mA-WPT"/>
-                                    <constraint firstAttribute="width" constant="8" id="THc-DV-57t"/>
+                                    <constraint firstAttribute="height" constant="16" id="Mdf-mA-WPT"/>
+                                    <constraint firstAttribute="width" constant="9" id="THc-DV-57t"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -92,29 +94,27 @@
                 <constraints>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="top" secondItem="A6f-g5-v7s" secondAttribute="top" id="0Y7-MO-lCW"/>
                     <constraint firstAttribute="trailing" secondItem="A6f-g5-v7s" secondAttribute="trailing" id="1t4-lc-ZXZ"/>
+                    <constraint firstAttribute="trailing" secondItem="K5q-Qa-Pnh" secondAttribute="trailing" id="4rc-fc-qPf"/>
+                    <constraint firstItem="K5q-Qa-Pnh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8dI-CU-gI8"/>
                     <constraint firstAttribute="trailing" secondItem="MNM-OS-iwT" secondAttribute="trailing" id="Dpp-ja-Ppb"/>
                     <constraint firstAttribute="bottom" secondItem="A6f-g5-v7s" secondAttribute="bottom" id="Dz3-qK-7LA"/>
+                    <constraint firstItem="SrM-6z-hC1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="K9o-wM-Elv"/>
                     <constraint firstItem="MNM-OS-iwT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KRO-SV-yPt"/>
                     <constraint firstItem="BVC-pc-qhM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="OWn-0r-61f"/>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="bottom" secondItem="A6f-g5-v7s" secondAttribute="bottom" id="Or8-T0-83W"/>
                     <constraint firstItem="A6f-g5-v7s" firstAttribute="top" secondItem="MNM-OS-iwT" secondAttribute="bottom" id="Sns-td-yrm"/>
                     <constraint firstAttribute="trailing" secondItem="BVC-pc-qhM" secondAttribute="trailing" constant="20" id="bCQ-sr-6gB"/>
+                    <constraint firstItem="SrM-6z-hC1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bIn-37-Etp"/>
                     <constraint firstItem="A6f-g5-v7s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="c2q-6v-gHN"/>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="trailing" secondItem="A6f-g5-v7s" secondAttribute="trailing" id="enE-lf-B7p"/>
                     <constraint firstItem="BVC-pc-qhM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="nBp-6G-xOQ"/>
                     <constraint firstAttribute="bottom" secondItem="K5q-Qa-Pnh" secondAttribute="bottom" id="qsz-Uf-fcD"/>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="leading" secondItem="A6f-g5-v7s" secondAttribute="leading" id="sCW-PN-CBF"/>
+                    <constraint firstAttribute="trailing" secondItem="SrM-6z-hC1" secondAttribute="trailing" id="yDa-SC-Kwi"/>
                     <constraint firstItem="MNM-OS-iwT" firstAttribute="top" secondItem="BVC-pc-qhM" secondAttribute="bottom" constant="8" id="zfF-S9-Fqj"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <constraints>
-                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="K5q-Qa-Pnh" secondAttribute="trailing" id="4rc-fc-qPf"/>
-                <constraint firstItem="K5q-Qa-Pnh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8dI-CU-gI8"/>
-                <constraint firstItem="SrM-6z-hC1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="K9o-wM-Elv"/>
-                <constraint firstItem="SrM-6z-hC1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bIn-37-Etp"/>
-                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="SrM-6z-hC1" secondAttribute="trailing" id="yDa-SC-Kwi"/>
-            </constraints>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="K5q-Qa-Pnh" id="y35-PR-cqI"/>
                 <outlet property="legendView" destination="MY1-06-Ewu" id="ocU-dZ-FRp"/>
@@ -129,6 +129,9 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="disclosure-chevron" width="8" height="13"/>
+        <image name="chevron.forward" catalog="system" width="97" height="128"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

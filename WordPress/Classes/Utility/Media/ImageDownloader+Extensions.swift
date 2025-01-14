@@ -1,9 +1,5 @@
 import Foundation
-import WordPressMedia
-
-extension ImageDownloader {
-    nonisolated static let shared = ImageDownloader(authenticator: MediaRequestAuthenticator())
-}
+import AsyncImageKit
 
 // MARK: - ImageDownloader (Closures)
 

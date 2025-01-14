@@ -47,6 +47,7 @@ public extension WPAccount {
     ///
     static func lookup(withUUIDString uuidString: String, in context: NSManagedObjectContext) throws -> WPAccount? {
         let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
+        fetchRequest.fetchLimit = 1
         fetchRequest.predicate = NSPredicate(format: "uuid = %@", uuidString)
 
         guard let defaultAccount = try context.fetch(fetchRequest).first else {
@@ -70,6 +71,7 @@ public extension WPAccount {
     ///
     static func lookup(withUsername username: String, in context: NSManagedObjectContext) throws -> WPAccount? {
         let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
+        fetchRequest.fetchLimit = 1
         fetchRequest.predicate = NSPredicate(format: "username = [c] %@ || email = [c] %@", username, username)
 
         guard let account = try context.fetch(fetchRequest).first else {
@@ -88,6 +90,7 @@ public extension WPAccount {
     ///
     static func lookup(withUserID userID: Int64, in context: NSManagedObjectContext) throws -> WPAccount? {
         let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
+        fetchRequest.fetchLimit = 1
         fetchRequest.predicate = NSPredicate(format: "userID = %ld", userID)
 
         guard let account = try context.fetch(fetchRequest).first else {

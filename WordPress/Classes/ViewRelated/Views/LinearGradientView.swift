@@ -1,6 +1,6 @@
 import UIKit
 
-class LinearGradientView: UIView {
+final class LinearGradientView: UIView {
     @IBInspectable var startColor: UIColor? = nil
     @IBInspectable var endColor: UIColor? = nil
 

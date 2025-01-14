@@ -2,6 +2,7 @@ import Foundation
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import AsyncImageKit
 import UIKit
 import Combine
 import WordPressUI
@@ -64,19 +65,22 @@ import AutomatticTracks
         return refreshControl
     }()
 
-    private let loadMoreThreashold = 4
+    private lazy var buttonScrollToTop = ReaderButtonScrollToTop.make { [weak self] in
+        self?.tableView.scrollToTop(animated: true)
+    }
 
+    let titleView = ReaderNavigationCustomTitleView()
+
+    private let loadMoreThreashold = 5
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let heightForFooterView = CGFloat(44)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isFeed = false
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: IndexPath?
     private var didSetupView = false
     private var didBumpStats = false
-    @Lazy private var titleView = ReaderNavigationCustomTitleView()
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
     private let notificationsButtonViewModel = NotificationsButtonViewModel()
     private var notificationsButtonCancellable: AnyCancellable?
@@ -87,6 +91,8 @@ import AutomatticTracks
     private let tableConfiguration = ReaderTableConfiguration()
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
+
+    private let prefetcher = ImagePrefetcher()
 
     enum NavigationItemTag: Int {
         case notifications
@@ -300,6 +306,7 @@ import AutomatticTracks
         setupTableView()
         setupFooterView()
         setupContentHandler()
+        setupButtonScrollToTop()
 
         observeNetworkStatus()
 
@@ -477,6 +484,7 @@ import AutomatticTracks
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
+        tableView.prefetchDataSource = self
     }
 
     @objc func configureRefreshControl() {
@@ -489,9 +497,14 @@ import AutomatticTracks
         content.initializeContent(tableView: tableView, delegate: self)
     }
 
+    private func setupButtonScrollToTop() {
+        view.addSubview(buttonScrollToTop)
+        buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: isCompact ? UIEdgeInsets(horizontal: 8, vertical: 16) : UIEdgeInsets(.all, 20))
+    }
+
     private func setupFooterView() {
         var frame = footerView.frame
-        frame.size.height = heightForFooterView
+        frame.size.height = 44
         footerView.frame = frame
         tableView.tableFooterView = footerView
         footerView.isHidden = true
@@ -882,11 +895,10 @@ import AutomatticTracks
         if !canSync() {
             let alertTitle = NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
             let alertMessage = NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
-            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
             let alertController = UIAlertController(title: alertTitle,
                 message: alertMessage,
                 preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+            alertController.addCancelActionWithTitle(SharedStrings.Button.ok, handler: nil)
             alertController.presentFromRootViewController()
 
             return
@@ -894,11 +906,10 @@ import AutomatticTracks
         if let syncHelper, syncHelper.isSyncing {
             let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
             let alertMessage = NSLocalizedString("Please wait until the current fetch completes.", comment: "Asks the user to wait until the currently running fetch request completes.")
-            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
             let alertController = UIAlertController(title: alertTitle,
                 message: alertMessage,
                 preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+            alertController.addCancelActionWithTitle(SharedStrings.Button.ok, handler: nil)
             alertController.presentFromRootViewController()
 
             return
@@ -1377,6 +1388,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
+        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+            cell.selectionStyle = .none
+        }
+
         guard cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
@@ -1469,6 +1484,18 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
+        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+            controller.preferredTransition = .zoom { [weak self] context in
+                guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
+                    return nil
+                }
+                if let cell = (cell as? ReaderPostCell) {
+                    return cell.getViewForZoomTransition()
+                }
+                return cell.contentView
+            }
+        }
+
         navigationController?.pushViewController(controller, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: false)
@@ -1490,6 +1517,28 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
                 anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
                 viewController: self
             ).makeMenu())
+        }
+    }
+}
+
+extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        prefetcher.startPrefetching(for: makeImageRequests(for: indexPaths))
+    }
+
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        prefetcher.stopPrefetching(for: makeImageRequests(for: indexPaths))
+
+    }
+
+    private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {
+        guard let window = view.window else { return [] }
+        let targetSize = ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
+        return indexPaths.compactMap {
+            guard let imageURL = getPost(at: $0)?.featuredImageURLForDisplay() else {
+                return nil
+            }
+            return ImageRequest(url: imageURL, options: ImageRequestOptions(size: targetSize))
         }
     }
 }
@@ -1620,7 +1669,8 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
-        $titleView.value?.updateAlpha(in: scrollView)
+        titleView.updateAlpha(in: scrollView)
+        buttonScrollToTop.setButtonHidden(scrollView.contentOffset.y < view.bounds.height / 3, animated: true)
     }
 }
 

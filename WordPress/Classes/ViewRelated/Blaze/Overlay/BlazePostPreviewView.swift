@@ -1,5 +1,5 @@
 import UIKit
-import WordPressMedia
+import AsyncImageKit
 
 final class BlazePostPreviewView: UIView {
 
@@ -96,13 +96,8 @@ final class BlazePostPreviewView: UIView {
 
         if let url = post.featuredImageURL {
             featuredImageView.isHidden = false
-            let host = MediaHost(with: post, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                WordPressAppDelegate.crashLogging?.logError(error)
-            })
-            let preferredSize = CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height)
-                .scaled(by: UITraitCollection.current.displayScale)
-            featuredImageView.setImage(with: url, host: host, size: preferredSize)
+            let targetSize = ImageSize(scaling: featuredImageView.frame.size, in: self)
+            featuredImageView.setImage(with: url, host: MediaHost(post), size: targetSize)
 
         } else {
             featuredImageView.isHidden = true

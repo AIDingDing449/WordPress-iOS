@@ -142,10 +142,9 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayFullscreenImage(_ image: UIImage) {
-        let imageViewController = WPImageViewController(image: image)
-        imageViewController.modalTransitionStyle = .crossDissolve
-        imageViewController.modalPresentationStyle = .fullScreen
-        controller?.present(imageViewController, animated: true)
+        let lightboxVC = LightboxViewController(.image(image))
+        lightboxVC.configureZoomTransition()
+        controller?.present(lightboxVC, animated: true)
     }
 
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws {

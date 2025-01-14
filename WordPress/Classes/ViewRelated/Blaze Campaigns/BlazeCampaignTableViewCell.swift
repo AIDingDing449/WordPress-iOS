@@ -1,5 +1,5 @@
 import UIKit
-import WordPressMedia
+import AsyncImageKit
 
 final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
 
@@ -77,7 +77,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     }()
 
     private lazy var chevronView: UIImageView = {
-        let image = UIImage(systemName: "chevron.right")?.imageFlippedForRightToLeftLayoutDirection()
+        let image = UIImage(systemName: "chevron.forward")
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .separator
@@ -107,11 +107,8 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         featuredImageView.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
-            let host = MediaHost(with: blog, failure: { error in
-                WordPressAppDelegate.crashLogging?.logError(error)
-            })
-            let preferredSize = CGSize(width: Metrics.featuredImageSize, height: Metrics.featuredImageSize)
-                .scaled(by: UITraitCollection.current.displayScale)
+            let host = MediaHost(blog)
+            let preferredSize = ImageSize(scaling: CGSize(width: Metrics.featuredImageSize, height: Metrics.featuredImageSize), in: self)
             featuredImageView.setImage(with: imageURL, host: host, size: preferredSize)
         }
 

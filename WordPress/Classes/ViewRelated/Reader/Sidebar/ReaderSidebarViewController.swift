@@ -74,7 +74,6 @@ private struct ReaderSidebarView: View {
 
     @State private var searchText = ""
 
-    @Environment(\.layoutDirection) var layoutDirection
     @Environment(\.editMode) var editMode
 
     var isEditing: Bool { editMode?.wrappedValue.isEditing == true }
@@ -143,7 +142,7 @@ private struct ReaderSidebarView: View {
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
             Label(Strings.subscriptions, systemImage: "checkmark.rectangle.stack")
                 .tag(ReaderSidebarItem.allSubscriptions)
-                .listItemTint(AppColor.brand)
+                .listItemTint(AppColor.primary)
                 .withDisabledSelection(isEditing)
 
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
@@ -159,11 +158,16 @@ private struct ReaderSidebarView: View {
 
     private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
         HStack {
-            Label(title, systemImage: systemImage)
-                .lineLimit(1)
+            Label {
+                Text(title)
+                    .font(.headline).fontWeight(.medium)
+            } icon: {
+                Image(systemName: systemImage)
+            }
+            .lineLimit(1)
             if viewModel.isCompact {
                 Spacer()
-                Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.system(size: 14).weight(.medium))
                     .foregroundStyle(.secondary.opacity(0.8))
             }
@@ -195,8 +199,6 @@ private struct ReaderSidebarSection<Content: View>: View {
     var isCompact: Bool
     @ViewBuilder var content: () -> Content
 
-    @Environment(\.layoutDirection) var layoutDirection
-
     var body: some View {
         if isCompact {
             Button {
@@ -207,9 +209,9 @@ private struct ReaderSidebarSection<Content: View>: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Image(systemName: isExpanded ? "chevron.down" : (layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right"))
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.forward")
                         .font(.system(size: 14).weight(.semibold))
-                        .foregroundStyle(AppColor.brand)
+                        .foregroundStyle(AppColor.primary)
                         .frame(width: 14)
                 }
                 .contentShape(Rectangle())
