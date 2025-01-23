@@ -1,3 +1,5 @@
-Bulan ini, kami telah:
-- Meningkatkan stabilitas editor eksperimental (cobalah dan rasakan pengalamannya!)
-- Menyesuaikan cara pengguna login ke WordPress.com – semoga cara ini memudahkan para pengguna untuk memulai.
+Pembaruan kali ini:
+- Perbaikan sejumlah masalah UI pada iPad.
+- Penambahan ID dan URL media untuk tiap item media
+- Penggunaan Editor Cepat Gravatar yang baru untuk memperbarui avatar Anda.
+- Penggunaan pendekatan berbasis web untuk login WordPress.com. Aplikasi ini diharapkan jadi lebih andal bagi sebagian besar pengguna. Harap hubungi dukungan jika Anda mengalami masalah!

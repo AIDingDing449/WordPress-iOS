@@ -1,3 +1,5 @@
-Deze maand hebben we:  
-- Stabiliteitsverbeteringen aan de experimentele editor (je zou het moeten proberen als je dat nog niet hebt gedaan!)  
-- Aangepast hoe gebruikers inloggen op WordPress.com – we hopen dat het het makkelijker maakt voor mensen om te beginnen.
+Deze update:  
+- Oplost enkele UI problemen op de iPad.  
+- Voegt het media ID en URL toe aan elk media-item  
+- Gebruikt de nieuwe Gravatar Quick Editor om je avatar te updaten.  
+- Gebruikt een web-gebaseerde benadering voor WordPress.com login. Dit zou betrouwbaarder moeten zijn voor de meeste gebruikers, maar neem contact met support op als je problemen ondervindt!

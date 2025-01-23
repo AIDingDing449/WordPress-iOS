@@ -1,5 +1,5 @@
-Este mes, hemos:
-- Corregido algunos fallos del lector, mejorado la búsqueda y hecho que las publicaciones se carguen mejor.
-- Habilitado las incrustaciones de TikTok en el lector.
-- Hecho mejoras en la estabilidad del editor experimental (¡pruébalo si todavía no lo has hecho!)
-- Ajustado la forma en que los usuarios inician sesión en WordPress.com. Esperamos que ahora sea más fácil empezar a usarlo.
+Esta actualización
+:- Corrige algunos problemas de la interfaz de usuario en iPad.
+- Añade el ID del medio y la URL a cada elemento de medios
+- Utiliza el nuevo Gravatar Quick Editor para actualizar tu avatar.
+- Utiliza un sistema basado en web para acceder a WordPress.com. Debería ser más fiable para la mayoría de los usuarios, pero si tienes problemas, ponte en contacto con el servicio de asistencia.
