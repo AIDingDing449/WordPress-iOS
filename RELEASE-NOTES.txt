@@ -1,3 +1,7 @@
+25.8
+-----
+
+
 25.7
 -----
 * [**] Add Image Playground support (part of Apple Intelligence suite) for adding images to your posts, generated featured image, site icons, and more [#23688]

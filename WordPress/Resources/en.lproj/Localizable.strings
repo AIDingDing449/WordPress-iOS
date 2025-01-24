@@ -125,9 +125,6 @@
 /* Label displaying value in trillions. Ex: 66.6T. */
 "%@T" = "%@T";
 
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d accounts";
-
 /* Age between dates over one day.
    Number of days */
 "%d days" = "%d days";
@@ -297,9 +294,6 @@
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "\"Lazy-load\" images";
-
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "\"More\" Button";
 
@@ -320,9 +314,6 @@
 
 /* Age between dates equaling one day. */
 "a day" = "a day";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "A featured image is set. Tap to change it.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "A file contains a malicious code pattern";
@@ -1042,6 +1033,9 @@
 /* No comment provided by engineer. */
 "Available to all users" = "Available to all users";
 
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "To update your avatar, you need to verify your email address first.";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Unable to load the image. Please choose a different one or try again later.";
 
@@ -1333,11 +1327,17 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Dismiss";
 
-/* Context menu button title */
-"blogHeader.actionCopyURL" = "Copy URL";
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "Set Reminders";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "Set up your blogging reminders on days you want to post.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "Blogging Reminders";
 
 /* Context menu button title */
-"blogHeader.actionVisitSite" = "Visit site";
+"blogHeader.actionVisitSite" = "Visit Site";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Staging";
@@ -1434,7 +1434,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1443,7 +1442,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1451,7 +1449,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1461,7 +1458,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1490,9 +1486,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Cancel sharing";
-
-/* The action was canceled */
-"Canceled" = "Canceled";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Canceling...";
@@ -1857,9 +1850,6 @@ Example: Reply to Pamela Nguyen */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Community & Non-Profit";
 
-/* The action is completed */
-"Completed" = "Completed";
-
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "These cookies allow us to optimize performance by collecting information on how users interact with our websites.";
 
@@ -2100,9 +2090,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "Couldn't update. Check that you're online and refresh.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "Couldn't upload the featured image";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Couldn’t close account automatically";
@@ -2584,8 +2571,7 @@ Example: Reply to Pamela Nguyen */
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "Failed to save settings";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Dismiss";
@@ -2753,9 +2739,7 @@ Example: Reply to Pamela Nguyen */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -3128,7 +3112,6 @@ Example: Reply to Pamela Nguyen */
 "entityMetadataFooterView.id" = "ID";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Error";
 
@@ -3305,8 +3288,7 @@ Example: Reply to Pamela Nguyen */
 /* Bottom toolbar title in the selection mode */
 "externalMediaPicker.toolbarViewSelected" = "View Selected (%@)";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Failed";
 
 /* Message for mark all as read success notice */
@@ -3348,12 +3330,8 @@ Example: Reply to Pamela Nguyen */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Featured";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Featured Image";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Featured Image did not load";
 
 /* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
 "Fetching comments..." = "Fetching comments...";
@@ -3528,12 +3506,6 @@ Example: Reply to Pamela Nguyen */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Full Size";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
-
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Gallery caption. %s";
 
@@ -3625,9 +3597,6 @@ Example: Reply to Pamela Nguyen */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Got it";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "Got it!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Grabbing site URL";
@@ -3880,9 +3849,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Hint for image title on image settings. */
 "Image title" = "Image title";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see.";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "In a few words, explain what this site is about.";
@@ -4510,8 +4476,7 @@ Please install the %3$@ to use the app with this site.";
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Learn more";
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
@@ -4926,9 +4891,6 @@ Please install the %3$@ to use the app with this site.";
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Select";
 
-/* Context menu button */
-"mediaLibrary.buttonShare" = "Share";
-
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Cancel";
 
@@ -5000,6 +4962,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Select Items";
+
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "Image Playground";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this.";
@@ -5165,7 +5130,6 @@ Please install the %3$@ to use the app with this site.";
 "Months and Years" = "Months and Years";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "More";
@@ -5331,9 +5295,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalize home";
-
-/* Menu title for the share site option */
-"mySite.siteActions.shareSite" = "Share site";
 
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Change site icon";
@@ -5744,9 +5705,6 @@ Please install the %3$@ to use the app with this site.";
 "notifications.accessibility-post-like-button-on" = "You've Liked this post";
 
 /* A label for screenreader users */
-"notifications.accessibility-share-button" = "Share";
-
-/* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "Double Tap to Like this Comment";
 
 /* A label for screenreader users */
@@ -5824,9 +5782,6 @@ Please install the %3$@ to use the app with this site.";
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Now that Jetpack is installed, we just need to get you set up. This will only take a minute.";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast.";
-
 /* Register Domain - Address information field Number */
 "Number" = "Number";
 
@@ -5842,24 +5797,14 @@ Please install the %3$@ to use the app with this site.";
 /* Title of a button style */
 "Official Buttons" = "Official Buttons";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* Comments +2 Days Section Header
@@ -6450,6 +6395,9 @@ Please install the %3$@ to use the app with this site.";
 "postEditor.moreMenu.saveDraft" = "Save Draft";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "Send Feedback";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Visual Editor";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -6499,9 +6447,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "You don't have enough requests available to create a post from audio.";
-
-/* Button title */
-"postFromAudio.ok" = "OK";
 
 /* Button title */
 "postFromAudio.retry" = "Retry";
@@ -6564,9 +6509,6 @@ Please install the %3$@ to use the app with this site.";
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "Delete";
 
-/* Title for the 'Share' post list row swipe action */
-"postList.swipeActionShare" = "Share";
-
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "View";
 
@@ -6596,12 +6538,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of notification displayed when either a new or an existing draft is saved */
 "postNotice.draftSaved" = "Draft Saved";
-
-/* A generic error message title */
-"postNotice.errorTitle" = "An error occured";
-
-/* Button OK */
-"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pagePending" = "Page pending review";
@@ -6691,9 +6627,6 @@ Please install the %3$@ to use the app with this site.";
 /* Label for post settings option. Tapping displays settings for a post. */
 "posts.settings.actionTitle" = "Settings";
 
-/* Share the post. */
-"posts.share.actionTitle" = "Share";
-
 /* Label for post stats option. Tapping displays statistics for a post. */
 "posts.stats.actionTitle" = "Stats";
 
@@ -6712,20 +6645,20 @@ Please install the %3$@ to use the app with this site.";
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Untitled";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Dismiss";
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "Cancel Upload";
 
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "Remove";
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "Replace";
 
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "Retry";
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "Set Featured Image";
 
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "Featured Image Options";
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "Failed to upload new featured image";
 
-/* Button OK */
-"postSettings.ok" = "OK";
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "Uploading…";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "Parent page";
@@ -6738,9 +6671,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Section title for Page Attributes */
 "postSettings.section.pageAttributes" = "Page Attributes";
-
-/* Button in Post Settings */
-"postSettings.setFeaturedImageButton" = "Set Featured Image";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Subscribe now to share more";
@@ -6804,9 +6734,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "Preparing to scan";
-
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Preparing...";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categories";
@@ -7068,6 +6995,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on.";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "Please scan the code using the app";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Dismiss";
 
@@ -7112,8 +7042,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "No blogs found";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "Add to Favorites";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "Notification Settings";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "Remove from Favorites";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "Subscribe";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "Unfollow";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "Unsubscribe";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
@@ -7121,10 +7066,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d likes_";
 
-/* Describes that the current user is the only one liking a post. */
-"reader.detail.likes.self" = "You like this.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+/* Describes that only one user likes a post. The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1 like_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
@@ -7310,10 +7252,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "Blog Details";
 
 /* Context menu action */
-"reader.postContextMenu.copyLink" = "Copy Link";
+"reader.postContextMenu.manageNotifications" = "Manage Notifications";
 
 /* Context menu action */
-"reader.postContextMenu.manageNotifications" = "Manage Notifications";
+"reader.postContextMenu.markRead" = "Mark as Read";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "Mark as Unread";
 
 /* Context menu action */
 "reader.postContextMenu.reportPost" = "Report Post";
@@ -7322,16 +7267,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Report User";
 
 /* Context menu action */
-"reader.postContextMenu.share" = "Share";
-
-/* Context menu action */
 "reader.postContextMenu.showBlog" = "Go to Blog";
-
-/* Context menu action */
-"reader.postContextMenu.subscribeT" = "Subscribe";
-
-/* Context menu action */
-"reader.postContextMenu.unsubscribe" = "Unsubscribe";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "View in Browser";
@@ -7586,7 +7522,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "readerDetail.dismissButton.accessibilityLabel" = "Dismiss";
 
 /* Spoken accessibility label for the Reading Preferences menu. */
-"readerDetail.displaySettingButton.accessibilityLabel" = "Reading Preferences";
+"readerDetail.displaySettingButton.displaySettingsLabel" = "Reading Preferences";
 
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "More on WordPress.com";
@@ -7599,9 +7535,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Open in Safari";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "Share";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "You don't have permission to view this private blog.";
@@ -7730,9 +7663,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "Reminders removed" = "Reminders removed";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Remove";
 
 /* Remove Person Alert Title
@@ -7747,9 +7678,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* No comment provided by engineer. */
 "Remove blocks" = "Remove blocks";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Remove Featured Image";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
@@ -7774,9 +7702,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Remove site icon button */
 "Remove Site Icon" = "Remove Site Icon";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Remove this Featured Image?";
 
 /* User action to remove video. */
 "Remove video" = "Remove video";
@@ -8239,20 +8164,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Set as featured image";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Set reminders";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "Set up";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Set up Jetpack";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Set your blogging reminders";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Setting up theme";
@@ -8275,11 +8191,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Message to show when setting save failed */
 "Settings update failed" = "Settings update failed";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Share";
 
 /* Accessibility label for button to share a comment from a notification */
@@ -8357,6 +8269,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.view" = "View";
+
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "Failed to update data";
 
 /* A generic error message */
 "shared.error.geneirc" = "Something went wrong";
@@ -8773,6 +8688,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter auto-sharing is no longer available due to Twitter's changes in terms and pricing.";
 
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d accounts";
+
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
 
@@ -9103,9 +9021,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* User action to stop upload. */
 "Stop upload" = "Stop upload";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "Streamlined navigation";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Strike Through";
 
@@ -9117,12 +9032,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Submit for Review";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonCancel" = "Cancel";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonOK" = "OK";
 
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "Details";
@@ -9598,8 +9507,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "The image could not be added to the Media Library.";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "The Internet connection appears to be offline.";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -10366,9 +10274,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Upload failed";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "Upload failed. Tap for options.";
-
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Upload Media";
 
@@ -10400,9 +10305,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Uploading...";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Uploading…";
@@ -10464,9 +10366,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message in the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertMessage" = "There was an error deleting the user.";
-
-/* The title of the OK button in the alert that appears when deleting a user */
-"userDetails.alert.deleteUserErrorAlertOkButton" = "OK";
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Error";
@@ -10803,6 +10702,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Dismiss";
+
+/* Button label to share a web page */
+"webKit.button.share" = "Share";
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterEndDate" = "End Date";
@@ -11428,9 +11330,6 @@ from anywhere.";
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & ).";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Your posts, pages, and settings will be mailed to you at %@.";
