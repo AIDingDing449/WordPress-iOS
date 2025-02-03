@@ -1777,6 +1777,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 - (void)showPlugins
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
+
+    if ([Feature enabled:FeatureFlagPluginManagementOverhaul]) {
+        [self showManagePluginsScreen];
+        return;
+    }
+
     PluginDirectoryViewController *controller = [self makePluginDirectoryViewControllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];

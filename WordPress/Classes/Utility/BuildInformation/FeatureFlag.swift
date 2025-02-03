@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newGutenbergPlugins
     case selfHostedSiteUserManagement
     case readerCommentsWebKit
+    case pluginManagementOverhaul
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -51,6 +52,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .selfHostedSiteUserManagement:
             return false
         case .readerCommentsWebKit:
+            return false
+        case .pluginManagementOverhaul:
             return false
         }
     }
@@ -88,6 +91,7 @@ extension FeatureFlag {
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .readerCommentsWebKit: "Render Comments using WebKit"
+        case .pluginManagementOverhaul: "Plugin Management Overhaul"
         }
     }
 }

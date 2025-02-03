@@ -145,9 +145,21 @@ extension BlogDetailsViewController {
               let site = JetpackSiteRef(blog: blog) else {
             return
         }
-        let query = PluginQuery.all(site: site)
-        let listViewController = PluginListViewController(site: site, query: query)
-        presentationDelegate?.presentBlogDetailsViewController(listViewController)
+
+        let viewController: UIViewController
+        if Feature.enabled(.pluginManagementOverhaul) {
+            let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Plugin Management", comment: "Feature name for managing plugins in the app")
+            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
+                let service = PluginService(client: client)
+                InstalledPluginsListView(service: service)
+            }
+            viewController = UIHostingController(rootView: rootView)
+        } else {
+            let query = PluginQuery.all(site: site)
+            viewController = PluginListViewController(site: site, query: query)
+        }
+
+        presentationDelegate?.presentBlogDetailsViewController(viewController)
     }
 }
 
