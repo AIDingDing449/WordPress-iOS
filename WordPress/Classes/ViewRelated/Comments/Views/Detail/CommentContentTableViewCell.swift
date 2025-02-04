@@ -513,13 +513,14 @@ private extension CommentContentTableViewCell {
             contentContainerHeightConstraint?.isActive = false
         }
 
-        let contentView = renderer.render(comment: comment.content)
+        let contentView = renderer.view
         if contentContainerView.subviews.first != contentView {
             contentContainerView.subviews.forEach { $0.removeFromSuperview() }
             contentView.removeFromSuperview()
             contentContainerView?.addSubview(contentView)
             contentView.pinEdges()
         }
+        renderer.render(comment: comment.content)
     }
 
     // MARK: Button Actions

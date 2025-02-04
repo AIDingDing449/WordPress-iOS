@@ -5,13 +5,15 @@ import UIKit
 public protocol CommentContentRenderer: AnyObject {
     var delegate: CommentContentRendererDelegate? { get set }
 
+    /// A view for rendering the comments.
+    var view: UIView { get }
+
     init()
 
-    /// Returns a view component that's configured to display the formatted content of the comment.
-    ///
-    /// Note that the renderer *might* return a view with the wrong sizing at first, but it should update its delegate with the correct height
-    /// through the `renderer(_:asyncRenderCompletedWithHeight:)` method.
-    func render(comment: String) -> UIView
+    /// Note that the renderer *might* return a view with the wrong sizing at first,
+    /// but it should update its delegate with the correct height through the
+    ///  `renderer(_:asyncRenderCompletedWithHeight:)` method.
+    func render(comment: String)
 }
 
 @MainActor

@@ -7,17 +7,19 @@ import WordPressReader
 class RichCommentContentRenderer: NSObject, CommentContentRenderer {
     weak var delegate: CommentContentRendererDelegate?
 
+    var view: UIView { textView }
+
     weak var richContentDelegate: WPRichContentViewDelegate? = nil
     var attributedText: NSAttributedString?
     var comment: Comment?
 
+    lazy var textView = newRichContentView()
+
     required override init() {}
 
-    func render(comment: String) -> UIView {
-        let textView = newRichContentView()
+    func render(comment: String) {
         textView.attributedText = attributedText
         textView.delegate = self
-        return textView
     }
 }
 

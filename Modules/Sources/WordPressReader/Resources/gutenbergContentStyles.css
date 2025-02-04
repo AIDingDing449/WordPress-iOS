@@ -99,10 +99,7 @@ a.mention {
 
 .wp-block-image img,
 p > img:not(.emoji) {
-    display: block;
-    margin: 0 auto; /* align center */
-    width: auto;
-    height: auto;
+    max-height: 360px;
 }
 
 /* apply border radius to all image elements. */

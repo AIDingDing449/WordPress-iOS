@@ -9,6 +9,8 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     public weak var delegate: CommentContentRendererDelegate?
 
+    public var view: UIView { webView }
+
     private let webView = WKWebView(frame: .zero, configuration: {
         let configuration = WKWebViewConfiguration()
         configuration.allowsInlineMediaPlayback = true
@@ -50,15 +52,14 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.backgroundColor = .clear
     }
 
-    public func render(comment: String) -> UIView {
+    public func render(comment: String) {
         guard self.comment != comment else {
-            return webView // Already rendering this comment
+            return // Already rendering this comment
         }
         self.comment = comment
 
         // - important: `wordPressSharedBundle` contains custom fonts
         webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
-        return webView
     }
 }
 
