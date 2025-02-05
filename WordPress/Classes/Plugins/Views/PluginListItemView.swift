@@ -3,104 +3,131 @@ import SwiftUI
 import AsyncImageKit
 import WordPressAPI
 import WordPressCore
+import WordPressShared
+import SafariServices
 
 struct PluginListItemView: View {
 
-    @ScaledMetric(relativeTo: .body) var descriptionFontSize: CGFloat = 14
+    @State private var showingSafariView = false
 
-    private var slug: PluginWpOrgDirectorySlug?
-    private var iconURL: URL?
-    private var name: String
-    private var version: String
-    private var author: String
-    private var shortDescription: String
-    private var service: PluginServiceProtocol
+    let plugin: InstalledPlugin
+    let viewModel: InstalledPluginsListViewModel
 
-    init(plugin: InstalledPlugin, service: PluginServiceProtocol) {
-        self.slug = plugin.possibleWpOrgDirectorySlug
-        self.iconURL = plugin.iconURL
-        self.name = plugin.name
-        self.version = plugin.version
-        self.author = plugin.author
-        self.shortDescription = plugin.shortDescription
-        self.service = service
+    // Add this computed property to avoid direct state access in the view body
+    private var isUpdating: Bool {
+        viewModel.updating.contains(plugin.slug)
     }
 
     var body: some View {
         HStack(alignment: .top) {
-            PluginIconView(slug: slug, service: service)
+            PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: viewModel.service)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(name)
+                Text(plugin.name.makePlainText())
                     .lineLimit(1)
                     .font(.headline)
                     .foregroundStyle(.primary)
 
-                if !author.isEmpty {
-                    Text(Strings.author(author))
-                        .lineLimit(1)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                Text(plugin.shortDescription.makePlainText())
+                    .lineLimit(2)
+                    .font(.body)
+                    .foregroundStyle(.primary)
 
-                Group {
-                    if shortDescription.isEmpty {
-                        Text(Strings.noDescriptionAvailable)
-                            .font(.system(size: descriptionFontSize).italic())
-                    } else if let html = renderedDescription() {
-                        Text(html)
-                    } else {
-                        Text(shortDescription)
-                            .font(.system(size: descriptionFontSize))
-                    }
-                }
-                .padding(.vertical, 4)
-
-                Text(Strings.version(version))
+                Text(Strings.version(plugin.version))
                     .font(.caption)
                     .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+        }
+        .contextMenu(menuItems: {
+            menuItems
+        })
+        .overlay(alignment: .bottomTrailing) {
+            Menu {
+                menuItems
+            } label: {
+                Image(systemName: "ellipsis")
+                    .padding(4)
+                    .frame(width: 44, height: 44, alignment: .bottomTrailing)
+                    .contentShape(Rectangle())
+            }
+            .foregroundStyle(.secondary)
+        }
+        .sheet(isPresented: $showingSafariView) {
+            if let url = wpOrgURL {
+                SafariView(url: url)
             }
         }
     }
 
-    func renderedDescription() -> AttributedString? {
-        guard var data = shortDescription.data(using: .utf8) else {
-            return nil
+    @ViewBuilder
+    private var menuItems: some View {
+        Section {
+            if plugin.isActive {
+                Button(Strings.deactivate, systemImage: "bolt.slash") {
+                    Task {
+                        await viewModel.toggle(slug: plugin.slug)
+                    }
+                }
+            } else {
+                Button(Strings.activate, systemImage: "bolt") {
+                    Task {
+                        await viewModel.toggle(slug: plugin.slug)
+                    }
+                }
+                Button(Strings.delete, systemImage: "trash", role: .destructive) {
+                    Task {
+                        await viewModel.uninstall(slug: plugin.slug)
+                    }
+                }
+            }
         }
+        .disabled(isUpdating)
 
-        // We want to use the system font, instead of the default "Times New Roman" font in the rendered HTML.
-        // Using `.defaultAttributes: [.font: systemFont(...)]` in the `NSAttributedString` initialiser below doesn't
-        // work. Using a CSS style here as a workaround.
-        data.append(contentsOf: "<style> body { font-family: -apple-system; font-size: \(descriptionFontSize)px; } </style>".data(using: .utf8)!)
-
-        do {
-            let string = try NSAttributedString(
-                data: data,
-                options: [
-                    .documentType: NSAttributedString.DocumentType.html,
-                    .characterEncoding: String.Encoding.utf8.rawValue,
-                    .sourceTextScaling: NSTextScalingType.iOS,
-                ],
-                documentAttributes: nil
-            )
-            return try AttributedString(string, including: \.uiKit)
-        } catch {
-            DDLogError("Failed to parse HTML: \(error)")
-            return nil
+        if wpOrgURL != nil {
+            Section {
+                Button {
+                    showingSafariView = true
+                } label: {
+                    Label(Strings.viewOnWordPressOrg, systemImage: "safari")
+                }
+            }
         }
+    }
+
+    private var wpOrgURL: URL? {
+        guard let slug = plugin.possibleWpOrgDirectorySlug else { return nil }
+        return URL(string: "https://wordpress.org/plugins/\(slug.slug)/")
     }
 
     private enum Strings {
         static func author(_ author: String) -> String {
-            let format = NSLocalizedString("site.plugins.list.item.author", value: "By %@", comment: "The plugin author displayed in the plugins list. The first argument is plugin author name")
+            let format = NSLocalizedString("sitePluginsList.item.author", value: "By %@", comment: "The plugin author displayed in the plugins list. The first argument is plugin author name")
             return String(format: format, author)
         }
 
         static func version(_ version: String) -> String {
-            let format = NSLocalizedString("site.plugins.list.item.author", value: "Version: %@", comment: "The plugin version displayed in the plugins list. The first argument is plugin version")
+            let format = NSLocalizedString("sitePluginsList.item.author", value: "Version: %@", comment: "The plugin version displayed in the plugins list. The first argument is plugin version")
             return String(format: format, version)
         }
 
-        static let noDescriptionAvailable: String = NSLocalizedString("site.plugins.list.item.noDescriptionAvailable", value: "The plugin author did not provide a description for this plugin.", comment: "The message displayed when a plugin has no description")
+        static let noDescriptionAvailable: String = NSLocalizedString("sitePluginsList.item.noDescriptionAvailable", value: "The plugin author did not provide a description for this plugin.", comment: "The message displayed when a plugin has no description")
+
+        static let activate: String = NSLocalizedString("sitePluginsList.itemAction.activate", value: "Activate", comment: "Button to activate a plugin")
+        static let deactivate: String = NSLocalizedString("sitePluginsList.itemAction.deactivate", value: "Deactivate", comment: "Button to deactivate a plugin")
+        static let delete: String = NSLocalizedString("sitePluginsList.itemAction.delete", value: "Delete", comment: "Button to delete a plugin")
+        static let viewOnWordPressOrg: String = NSLocalizedString("sitePluginsList.itemAction.viewOnWordPressOrg", value: "View on WordPress.org", comment: "Button to view the plugin on WordPress.org website")
+    }
+}
+
+private struct SafariView: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        SFSafariViewController(url: url)
+    }
+
+    func updateUIViewController(_ controller: SFSafariViewController, context: Context) {
     }
 }

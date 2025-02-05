@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressAPI
+@preconcurrency import WordPressAPIInternal
 
 public actor PluginService: PluginServiceProtocol {
     private let client: WordPressClient
@@ -20,8 +21,8 @@ public actor PluginService: PluginServiceProtocol {
         try await installedPluginDataStore.store(plugins)
     }
 
-    public func installedPluginsUpdates() async -> AsyncStream<Result<[InstalledPlugin], Error>> {
-        await installedPluginDataStore.listStream(query: .all)
+    public func installedPluginsUpdates(query: PluginDataStoreQuery) async -> AsyncStream<Result<[InstalledPlugin], Error>> {
+        await installedPluginDataStore.listStream(query: query)
     }
 
     public func resolveIconURL(of slug: PluginWpOrgDirectorySlug) async -> URL? {
@@ -36,6 +37,18 @@ public actor PluginService: PluginServiceProtocol {
         }
 
         return nil
+    }
+
+    public func togglePluginActivation(slug: PluginSlug) async throws {
+        let plugin = try await client.api.plugins.retrieveWithViewContext(pluginSlug: slug)
+        let newStatus: PluginStatus = plugin.data.status == .inactive ? (plugin.data.networkOnly ? .networkActive : .active) : .inactive
+        let newPlugin = try await client.api.plugins.update(pluginSlug: slug, params: .init(status: newStatus))
+        try await installedPluginDataStore.store([.init(plugin: newPlugin.data)])
+    }
+
+    public func uninstalledPlugin(slug: PluginSlug) async throws {
+        let _ = try await client.api.plugins.delete(pluginSlug: slug)
+        try await installedPluginDataStore.delete(query: .slug(slug))
     }
 
 }

@@ -6,8 +6,11 @@ import WordPressAPI
 public protocol InstalledPluginDataStore: DataStore where T == InstalledPlugin, Query == PluginDataStoreQuery {
 }
 
-public enum PluginDataStoreQuery: Equatable, Sendable {
+public enum PluginDataStoreQuery: Hashable, Sendable {
     case all
+    case active
+    case inactive
+    case slug(PluginSlug)
 }
 
 public actor InMemoryInstalledPluginDataStore: InstalledPluginDataStore, InMemoryDataStore {
@@ -23,9 +26,18 @@ public actor InMemoryInstalledPluginDataStore: InstalledPluginDataStore, InMemor
     public init() {}
 
     public func list(query: Query) throws -> [T] {
+        let plugins: any Sequence<T>
         switch query {
         case .all:
-            return storage.values.sorted(using: KeyPathComparator(\.slug.slug))
+            plugins = storage.values
+        case .active:
+            plugins = storage.values.filter { $0.isActive }
+        case .inactive:
+            plugins = storage.values.filter { !$0.isActive }
+        case let .slug(slug):
+            plugins = storage.values.first { $0.slug == slug }.flatMap { [$0] } ?? []
         }
+
+        return plugins.sorted(using: KeyPathComparator(\.slug.slug))
     }
 }
