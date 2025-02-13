@@ -8,6 +8,7 @@ public actor PluginService: PluginServiceProtocol {
     private let wpOrgClient: WordPressOrgApiClient
     private let installedPluginDataStore = InMemoryInstalledPluginDataStore()
     private let pluginDirectoryDataStore = InMemoryPluginDirectoryDataStore()
+    private let pluginDirectoryBrowserDataStore = CategorizedPluginInformationDataStore()
     private let urlSession: URLSession
 
     public init(client: WordPressClient) {
@@ -41,8 +42,12 @@ public actor PluginService: PluginServiceProtocol {
         await pluginDirectoryDataStore.listStream(query: query)
     }
 
-    public func resolveIconURL(of slug: PluginWpOrgDirectorySlug) async -> URL? {
+    public func resolveIconURL(of slug: PluginWpOrgDirectorySlug, plugin: PluginInformation?) async -> URL? {
         // TODO: Cache the icon URL
+
+        if let plugin, let url = await findIconFromPluginDirectory(pluginInfo: plugin) {
+            return url
+        }
 
         if let url = await findIconFromPluginDirectory(slug: slug) {
             return url
@@ -67,6 +72,21 @@ public actor PluginService: PluginServiceProtocol {
         try await installedPluginDataStore.delete(query: .slug(slug))
     }
 
+    public func fetchPluginsDirectory(category: WordPressOrgApiPluginDirectoryCategory) async throws {
+        // Hard-code the pagination parameters for now. We can suface these parameters when the app needs pagination.
+        let plugins = try await wpOrgClient.browsePlugins(category: category, page: 1, pageSize: 10).plugins
+        try await pluginDirectoryBrowserDataStore.delete(query: .category(category))
+        try await pluginDirectoryBrowserDataStore.store([CategorizedPluginInformation(category: category, plugins: plugins)])
+    }
+
+    public func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>> {
+        await pluginDirectoryBrowserDataStore.listStream(query: query)
+    }
+
+    public func searchPluginsDirectory(input: String) async throws -> [PluginInformation] {
+        // Hard-code the pagination parameters for now. We can suface these parameters when the app needs pagination.
+        try await wpOrgClient.searchPlugins(search: input, page: 1, pageSize: 20).plugins
+    }
 }
 
 private extension PluginService {
@@ -87,6 +107,10 @@ private extension PluginService {
             return nil
         }
 
+        return await findIconFromPluginDirectory(pluginInfo: pluginInfo)
+    }
+
+    func findIconFromPluginDirectory(pluginInfo: PluginInformation) async -> URL? {
         guard let icons = pluginInfo.icons else { return nil }
 
         let supportedFormat: Set<String> = ["png", "jpg", "jpeg", "gif"]

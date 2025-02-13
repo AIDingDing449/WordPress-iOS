@@ -8,7 +8,7 @@ import SafariServices
 
 struct PluginListItemView: View {
 
-    @State private var showingSafariView = false
+    @State private var isShowingSafariView = false
 
     let plugin: InstalledPlugin
     let viewModel: InstalledPluginsListViewModel
@@ -54,8 +54,8 @@ struct PluginListItemView: View {
             }
             .foregroundStyle(.secondary)
         }
-        .sheet(isPresented: $showingSafariView) {
-            if let url = wpOrgURL {
+        .sheet(isPresented: $isShowingSafariView) {
+            if let url = plugin.possibleWpOrgDirectoryURL {
                 SafariView(url: url)
             }
         }
@@ -85,20 +85,15 @@ struct PluginListItemView: View {
         }
         .disabled(isUpdating)
 
-        if wpOrgURL != nil {
+        if plugin.possibleWpOrgDirectoryURL != nil {
             Section {
                 Button {
-                    showingSafariView = true
+                    isShowingSafariView = true
                 } label: {
                     Label(Strings.viewOnWordPressOrg, systemImage: "safari")
                 }
             }
         }
-    }
-
-    private var wpOrgURL: URL? {
-        guard let slug = plugin.possibleWpOrgDirectorySlug else { return nil }
-        return URL(string: "https://wordpress.org/plugins/\(slug.slug)/")
     }
 
     private enum Strings {
@@ -118,16 +113,5 @@ struct PluginListItemView: View {
         static let deactivate: String = NSLocalizedString("sitePluginsList.itemAction.deactivate", value: "Deactivate", comment: "Button to deactivate a plugin")
         static let delete: String = NSLocalizedString("sitePluginsList.itemAction.delete", value: "Delete", comment: "Button to delete a plugin")
         static let viewOnWordPressOrg: String = NSLocalizedString("sitePluginsList.itemAction.viewOnWordPressOrg", value: "View on WordPress.org", comment: "Button to view the plugin on WordPress.org website")
-    }
-}
-
-private struct SafariView: UIViewControllerRepresentable {
-    let url: URL
-
-    func makeUIViewController(context: Context) -> SFSafariViewController {
-        SFSafariViewController(url: url)
-    }
-
-    func updateUIViewController(_ controller: SFSafariViewController, context: Context) {
     }
 }

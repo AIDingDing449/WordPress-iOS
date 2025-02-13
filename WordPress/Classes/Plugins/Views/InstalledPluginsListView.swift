@@ -7,6 +7,8 @@ import WordPressCore
 struct InstalledPluginsListView: View {
     @StateObject private var viewModel: InstalledPluginsListViewModel
 
+    @State private var presentAddNewPlugin = false
+
     init(client: WordPressClient) {
         self.init(service: PluginService(client: client))
     }
@@ -48,6 +50,13 @@ struct InstalledPluginsListView: View {
         .navigationTitle(Strings.title)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    presentAddNewPlugin = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Picker(Strings.filterTitle, selection: $viewModel.filter) {
                         Text(Strings.filterOptionAll).tag(InstalledPluginsListViewModel.PluginFilter.all)
@@ -57,6 +66,11 @@ struct InstalledPluginsListView: View {
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
+            }
+        }
+        .sheet(isPresented: $presentAddNewPlugin) {
+            NavigationStack {
+                AddNewPluginView(service: viewModel.service)
             }
         }
         .task(id: 0) {

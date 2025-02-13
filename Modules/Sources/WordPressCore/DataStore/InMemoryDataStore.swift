@@ -7,9 +7,9 @@ public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore {
     public struct Query: Sendable {
         // TODO: Replace this with `Predicate` once iOS 17 becomes the minimal deployment target.
         let filter: @Sendable (T) -> Bool
-        let sortBy: any SortComparator<T>
+        let sortBy: (any SortComparator<T>)?
 
-        public init(sortBy: any SortComparator<T>, filter: @escaping @Sendable (T) -> Bool) {
+        public init(sortBy: (any SortComparator<T>)?, filter: @escaping @Sendable (T) -> Bool) {
             self.sortBy = sortBy
             self.filter = filter
         }
@@ -32,9 +32,13 @@ public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore {
     }
 
     public func list(query: Query) async throws -> [T] {
-        storage.values
-            .filter(query.filter)
-            .sorted(using: query.sortBy)
+        let result = storage.values.filter(query.filter)
+
+        if let sortBy = query.sortBy {
+            return result.sorted(using: sortBy)
+        }
+
+        return result
     }
 
     public func delete(query: Query) async throws {
