@@ -2,6 +2,7 @@ import UIKit
 import WordPressUI
 import WordPressReader
 import Gravatar
+import Combine
 
 class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
@@ -27,8 +28,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @objc var accessoryButtonAction: ((UIView) -> Void)? = nil
 
     @objc var replyButtonAction: (() -> Void)? = nil
-
-    @objc var likeButtonAction: (() -> Void)? = nil
 
     @objc var contentLinkTapAction: ((URL) -> Void)? = nil
 
@@ -80,22 +79,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    @objc var isReplyHighlighted: Bool = false {
-        didSet {
-            replyButton.tintColor = isReplyHighlighted ? UIAppColor.primary : .label
-            replyButton.configuration?.image = UIImage(systemName: isReplyHighlighted ? "arrowshape.turn.up.left.fill" : "arrowshape.turn.up.left")
-        }
-    }
-
-    // MARK: Constants
-
-    private let contentButtonsTopSpacing: CGFloat = 15
-
     // MARK: Outlets
 
     @IBOutlet private weak var containerStackView: UIStackView!
-    @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
-
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
     private var defaultLeadingMargin: CGFloat = 0
@@ -113,7 +99,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var likeButton: UIButton!
 
     @IBOutlet private weak var highlightBarView: UIView!
-    @IBOutlet private weak var separatorView: UIView!
 
     // MARK: Private Properties
 
@@ -121,20 +106,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
     private var comment: Comment?
+    private var renderer: CommentContentRenderer?
     private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
+    private var viewModel: CommentCellViewModel?
+    private var cancellables: [AnyCancellable] = []
 
     // MARK: Like Button State
-
-    private var isLiked: Bool = false
-
-    private var likeCount: Int = 0
 
     /// Styling configuration based on `ReaderDisplaySetting`. The parameter is optional so that the styling approach
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
-    // TODO: (kean) remove
     var displaySetting: ReaderDisplaySettings? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
@@ -144,27 +127,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Visibility Control
 
-    private var isCommentReplyEnabled: Bool = false {
-        didSet {
-            replyButton.isHidden = !isCommentReplyEnabled
-        }
-    }
-
-    private var isCommentLikesEnabled: Bool = false {
-        didSet {
-            likeButton.isHidden = !isCommentLikesEnabled
-        }
-    }
-
     private var isAccessoryButtonEnabled: Bool = false {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
-        }
-    }
-
-    var shouldHideSeparator = false {
-        didSet {
-            separatorView.isHidden = shouldHideSeparator
         }
     }
 
@@ -173,14 +138,17 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        viewModel = nil
+        cancellables = []
+        avatarImageView.wp.prepareForReuse()
+        renderer?.prepareForReuse()
+
         // reset all highlight states.
         isEmphasized = false
-        isReplyHighlighted = false
 
         // reset all button actions.
         accessoryButtonAction = nil
         replyButtonAction = nil
-        likeButtonAction = nil
         contentLinkTapAction = nil
 
         onContentLoaded = nil
@@ -200,45 +168,31 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(
-        with comment: Comment,
+        viewModel: CommentCellViewModel,
         renderMethod: RenderMethod = .web,
         helper: ReaderCommentsHelper,
         onContentLoaded: ((CGFloat) -> Void)?
     ) {
+        let comment = viewModel.comment
         self.comment = comment
+        self.viewModel = viewModel
         self.helper = helper
+        self.onContentLoaded = onContentLoaded
 
-        nameLabel?.setText(comment.authorForDisplay())
-        dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
+        viewModel.$state.sink { [weak self] in
+            self?.configure(with: $0)
+        }.store(in: &cancellables)
 
-        // Always cancel ongoing image downloads, just in case. This is to prevent comment cells being displayed with the wrong avatar image,
-        // likely resulting from previous download operation before the cell is reused.
-        //
-        // Note that when downloading an image, any ongoing operation will be cancelled in UIImageView+Networking.
-        // This is more of a preventative step where the cancellation is made to happen as early as possible.
-        //
-        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17972
-        avatarImageView.cancelImageDownload()
+        viewModel.$avatar.sink { [weak self] in
+            self?.configureAvatar(with: $0)
+        }.store(in: &cancellables)
 
-        if let avatarURL = URL(string: comment.authorAvatarURL) {
-            configureImage(with: avatarURL)
-        } else {
-            configureImageWithGravatarEmail(comment.gravatarEmailForDisplay())
-        }
-
-        updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
+        viewModel.$content.sink { [weak self] in
+            self?.configureContent($0 ?? "", renderMethod: renderMethod, helper: helper)
+        }.store(in: &cancellables)
 
         // Configure feature availability.
-        isCommentReplyEnabled = comment.canReply()
-        isCommentLikesEnabled = comment.canLike()
         isAccessoryButtonEnabled = comment.isApproved()
-
-        // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(contentButtonsTopSpacing, after: contentContainerView)
-
-        // Configure content renderer.
-        self.onContentLoaded = onContentLoaded
-        configureRendererIfNeeded(for: comment, renderMethod: renderMethod, helper: helper)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -247,13 +201,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - comment: The `Comment` object to display.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
-        configure(with: comment, helper: helper, onContentLoaded: onContentLoaded)
+        configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
-        isCommentLikesEnabled = false
-        isCommentReplyEnabled = false
+        replyButton.isHidden = true
+        likeButton.isHidden = true
+
         isAccessoryButtonEnabled = false
-
-        shouldHideSeparator = true
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
@@ -269,17 +222,27 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             return
         }
     }
+
+    private func configure(with state: CommentCellViewModel.State) {
+        nameLabel.text = state.title
+        dateLabel.text = state.dateCreated?.toMediumString()
+
+        replyButton.isHidden = !state.isReplyEnabled
+        likeButton.isHidden = !state.isLikeEnabled
+
+        updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
+    }
 }
 
 // MARK: - CommentContentRendererDelegate
 
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
-    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
+    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat, comment: String) {
         if renderMethod == .web {
-            if let constraint = contentContainerHeightConstraint, let comment {
+            if let constraint = contentContainerHeightConstraint {
                 if height != constraint.constant {
                     constraint.constant = height
-                    helper?.setCachedContentHeight(height, for: .init(comment))
+                    helper?.setCachedContentHeight(height, for: comment)
                     onContentLoaded?(height) // We had the right size from the get-go
                 }
             } else {
@@ -358,17 +321,6 @@ private extension CommentContentTableViewCell {
         }
     }
 
-    var likeButtonTitle: String {
-        switch likeCount {
-        case .zero:
-            return .noLikes
-        case 1:
-            return String(format: .singularLikeFormat, likeCount)
-        default:
-            return String(format: .pluralLikesFormat, likeCount)
-        }
-    }
-
     // assign base styles for all the cell components.
     func configureViews() {
         // Store default margin for use in content layout.
@@ -388,41 +340,41 @@ private extension CommentContentTableViewCell {
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
 
-        accessoryButton?.tintColor = Style.buttonTintColor
+        accessoryButton?.tintColor = .secondaryLabel
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
         replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
-        replyButton.tintColor = .label
+        replyButton.configuration?.contentInsets.leading = 0
+        replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
-        likeButton.tintColor = .label
+        likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
-        updateLikeButton(liked: false, numberOfLikes: 0)
         likeButton.accessibilityIdentifier = .likeButtonAccessibilityId
-
-        separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
 
         applyStyles()
     }
 
     private func makeReactionButtonConfiguration(systemImage: String) -> UIButton.Configuration {
         var configuration = UIButton.Configuration.plain()
+        let font = UIFont.preferredFont(forTextStyle: .footnote)
         configuration.image = UIImage(systemName: systemImage)
-        configuration.imagePlacement = .top
-        configuration.imagePadding = 5
+        configuration.imagePlacement = .leading
+        configuration.imagePadding = 6
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
             var attributes = $0
-            attributes.font = UIFont.preferredFont(forTextStyle: .footnote)
+            attributes.font = font
             return attributes
         }
-        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption1))
+        configuration.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
 
@@ -435,80 +387,84 @@ private extension CommentContentTableViewCell {
         dateLabel?.textColor = style.dateTextColor
     }
 
-    /// Configures the avatar image view with the provided URL.
-    /// If the URL does not contain any image, the default placeholder image will be displayed.
-    /// - Parameter url: The URL containing the image.
-    func configureImage(with url: URL?) {
-        if let someURL = url, let gravatar = AvatarURL(url: someURL) {
-            avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: true)
+    private func configureAvatar(with avatar: CommentCellViewModel.Avatar?) {
+        guard let avatar else {
+            avatarImageView.wp.prepareForReuse()
             return
         }
-
-        // handle non-gravatar images
-        avatarImageView.downloadImage(from: url, placeholderImage: Style.placeholderImage)
-    }
-
-    /// Configures the avatar image view from Gravatar based on provided email.
-    /// If the Gravatar image for the provided email doesn't exist, the default placeholder image will be displayed.
-    /// - Parameter gravatarEmail: The email to be used for querying the Gravatar image.
-    func configureImageWithGravatarEmail(_ email: String?) {
-        guard let someEmail = email else {
-            return
+        switch avatar {
+        case .url(let imageURL):
+            if let gravatar = AvatarURL(url: imageURL) {
+                avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: false)
+            } else {
+                avatarImageView.image = Style.placeholderImage
+                avatarImageView.wp.setImage(with: imageURL)
+            }
+        case .email(let email):
+            avatarImageView.downloadGravatar(for: email, placeholderImage: Style.placeholderImage)
         }
-
-        avatarImageView.downloadGravatar(for: someEmail, placeholderImage: Style.placeholderImage)
     }
 
     func updateContainerLeadingConstraint() {
         containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
-    /// Updates the style and text of the Like button.
-    /// - Parameters:
-    ///   - liked: Represents the target state – true if the comment is liked, or should be false otherwise.
-    ///   - numberOfLikes: The number of likes to be displayed.
-    ///   - animated: Whether the Like button state change should be animated or not. Defaults to false.
-    ///   - completion: Completion block called once the animation is completed. Defaults to nil.
-    func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false) {
-        isLiked = liked
-        likeCount = numberOfLikes
-        likeButton.tintColor = liked ? Style.likedTintColor : .label
+    func updateLikeButton(isLiked: Bool, likeCount: Int) {
+        likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
-            configuration.image = UIImage(systemName: liked ? "star.fill" : "star")
-            configuration.title = likeButtonTitle
+            configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
+            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
+            likeButton.accessibilityLabel = {
+                switch likeCount {
+                case .zero: .noLikes
+                case 1: String(format: .singularLikeFormat, likeCount)
+                default: String(format: .pluralLikesFormat, likeCount)
+                }
+            }()
             likeButton.configuration = configuration
         } else {
             wpAssertionFailure("missing configuration")
         }
-        likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
-        if liked && animated {
-            likeButton.imageView?.fadeInWithRotationAnimation()
-        }
+        likeButton.accessibilityLabel = isLiked ? String(likeCount) + .commentIsLiked : String(likeCount) + .commentIsNotLiked
     }
 
     // MARK: Content Rendering
 
-    func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
-        let renderer: CommentContentRenderer = {
+    func configureContent(_ content: String, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
+        if self.renderMethod != renderMethod {
+            self.renderer = nil
+        }
+        self.renderMethod = renderMethod
+
+        let renderer = self.renderer ?? {
+            let renderer = makeRenderer()
+            self.renderer = renderer
+            return renderer
+        }()
+
+        func makeRenderer() -> CommentContentRenderer {
             switch renderMethod {
             case .web:
-                return helper.getRenderer(for: comment)
+                let renderer = helper.makeWebRenderer()
+                renderer.delegate = self
+                return renderer
             case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer()
                 renderer.richContentDelegate = self.richContentDelegate
                 renderer.attributedText = attributedText
-                renderer.comment = comment
+                renderer.comment = viewModel?.comment
+                renderer.delegate = self
                 return renderer
             }
-        }()
-        renderer.delegate = self
-
-        self.renderMethod = renderMethod // we assume the render method can't change
+        }
 
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
-            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: TaggedManagedObjectID(comment)) ?? 20
+            // - warning: It's important to set height to the minimum supported
+            // value because `WKWebView` can only increase the content height and
+            // never decreases it when the content changes.
+            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false
         }
@@ -520,7 +476,7 @@ private extension CommentContentTableViewCell {
             contentContainerView?.addSubview(contentView)
             contentView.pinEdges()
         }
-        renderer.render(comment: comment.content)
+        renderer.render(comment: content)
     }
 
     // MARK: Button Actions
@@ -534,8 +490,18 @@ private extension CommentContentTableViewCell {
     }
 
     @objc func likeButtonTapped() {
-        updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true)
-        likeButtonAction?()
+        guard let viewModel else {
+            return wpAssertionFailure("ViewModel missing")
+        }
+        if !viewModel.state.isLiked, let imageView = likeButton.imageView {
+            // Animate the changes and then update the model to avoid animation interruptions
+            updateLikeButton(isLiked: true, likeCount: viewModel.state.likeCount + 1)
+            imageView.fadeInWithRotationAnimation { _ in
+                viewModel.buttonLikeTapped()
+            }
+        } else {
+            viewModel.buttonLikeTapped()
+        }
     }
 }
 
@@ -548,8 +514,6 @@ private extension String {
     static let likeButtonAccessibilityId = "like-comment-button"
     static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
     static let noLikes = NSLocalizedString("Like", comment: "Button title to Like a comment.")
-    static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. "
-                                                        + "%1$d is a placeholder for the number of Likes.")
-    static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
-                                                + "%1$d is a placeholder for the number of Likes.")
+    static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+    static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
 }

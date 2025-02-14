@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newGutenbergPlugins
     case selfHostedSiteUserManagement
     case readerCommentsWebKit
+    case readerGutenbergCommentComposer
     case pluginManagementOverhaul
 
     /// Returns a boolean indicating if the feature is enabled
@@ -52,6 +53,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .selfHostedSiteUserManagement:
             return false
         case .readerCommentsWebKit:
+            return BuildConfiguration.current != .appStore
+        case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
             return false
@@ -92,6 +95,7 @@ extension FeatureFlag {
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .readerCommentsWebKit: "Render Comments using WebKit"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
+        case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         }
     }
 }

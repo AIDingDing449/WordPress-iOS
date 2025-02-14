@@ -14,6 +14,8 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 };
 
 @class Comment;
+@class CommentCellViewModel;
+@class CommentContentTableViewCell;
 @class ReaderPost;
 @class ReaderCommentsHelper;
 
@@ -23,14 +25,13 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic, assign, readwrite) BOOL allowsPushingPostDetails;
 @property (nonatomic, assign, readwrite) ReaderCommentsSource source;
 @property (nonatomic, strong, readonly) ReaderCommentsHelper *helper;
+@property (nonatomic, strong, readonly) UIView *buttonAddComment;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
 + (instancetype)controllerWithPost:(ReaderPost *)post source:(ReaderCommentsSource)source;
 + (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source;
 
-/// Opens the Add Comment when the view appears
-@property (nonatomic) BOOL promptToAddComment;
 /// Navigates to the specified comment when the view appears
 @property (nonatomic, strong) NSNumber *navigateToCommentID;
 
@@ -39,5 +40,10 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic, assign, readwrite) BOOL commentModified;
 - (void)refreshAfterCommentModeration;
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment;
+- (void)trackReplyTo:(BOOL)replyTarget;
+- (void)configureCell:(CommentContentTableViewCell *)cell viewModel:(CommentCellViewModel *)viewModel indexPath:(NSIndexPath *)indexPath;
+- (UIView *)cachedHeaderView;
+- (void)loadMore;
+- (void)highlightCommentAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

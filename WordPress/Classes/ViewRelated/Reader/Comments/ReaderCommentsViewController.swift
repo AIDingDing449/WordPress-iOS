@@ -1,6 +1,8 @@
 import Foundation
 import UIKit
+import SwiftUI
 import WordPressShared
+import WordPressUI
 
 // Notification sent when a comment is moderated/edited to allow views that display Comments to update if necessary.
 // Specifically, the Comments snippet on ReaderDetailViewController.
@@ -9,18 +11,68 @@ extension NSNotification.Name {
 }
 
 @objc extension ReaderCommentsViewController {
-    func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
-        guard let siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
-        return SuggestionService.shared.shouldShowSuggestions(for: blog)
+    func configureTableViewController(_ vc: ReaderCommentsTableViewController) {
+        addChild(vc)
+        view.insertSubview(vc.view, belowSubview: buttonAddComment)
+        vc.view.pinEdges()
+        vc.didMove(toParent: self)
+    }
+
+    func makeCommentButton() -> UIView {
+        let button = CommentLargeButton()
+        button.onTap = { [weak self] in
+            self?.buttonAddCommentTapped()
+        }
+        view.addSubview(button)
+        button.pinEdges([.horizontal, .bottom])
+        return button
+    }
+
+    func makeActivityIndicator() -> UIActivityIndicatorView {
+        let spinner = UIActivityIndicatorView()
+        view.addSubview(spinner)
+        spinner.pinCenter()
+        return spinner
+    }
+
+    func makeEmptyStateView(title: String, imageName: String?, description: String?) -> UIView {
+        UIHostingView(view: EmptyStateView(label: {
+            if let imageName {
+                Label(title, image: imageName)
+            } else {
+                Text(title)
+            }
+        }, description: {
+            if let description {
+                Text(description)
+            }
+        }, actions: {
+            EmptyView()
+        }))
+    }
+
+    func buttonAddCommentTapped() {
+        let viewModel = CommentComposerViewModel(post: post)
+        viewModel.save = { [weak self] in
+            try await self?.sendComment($0)
+        }
+        showCommentComposer(viewModel: viewModel)
+    }
+
+    func didTapReply(comment: Comment) {
+        guard let viewModel = CommentComposerViewModel(comment: comment) else {
+            return wpAssertionFailure("invalid context")
+        }
+        viewModel.save = { [weak self] in
+            try await self?.sendComment($0, comment: comment)
+        }
+        showCommentComposer(viewModel: viewModel)
     }
 
     func handleHeaderTapped() {
-        guard let post,
-              allowsPushingPostDetails else {
-                  return
-              }
-
-        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        guard let post, allowsPushingPostDetails else {
+            return
+        }
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.shouldHideComments = true
         navigationController?.pushViewController(controller, animated: true)
@@ -69,45 +121,36 @@ extension NSNotification.Name {
     }
 
     func configureContentCell(
-        _ cell: UITableViewCell,
-        comment: Comment,
+        _ cell: CommentContentTableViewCell,
+        viewModel: CommentCellViewModel,
         indexPath: IndexPath,
-        handler: WPTableViewHandler
+        tableView: UITableView
     ) {
-        guard let cell = cell as? CommentContentTableViewCell else {
-            return
-        }
-
+        let comment = viewModel.comment
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
-        cell.shouldHideSeparator = true
 
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
-        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment,
-                                                                                 indexPath: indexPath,
-                                                                                 handler: handler,
-                                                                                 sourceView: cell.accessoryButton) : nil
+        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
         let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
-        cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { _ in
-            if handler.tableView.alpha == 0 {
+        cell.configure(viewModel: viewModel, renderMethod: renderMethod, helper: helper) { [weak tableView] _ in
+            guard let tableView else { return }
+
+            if tableView.alpha == 0 {
                 UIView.animate(withDuration: 0.2) {
-                    handler.tableView.alpha = 1
+                    tableView.alpha = 1
                 }
             }
-
-            // don't adjust cell height when it's already scrolled out of viewport.
-            guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
-                  visibleIndexPaths.contains(indexPath) else {
-                      return
-                  }
-
-            UIView.setAnimationsEnabled(false)
-            handler.tableView.performBatchUpdates({})
-            UIView.setAnimationsEnabled(true)
+            // don't adjust cell height when it's out of the viewport.
+            if (tableView.indexPathsForVisibleRows ?? []).contains(indexPath) {
+                UIView.setAnimationsEnabled(false)
+                tableView.performBatchUpdates({})
+                UIView.setAnimationsEnabled(true)
+            }
         }
     }
 
@@ -160,7 +203,39 @@ extension NSNotification.Name {
     @objc func postCommentModifiedNotification() {
         NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
     }
+}
 
+extension ReaderCommentsViewController {
+    func showCommentComposer(viewModel: CommentComposerViewModel) {
+        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
+    }
+
+    @MainActor
+    func sendComment(_ content: String, comment: Comment? = nil) async throws {
+        guard let post = self.post else {
+            throw URLError(.unknown)
+        }
+        return try await withUnsafeThrowingContinuation { [weak self] continuation in
+            let service = CommentService(coreDataStack: ContextManager.shared)
+            if let comment {
+                service.replyToHierarchicalComment(withID: comment.commentID as NSNumber, post: post, content: content) {
+                    self?.trackReply(to: true)
+                    continuation.resume()
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            } else {
+                service.reply(to: post, content: content) {
+                    self?.trackReply(to: false)
+                    continuation.resume()
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Popover Presentation Delegate
@@ -195,8 +270,8 @@ private extension ReaderCommentsViewController {
     ///    | Baz   •|
     ///     --------
     ///
-    func menu(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) -> UIMenu {
-        let commentMenus = commentMenu(for: comment, indexPath: indexPath, handler: handler, sourceView: sourceView)
+    func menu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
         return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
             UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
         })
@@ -205,7 +280,7 @@ private extension ReaderCommentsViewController {
     /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
     /// the order of comment menu will determine the order of appearance for the corresponding menu element.
     ///
-    func commentMenu(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) -> [[ReaderCommentMenu]] {
+    func commentMenu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
         return [
             [
                 .unapprove { [weak self] in
@@ -219,8 +294,9 @@ private extension ReaderCommentsViewController {
                 }
             ],
             [
-                .edit { [weak self] in
-                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: handler.tableView)
+                .edit { [weak self, weak tableView] in
+                    guard let tableView else { return }
+                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: tableView)
                 },
                 .share { [weak self] in
                     self?.shareComment(comment, sourceView: sourceView)
