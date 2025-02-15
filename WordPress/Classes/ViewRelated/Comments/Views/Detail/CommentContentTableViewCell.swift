@@ -13,14 +13,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         case info
     }
 
-    enum RenderMethod: Equatable {
-        /// Uses WebKit to render the comment body.
-        case web
-
-        /// Uses WPRichContent to render the comment body.
-        case richContent(NSAttributedString)
-    }
-
     // MARK: - Public Properties
 
     /// A closure that's called when the accessory button is tapped.
@@ -30,8 +22,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @objc var replyButtonAction: (() -> Void)? = nil
 
     @objc var contentLinkTapAction: ((URL) -> Void)? = nil
-
-    @objc weak var richContentDelegate: WPRichContentViewDelegate? = nil
 
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
@@ -107,7 +97,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     private var comment: Comment?
     private var renderer: CommentContentRenderer?
-    private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
     private var viewModel: CommentCellViewModel?
     private var cancellables: [AnyCancellable] = []
@@ -165,11 +154,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
-    ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(
         viewModel: CommentCellViewModel,
-        renderMethod: RenderMethod = .web,
         helper: ReaderCommentsHelper,
         onContentLoaded: ((CGFloat) -> Void)?
     ) {
@@ -188,7 +175,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }.store(in: &cancellables)
 
         viewModel.$content.sink { [weak self] in
-            self?.configureContent($0 ?? "", renderMethod: renderMethod, helper: helper)
+            self?.configureContent($0 ?? "", helper: helper)
         }.store(in: &cancellables)
 
         // Configure feature availability.
@@ -203,24 +190,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
-        replyButton.isHidden = true
-        likeButton.isHidden = true
-
-        isAccessoryButtonEnabled = false
+        hideActions()
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
     }
 
-    @objc func ensureRichContentTextViewLayout() {
-        switch renderMethod {
-        case .richContent:
-            if let richContentTextView = contentContainerView.subviews.first as? WPRichContentView {
-                richContentTextView.updateLayoutForAttachments()
-            }
-        default:
-            return
-        }
+    func hideActions() {
+        replyButton.isHidden = true
+        likeButton.isHidden = true
+        isAccessoryButtonEnabled = false
     }
 
     private func configure(with state: CommentCellViewModel.State) {
@@ -238,18 +217,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
     func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat, comment: String) {
-        if renderMethod == .web {
-            if let constraint = contentContainerHeightConstraint {
-                if height != constraint.constant {
-                    constraint.constant = height
-                    helper?.setCachedContentHeight(height, for: comment)
-                    onContentLoaded?(height) // We had the right size from the get-go
-                }
-            } else {
-                wpAssertionFailure("constraint missing")
+        if let constraint = contentContainerHeightConstraint {
+            if height != constraint.constant {
+                constraint.constant = height
+                helper?.setCachedContentHeight(height, for: comment)
+                onContentLoaded?(height) // We had the right size from the get-go
             }
         } else {
-            onContentLoaded?(height)
+            wpAssertionFailure("constraint missing")
         }
     }
 
@@ -430,44 +405,20 @@ private extension CommentContentTableViewCell {
 
     // MARK: Content Rendering
 
-    func configureContent(_ content: String, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
-        if self.renderMethod != renderMethod {
-            self.renderer = nil
-        }
-        self.renderMethod = renderMethod
-
+    func configureContent(_ content: String, helper: ReaderCommentsHelper) {
         let renderer = self.renderer ?? {
-            let renderer = makeRenderer()
+            let renderer = helper.makeWebRenderer()
+            renderer.delegate = self
             self.renderer = renderer
             return renderer
         }()
 
-        func makeRenderer() -> CommentContentRenderer {
-            switch renderMethod {
-            case .web:
-                let renderer = helper.makeWebRenderer()
-                renderer.delegate = self
-                return renderer
-            case .richContent(let attributedText):
-                let renderer = RichCommentContentRenderer()
-                renderer.richContentDelegate = self.richContentDelegate
-                renderer.attributedText = attributedText
-                renderer.comment = viewModel?.comment
-                renderer.delegate = self
-                return renderer
-            }
-        }
-
-        if renderMethod == .web {
-            // reset height constraint to handle cases where the new content requires the webview to shrink.
-            contentContainerHeightConstraint?.isActive = true
-            // - warning: It's important to set height to the minimum supported
-            // value because `WKWebView` can only increase the content height and
-            // never decreases it when the content changes.
-            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
-        } else {
-            contentContainerHeightConstraint?.isActive = false
-        }
+        // reset height constraint to handle cases where the new content requires the webview to shrink.
+        contentContainerHeightConstraint?.isActive = true
+        // - warning: It's important to set height to the minimum supported
+        // value because `WKWebView` can only increase the content height and
+        // never decreases it when the content changes.
+        contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
 
         let contentView = renderer.view
         if contentContainerView.subviews.first != contentView {
