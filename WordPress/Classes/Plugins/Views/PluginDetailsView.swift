@@ -87,27 +87,32 @@ struct PluginDetailsView: View {
 
                     actionButton
                         .view
-                        .disabled(viewModel.isLoading || viewModel.isActivating || viewModel.isDeactivating || viewModel.isUninstalling || viewModel.isInstalling)
+                        .disabled(viewModel.isLoading || (viewModel.operation?.isCompleted == false))
                 }
                 .listRowSeparator(.hidden)
+
+                if let operation = viewModel.operation, !operation.isCompleted {
+                    switch operation.operation {
+                    case .install:
+                        inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
+                    case .uninstall:
+                        inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
+                    case .activate:
+                        inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
+                    case .deactivate:
+                        inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
+                    }
+                } else if let error = viewModel.operation?.errorMessage {
+                    errorView(title: SharedStrings.Error.generic, message: error)
+                } else if let newVersion {
+                    updateAvailableView(newVersion)
+                }
 
                 Text(pluginInfo.shortDescription)
                     .font(.body)
                     .listRowSeparator(.hidden)
             }
             .listSectionSeparator(.hidden)
-
-            if viewModel.isUninstalling {
-                inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
-            } else if viewModel.isInstalling {
-                inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
-            } else if viewModel.isActivating {
-                inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
-            } else if viewModel.isDeactivating {
-                inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
-            } else if let newVersion {
-                updateAvailableView(newVersion)
-            }
 
             if viewModel.isLoading {
                 ProgressView(Strings.loadingPluginInformation)
@@ -123,7 +128,7 @@ struct PluginDetailsView: View {
             }
         }
         .listStyle(.plain)
-        .task(id: 0) {
+        .task {
             await viewModel.onAppear()
         }
         .task(id: slug) {
@@ -167,8 +172,7 @@ struct PluginDetailsView: View {
             Button(SharedStrings.Button.cancel, role: .cancel) { }
             Button(SharedStrings.Button.delete, role: .destructive) {
                 Task { @MainActor in
-                    if let plugin = viewModel.installed {
-                        await viewModel.uninstall(plugin)
+                    if let plugin = viewModel.installed, await viewModel.uninstall(plugin) {
                         dismiss()
                     }
                 }
@@ -250,6 +254,28 @@ struct PluginDetailsView: View {
     }
 
     @ViewBuilder
+    private func errorView(title: String, message: String) -> some View {
+        HStack {
+            Image(systemName: "person.crop.circle.badge.exclamationmark")
+
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.headline)
+                Text(message)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+        }
+        .padding()
+        .background(Color.red.opacity(0.5))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+    }
+
+    @ViewBuilder
     private func pluginInfomationView(_ info: PluginInformation) -> some View {
         let screenshots = info.screenshotsList
         if !screenshots.isEmpty {
@@ -277,6 +303,7 @@ struct PluginDetailsView: View {
                     }
                     .padding(.horizontal)
                 }
+                .pagingIfAvailable()
             }
             .padding(.vertical)
             .listRowInsets(.zero)
@@ -390,19 +417,40 @@ enum ActionButton {
     }
 }
 
+private enum PluginOperation: Hashable {
+    case install
+    case uninstall
+    case activate
+    case deactivate
+}
+
+private struct PluginOperationStatus {
+    var operation: PluginOperation
+    var result: Result<Void, Error>?
+
+    var isCompleted: Bool {
+        result != nil
+    }
+
+    var errorMessage: String? {
+        if case let .failure(error)? = result {
+            return (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+        }
+        return nil
+    }
+}
+
 @MainActor
 final class WordPressPluginDetailViewModel: ObservableObject {
     let slug: PluginWpOrgDirectorySlug
     let service: PluginServiceProtocol
 
     @Published private(set) var isLoading = false
-    @Published private(set) var isUninstalling = false
-    @Published private(set) var isInstalling = false
     @Published private(set) var plugin: PluginInformation?
     @Published private(set) var installed: InstalledPlugin?
     @Published private(set) var error: String?
-    @Published private(set) var isActivating = false
-    @Published private(set) var isDeactivating = false
+
+    @Published private(set) fileprivate var operation: PluginOperationStatus?
 
     private var initialLoad = false
 
@@ -445,42 +493,51 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     }
 
     func updatePluginStatus(_ plugin: InstalledPlugin, activated: Bool) async {
-        let keyPath: ReferenceWritableKeyPath<WordPressPluginDetailViewModel, Bool> = activated ? \.isActivating : \.isDeactivating
-        self[keyPath: keyPath] = true
-        defer {
-            self[keyPath: keyPath] = false
+        if let operation, !operation.isCompleted {
+            DDLogWarn("Can't update plugin status at the moment, because there is another operation in progress: \(operation)")
+            return
         }
 
+        let operation = activated ? PluginOperation.activate : PluginOperation.deactivate
+
         do {
+            self.operation = .init(operation: operation)
             self.installed = try await service.updatePluginStatus(plugin: plugin, activated: false)
+            self.operation = .init(operation: operation, result: .success(()))
         } catch {
-            // TODO: Show an error notice
+            self.operation = .init(operation: operation, result: .failure(error))
         }
     }
 
-    func uninstall(_ plugin: InstalledPlugin) async {
-        isUninstalling = true
-        defer {
-            isUninstalling = false
+    func uninstall(_ plugin: InstalledPlugin) async -> Bool {
+        if let operation, !operation.isCompleted {
+            DDLogWarn("Can't uninsatll plugin at the moment, because there is another operation in progress: \(operation)")
+            return false
         }
 
         do {
+            self.operation = .init(operation: .uninstall)
             try await service.uninstalledPlugin(slug: plugin.slug)
+            self.operation = .init(operation: .uninstall, result: .success(()))
+            return true
         } catch {
-            // TODO: Show an error notice
+            self.operation = .init(operation: .uninstall, result: .failure(error))
+            return false
         }
     }
 
     func install() async {
-        isInstalling = true
-        defer {
-            isInstalling = false
+        if let operation, !operation.isCompleted {
+            DDLogWarn("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
+            return
         }
 
         do {
+            self.operation = .init(operation: .install)
             self.installed = try await service.installPlugin(slug: slug)
+            self.operation = .init(operation: .install, result: .success(()))
         } catch {
-            // TODO: Show an error notice
+            self.operation = .init(operation: .install, result: .failure(error))
         }
     }
 }
@@ -708,4 +765,15 @@ private enum Strings {
         value: "Please wait while the plugin is being deactivated...",
         comment: "Message shown while a plugin is being deactivated"
     )
+}
+
+private extension View {
+
+    @ViewBuilder
+    func pagingIfAvailable() -> some View {
+        if #available(iOS 17.0, *) {
+            scrollTargetBehavior(.paging)
+        }
+    }
+
 }
