@@ -1,5 +1,4 @@
 import UIKit
-import WordPressAuthenticator
 
 public protocol ApplicationShortcutsProvider {
     var shortcutItems: [UIApplicationShortcutItem]? { get set }
@@ -55,7 +54,7 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     fileprivate func registerForNotifications() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPRecentSitesChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPBlogUpdated, object: nil)
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)

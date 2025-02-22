@@ -52,18 +52,14 @@ extension NSNotification.Name {
     }
 
     func buttonAddCommentTapped() {
-        let viewModel = CommentComposerViewModel(post: post)
-        viewModel.save = { [weak self] in
+        let viewModel = CommentCreateViewModel(post: post) { [weak self] in
             try await self?.sendComment($0)
         }
         showCommentComposer(viewModel: viewModel)
     }
 
     func didTapReply(comment: Comment) {
-        guard let viewModel = CommentComposerViewModel(comment: comment) else {
-            return wpAssertionFailure("invalid context")
-        }
-        viewModel.save = { [weak self] in
+        let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
             try await self?.sendComment($0, comment: comment)
         }
         showCommentComposer(viewModel: viewModel)
@@ -195,8 +191,8 @@ extension NSNotification.Name {
 }
 
 extension ReaderCommentsViewController {
-    func showCommentComposer(viewModel: CommentComposerViewModel) {
-        let composerVC = CommentComposerViewController(viewModel: viewModel)
+    func showCommentComposer(viewModel: CommentCreateViewModel) {
+        let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }
@@ -295,30 +291,9 @@ private extension ReaderCommentsViewController {
     }
 
     func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
-        let editCommentTableViewController = EditCommentTableViewController(comment: comment) { [weak self] comment, commentChanged in
-            guard commentChanged else {
-                return
-            }
-
-            // optimistically update the comment in the thread with local changes.
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-
-            // track user's intent to edit the comment.
-            CommentAnalytics.trackCommentEdited(comment: comment)
-
-            self?.commentService.uploadComment(comment, success: {
-                self?.commentModified = true
-
-                // update the thread again in case the approval status changed.
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }, failure: { _ in
-                self?.displayNotice(title: .editCommentFailureNoticeText)
-            })
-        }
-
-        let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
-        navigationControllerToPresent.modalPresentationStyle = .fullScreen
-        present(navigationControllerToPresent, animated: true)
+        let composerVC = CommentEditViewController(viewModel: CommentEditViewModel(comment: comment))
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
     }
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {
@@ -413,8 +388,6 @@ private extension ReaderCommentsViewController {
 private extension String {
     static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
                                                    + "Shown when the comment is written by the post author.")
-    static let editCommentFailureNoticeText = NSLocalizedString("There has been an unexpected error while editing the comment",
-                                                                comment: "Error displayed if a comment fails to get updated")
     static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts a comment moderation action.")
 
     // moderation messages

@@ -982,13 +982,10 @@ private extension CommentDetailViewController {
     }
 
     @objc func buttonAddCommentTapped() {
-        guard let viewModel = CommentComposerViewModel(comment: comment) else {
-            return wpAssertionFailure("missing required parameters")
-        }
-        viewModel.save = { [weak self] in
+        let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
             try await self?.createReply(content: $0)
         }
-        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }

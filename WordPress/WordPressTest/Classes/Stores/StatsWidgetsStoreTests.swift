@@ -1,4 +1,3 @@
-import WordPressAuthenticator
 import XCTest
 
 @testable import WordPress
@@ -23,7 +22,7 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
             .build()
         XCTAssertFalse(statsWidgetsHaveData())
 
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
 
         XCTAssertTrue(statsWidgetsHaveData())
     }
@@ -33,7 +32,7 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
             .withAnAccount()
             .isHostedAtWPcom()
             .build()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
 
         NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
 
