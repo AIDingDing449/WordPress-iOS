@@ -92,13 +92,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
-    /// Hide the comments button in the toolbar
-    @objc var shouldHideComments: Bool = false {
-        didSet {
-            toolbar.shouldHideComments = shouldHideComments
-        }
-    }
-
     /// The post being shown
     @objc var post: ReaderPost? {
         return coordinator?.post
@@ -187,6 +180,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         updateLeftBarButtonItem()
         setupFeaturedImage()
         updateFollowButtonState()
@@ -286,15 +280,25 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     func showLoading() {
         if activityIndicator.superview == nil {
+            if post == nil {
+                header.alpha = 0
+            }
             for view in allContentViews {
                 view.alpha = 0
             }
             scrollView.addSubview(activityIndicator)
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                activityIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
-                activityIndicator.topAnchor.constraint(equalTo: webView.topAnchor, constant: 64),
-            ])
+            if post == nil {
+                NSLayoutConstraint.activate([
+                    activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    activityIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
+                    activityIndicator.topAnchor.constraint(equalTo: webView.topAnchor, constant: 64),
+                ])
+            }
             activityIndicator.startAnimating()
         }
     }
@@ -307,6 +311,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         activityIndicator.stopAnimating()
         activityIndicator.removeFromSuperview()
         UIView.animate(withDuration: 0.25) {
+            self.header.alpha = 1
             for view in self.allContentViews {
                 view.alpha = 1
             }

@@ -70,7 +70,6 @@ extension NSNotification.Name {
             return
         }
         let controller = ReaderDetailViewController.controllerWithPost(post)
-        controller.shouldHideComments = true
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -114,14 +113,11 @@ extension NSNotification.Name {
     ) {
         let comment = viewModel.comment
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
-        cell.indentationWidth = Constants.indentationWidth
-        cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
-        cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
+        cell.depth = Int(comment.depth)
 
-        // if the comment can be moderated, show the context menu when tapping the accessory button.
-        // Note that accessoryButtonAction will be ignored when the menu is assigned.
-        cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
-        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
+        let isModerationEnabled = isModerationMenuEnabled(for: comment)
+        cell.accessoryButton.showsMenuAsPrimaryAction = isModerationEnabled
+        cell.accessoryButton.menu = isModerationEnabled ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
         cell.configure(viewModel: viewModel, helper: helper) { [weak tableView] _ in
             guard let tableView else { return }
 
@@ -130,12 +126,9 @@ extension NSNotification.Name {
                     tableView.alpha = 1
                 }
             }
-            // don't adjust cell height when it's out of the viewport.
-            if (tableView.indexPathsForVisibleRows ?? []).contains(indexPath) {
-                UIView.setAnimationsEnabled(false)
-                tableView.performBatchUpdates({})
-                UIView.setAnimationsEnabled(true)
-            }
+            UIView.setAnimationsEnabled(false)
+            tableView.performBatchUpdates({})
+            UIView.setAnimationsEnabled(true)
         }
     }
 
@@ -235,11 +228,6 @@ extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate 
 // MARK: - Private Helpers
 
 private extension ReaderCommentsViewController {
-    struct Constants {
-        static let indentationWidth: CGFloat = 15.0
-        static let maxIndentationLevel: Int = 4
-    }
-
     var commentService: CommentService {
         return CommentService(coreDataStack: ContextManager.shared)
     }
