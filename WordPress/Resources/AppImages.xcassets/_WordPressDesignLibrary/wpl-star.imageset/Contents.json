@@ -1,15 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "icon-reader-comment-reply.pdf",
+      "filename" : "star-empty.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }
