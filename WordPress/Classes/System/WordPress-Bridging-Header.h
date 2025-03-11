@@ -14,8 +14,6 @@
 #import "CommentsViewController+Network.h"
 #import "Constants.h"
 
-#import "EditCommentViewController.h"
-
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
@@ -74,7 +72,6 @@
 
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
-#import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPAnalyticsTrackerAutomatticTracks.h"
