@@ -48,10 +48,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     ///
     @IBOutlet var badgeCenterLayoutConstraint: NSLayoutConstraint!
 
-    /// RelpyTextView
-    ///
-    @IBOutlet var replyTextView: CommentLargeButton!
-
     /// Embedded Media Downloader
     ///
     fileprivate var mediaDownloader = NotificationMediaDownloader()
@@ -139,7 +135,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupTableView()
         setupTableViewCells()
         setupTableDelegates()
-        setupReplyTextView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -201,7 +196,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     fileprivate func refreshInterface() {
         formatter.resetCache()
         tableView.reloadData()
-        attachReplyViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
         refreshNavigationBar()
     }
@@ -347,18 +341,17 @@ extension NotificationDetailsViewController {
     }
 
     func setupTableView() {
-        tableView.separatorStyle            = .none
-        tableView.keyboardDismissMode       = .interactive
-        tableView.accessibilityIdentifier   = .notificationDetailsTableAccessibilityId
-        tableView.accessibilityLabel        = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = .systemBackground
+        tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .interactive
+        tableView.accessibilityIdentifier = .notificationDetailsTableAccessibilityId
+        tableView.accessibilityLabel = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
+        tableView.backgroundColor = .systemBackground
     }
 
     func setupTableViewCells() {
         let cellClassNames: [NoteBlockTableViewCell.Type] = [
             NoteBlockHeaderTableViewCell.self,
             NoteBlockTextTableViewCell.self,
-            NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
             NoteBlockUserTableViewCell.self,
             NoteBlockButtonTableViewCell.self
@@ -395,22 +388,6 @@ extension NotificationDetailsViewController {
         }
     }
 
-    func setupReplyTextView() {
-        let replyTextView = CommentLargeButton()
-
-        replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
-        replyTextView.accessibilityLabel = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-
-        replyTextView.onTap = {
-            // TODO: (kean) remove the remaining .comment-related code
-            wpAssertionFailure("Notifications have been using NotificationCommentDetailViewController since 2023")
-        }
-
-        replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
-
-        self.replyTextView = replyTextView
-    }
-
     func setupNotificationListeners() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(notificationWasUpdated), name: .NSManagedObjectContextObjectsDidChange, object: note.managedObjectContext)
@@ -419,28 +396,6 @@ extension NotificationDetailsViewController {
     func tearDownNotificationListeners() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: note.managedObjectContext)
-    }
-}
-
-// MARK: - Reply View Helpers
-//
-extension NotificationDetailsViewController {
-    func attachReplyViewIfNeeded() {
-        guard shouldAttachReplyView else {
-            replyTextView.removeFromSuperview()
-            return
-        }
-
-        stackView.addArrangedSubview(replyTextView)
-    }
-
-    var shouldAttachReplyView: Bool {
-        // Attach the Reply component only if the notification has a comment, and it can be replied to.
-        //
-        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-            return false
-        }
-        return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
     }
 }
 
@@ -479,8 +434,6 @@ private extension NotificationDetailsViewController {
             fallthrough
         case .text:
             return NoteBlockTextTableViewCell.reuseIdentifier()
-        case .comment:
-            return NoteBlockCommentTableViewCell.reuseIdentifier()
         case .image:
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
@@ -488,7 +441,7 @@ private extension NotificationDetailsViewController {
         case .button:
             return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
-            assertionFailure("Unmanaged group kind: \(blockGroup.kind)")
+            wpAssertionFailure("Unmanaged group kind", userInfo: ["kind": "\(blockGroup.kind)"])
             return NoteBlockTextTableViewCell.reuseIdentifier()
         }
     }
@@ -512,8 +465,6 @@ private extension NotificationDetailsViewController {
             setupFooterCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockCommentTableViewCell:
-            setupCommentCell(cell, blockGroup: blockGroup, at: indexPath)
         case let cell as NoteBlockImageTableViewCell:
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
@@ -580,76 +531,6 @@ private extension NotificationDetailsViewController {
 
         cell.onUnfollowClick = { [weak self] in
             self?.unfollowSiteWithBlock(userBlock)
-        }
-
-        // Download the Gravatar
-        let mediaURL = userBlock.media.first?.mediaURL
-        cell.downloadGravatarWithURL(mediaURL)
-    }
-
-    func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
-        // Note:
-        // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
-        // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
-        //
-        //  -   Font colors are updated.
-        //  -   A left separator is displayed.
-        //
-        guard let commentBlock: FormattableCommentContent = blockGroup.blockOfKind(.comment) else {
-            assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        guard let userBlock: FormattableUserContent = blockGroup.blockOfKind(.user) else {
-            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        // Merge the Attachments with their ranges: [NSRange: UIImage]
-        let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls)
-        let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
-
-        let styles = RichTextContentStyles(key: "RichText-\(indexPath)")
-        let text = formatter.render(content: commentBlock, with: styles).stringByEmbeddingImageAttachments(mediaRanges)
-
-        // Setup: Properties
-        cell.name                   = userBlock.text
-        cell.timestamp              = (note.timestampAsDate as NSDate).mediumString()
-        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
-        cell.attributedCommentText  = text.trimNewlines()
-        cell.isApproved             = commentBlock.isCommentApproved
-
-        // Add comment author's name to Reply placeholder.
-        let placeholderFormat = NSLocalizedString("Reply to %1$@",
-                                                  comment: "Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.")
-        replyTextView.placeholder = String(format: placeholderFormat, cell.name ?? String())
-
-        // Setup: Callbacks
-        cell.onUserClick = { [weak self] in
-            guard let homeURL = userBlock.metaLinksHome else {
-                return
-            }
-
-            self?.displayURL(homeURL)
-        }
-
-        cell.onUrlClick = { [weak self] url in
-            self?.displayURL(url as URL)
-        }
-
-        cell.onAttachmentClick = { [weak self] attachment in
-            guard let image = attachment.image else {
-                return
-            }
-            self?.router.routeTo(image)
-        }
-
-        cell.onTimeStampLongPress = { [weak self] in
-            guard let urlString = self?.note.url,
-            let url = URL(string: urlString) else {
-                return
-            }
-            UIAlertController.presentAlertAndCopyCommentURLToClipboard(url: url)
         }
 
         // Download the Gravatar
@@ -966,7 +847,7 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
 //
 private extension NotificationDetailsViewController {
     var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     var actionsService: NotificationActionsService {
@@ -974,19 +855,19 @@ private extension NotificationDetailsViewController {
     }
 
     enum ContentMedia {
-        static let richBlockTypes           = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
-        static let duration                 = TimeInterval(0.25)
-        static let delay                    = TimeInterval(0)
+        static let richBlockTypes = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
+        static let duration = TimeInterval(0.25)
+        static let delay = TimeInterval(0)
         static let options: UIView.AnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
     }
 
     enum Settings {
-        static let numberOfSections         = 1
-        static let estimatedRowHeight       = CGFloat(44)
+        static let numberOfSections = 1
+        static let estimatedRowHeight = CGFloat(44)
     }
 
     enum Assets {
-        static let confettiBackground       = "notifications-confetti-background"
+        static let confettiBackground = "notifications-confetti-background"
     }
 }
 
@@ -1003,5 +884,4 @@ extension NotificationDetailsViewController {
 //
 private extension String {
     static let notificationDetailsTableAccessibilityId = "notifications-details-table"
-    static let replyTextViewAccessibilityId = "reply-text-view"
 }
