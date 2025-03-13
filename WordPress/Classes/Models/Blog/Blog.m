@@ -2,9 +2,9 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 @import WordPressDataObjC;
-#import "Constants.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
+@import SFHFKeychainUtils;
 
 @import NSObject_SafeExpectations;
 @import NSURL_IDN;

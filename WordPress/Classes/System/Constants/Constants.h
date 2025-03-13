@@ -9,15 +9,12 @@ extern NSString *const WPComDefaultAccountUrlKey;
 /// WordPress URL's
 ///
 extern NSString *const WPMobileReaderURL;
-extern NSString *const WPMobileReaderDetailURL;
-extern NSString *const WPAutomatticMainURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
 extern NSString *const WPAutomatticCCPAPrivacyNoticeURL;
 extern NSString *const WPAutomatticCookiesURL;
 extern NSString *const WPGithubMainURL;
 extern NSString *const WPComReferrerURL;
-extern NSString *const AutomatticDomain;
 extern NSString *const WPComDomain;
 
 /// Notifications Constants
@@ -28,25 +25,6 @@ extern NSString *const WPPushNotificationAppId;
 ///
 extern NSString *const WPAppGroupName;
 extern NSString *const WPAppKeychainAccessGroup;
-
-/// Notification Service Extension Constants
-///
-extern NSString *const WPNotificationServiceExtensionKeychainServiceName;
-extern NSString *const WPNotificationServiceExtensionKeychainTokenKey;
-extern NSString *const WPNotificationServiceExtensionKeychainUsernameKey;
-extern NSString *const WPNotificationServiceExtensionKeychainUserIDKey;
-
-/// Share Extension Constants
-///
-extern NSString *const WPShareExtensionKeychainUsernameKey;
-extern NSString *const WPShareExtensionKeychainTokenKey;
-extern NSString *const WPShareExtensionKeychainServiceName;
-extern NSString *const WPShareExtensionUserDefaultsPrimarySiteName;
-extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
-extern NSString *const WPShareExtensionUserDefaultsLastUsedSiteName;
-extern NSString *const WPShareExtensionUserDefaultsLastUsedSiteID;
-extern NSString *const WPShareExtensionMaximumMediaDimensionKey;
-extern NSString *const WPShareExtensionRecentSitesKey;
 
 /// Apple ID Constants
 ///

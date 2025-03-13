@@ -1,5 +1,5 @@
 import Foundation
-import WordPressAuthenticator
+import WordPressKit
 
 /// - Warning:
 /// This configuration class has a **Jetpack** counterpart in the Jetpack bundle.
@@ -34,14 +34,6 @@ import WordPressAuthenticator
     #endif
 }
 
-// MARK: - Tab bar order
-@objc enum WPTab: Int {
-    case mySites
-    case reader
-    case notifications
-    case me
-}
-
 // MARK: - Localized Strings
 extension AppConstants {
 
@@ -55,18 +47,10 @@ extension AppConstants {
         static let prompt = NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
     }
 
-    struct PostSignUpInterstitial {
-        static let welcomeTitleText = NSLocalizedString("Welcome to WordPress", comment: "Post Signup Interstitial Title Text for WordPress iOS")
-    }
-
     struct Settings {
         static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
         static let shareButtonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
         static let whatIsNewTitle = NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
-    }
-
-    struct Login {
-        static let continueButtonTitle = WordPressAuthenticatorDisplayStrings.defaultStrings.continueWithWPButtonTitle
     }
 
     struct Logout {

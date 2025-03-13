@@ -34,14 +34,6 @@ import WordPressKit
     #endif
 }
 
-// MARK: - Tab bar order
-@objc enum WPTab: Int {
-    case mySites
-    case reader
-    case notifications
-    case me
-}
-
 // MARK: - Localized Strings
 extension AppConstants {
 
@@ -55,21 +47,10 @@ extension AppConstants {
         static let prompt = NSLocalizedString("appRatings.jetpack.prompt", value: "What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the Jetpack app")
     }
 
-    struct PostSignUpInterstitial {
-        static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
-    }
-
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
         static let shareButtonTitle = NSLocalizedString("Share Jetpack with a friend", comment: "Title for a button that recommends the app to others")
         static let whatIsNewTitle = NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
-    }
-
-    struct Login {
-        static let continueButtonTitle = NSLocalizedString(
-            "Continue With WordPress.com",
-            comment: "Button title. Takes the user to the login with WordPress.com flow."
-        )
     }
 
     struct Logout {
