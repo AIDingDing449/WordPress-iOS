@@ -1,4 +1,5 @@
 import SFHFKeychainUtils
+import BuildSettingsKit
 import WordPressKit
 import JetpackStatsWidgetsCore
 import WordPressShared
@@ -219,9 +220,9 @@ private extension StatsWidgetsService {
 
     private func createStatsService(for widgetData: HomeWidgetData) throws -> StatsServiceRemoteV2 {
         let token = try SFHFKeychainUtils.getPasswordForUsername(
-            AppConfiguration.Widget.Stats.keychainTokenKey,
-            andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
-            accessGroup: WPAppKeychainAccessGroup
+            WidgetStatsConfiguration.keychainTokenKey,
+            andServiceName: WidgetStatsConfiguration.keychainServiceName,
+            accessGroup: BuildSettings.appKeychainAccessGroup
         )
         let wpApi = WordPressComRestApi(oAuthToken: token)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)

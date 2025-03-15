@@ -1,4 +1,5 @@
 import Aztec
+import BuildSettingsKit
 import CoreData
 import WordPressKit
 
@@ -22,14 +23,14 @@ class AppExtensionsService {
     /// Unique identifier for background sessions
     ///
     fileprivate lazy var backgroundSessionIdentifier: String = {
-        let identifier = WPAppGroupName + "." + UUID().uuidString
+        let identifier = BuildSettings.appGroupName + "." + UUID().uuidString
         return identifier
     }()
 
     /// WordPress.com OAuth Token
     ///
     fileprivate lazy var oauth2Token: String? = {
-        ShareExtensionService.retrieveShareExtensionToken()
+        ShareExtensionService().retrieveShareExtensionToken()
     }()
 
     /// Simple Rest API (no backgrounding)
@@ -39,7 +40,7 @@ class AppExtensionsService {
                             userAgent: nil,
                             backgroundUploads: false,
                             backgroundSessionIdentifier: backgroundSessionIdentifier,
-                            sharedContainerIdentifier: WPAppGroupName)
+                            sharedContainerIdentifier: BuildSettings.appGroupName)
     }()
 
     /// Backgrounding Rest API
@@ -49,19 +50,19 @@ class AppExtensionsService {
                                    userAgent: nil,
                                    backgroundUploads: true,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: WPAppGroupName)
+                                   sharedContainerIdentifier: BuildSettings.appGroupName)
     }()
 
     /// Tracks Instance
     ///
     fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: WPAppGroupName)
+        Tracks(appGroupName: BuildSettings.appGroupName)
     }()
 
     /// WordPress.com Username
     ///
     internal lazy var wpcomUsername: String? = {
-        ShareExtensionService.retrieveShareExtensionUsername()
+        ShareExtensionService().retrieveShareExtensionUsername()
     }()
 
     /// Core Data stack for application extensions
@@ -132,7 +133,7 @@ extension AppExtensionsService {
 
     private func primarySites(with blogs: [RemoteBlog]) -> [RemoteBlog] {
         // Find the primary site (even if it's not visible)
-        let primarySiteID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
+        let primarySiteID = ShareExtensionService().retrieveShareExtensionPrimarySite()?.siteID ?? 0
         return blogs.filter({ $0.blogID.intValue == primarySiteID })
     }
 
@@ -146,7 +147,7 @@ extension AppExtensionsService {
         } else {
             filteredVisibleSites = visibleSites
         }
-        let recentSiteURLs = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
+        let recentSiteURLs = ShareExtensionService().retrieveShareExtensionRecentSites() ?? [String()]
 
         return recentSiteURLs.compactMap({ url in
             return filteredVisibleSites.first(where: { $0.url == url })

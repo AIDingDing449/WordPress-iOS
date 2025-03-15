@@ -59,6 +59,7 @@ let package = Package(
             .product(name: "Collections", package: "swift-collections"),
             .product(name: "Gifu", package: "Gifu"),
         ]),
+        .target(name: "BuildSettingsKit"),
         .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         // SFHFKeychainUtils is an old Objective-C keychain wrapper.
@@ -151,6 +152,7 @@ enum XcodeSupport {
 
     static var targets: [Target] {
         let wordPresAuthentificatorDependencies: [Target.Dependency] = [
+            "BuildSettingsKit",
             "WordPressShared",
             "WordPressUI",
             .product(name: "Gridicons", package: "Gridicons-iOS"),
@@ -162,6 +164,7 @@ enum XcodeSupport {
         ]
 
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
+            "BuildSettingsKit",
             "SFHFKeychainUtils",
             "WordPressShared",
             "WordPressUI",
@@ -185,6 +188,7 @@ enum XcodeSupport {
         return [
             .xcodeTarget("XcodeTarget_App", dependencies: [
                 "DesignSystem",
+                "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 "SFHFKeychainUtils",
                 "WordPressData",
@@ -238,8 +242,10 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                "BuildSettingsKit",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
+                "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 "SFHFKeychainUtils",
                 "WordPressShared",
@@ -249,6 +255,7 @@ enum XcodeSupport {
                 .product(name: "ColorStudio", package: "color-studio"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
+                "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]),

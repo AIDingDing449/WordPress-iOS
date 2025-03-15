@@ -1,11 +1,5 @@
 #import <Foundation/Foundation.h>
 
-
-/// XMLRPC Constants
-///
-extern NSString *const WPComXMLRPCUrl;
-extern NSString *const WPComDefaultAccountUrlKey;
-
 /// WordPress URL's
 ///
 extern NSString *const WPMobileReaderURL;
@@ -20,11 +14,6 @@ extern NSString *const WPComDomain;
 /// Notifications Constants
 ///
 extern NSString *const WPPushNotificationAppId;
-
-/// Keychain + User Defaults Constants
-///
-extern NSString *const WPAppGroupName;
-extern NSString *const WPAppKeychainAccessGroup;
 
 /// Apple ID Constants
 ///

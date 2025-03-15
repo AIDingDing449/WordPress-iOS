@@ -1,4 +1,5 @@
 import Aztec
+import BuildSettingsKit
 import CoreData
 import Foundation
 import WordPressData
@@ -241,11 +242,11 @@ import WordPressFlux
                                    userAgent: nil,
                                    backgroundUploads: false,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: WPAppGroupName)
+                                   sharedContainerIdentifier: BuildSettings.appGroupName)
     }
 
     private func token() -> String? {
-        return ShareExtensionService.retrieveShareExtensionToken()
+        return ShareExtensionService().retrieveShareExtensionToken()
     }
 
     private func updateMedia(postID: Int64?, siteID: Int64, onComplete: CompletionBlock?) {

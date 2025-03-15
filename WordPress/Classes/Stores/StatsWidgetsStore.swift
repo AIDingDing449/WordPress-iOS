@@ -1,12 +1,20 @@
+import Foundation
 import JetpackStatsWidgetsCore
+import BuildSettingsKit
 import SFHFKeychainUtils
 import WidgetKit
 
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack
+    private let appGroupName: String
+    private let appKeychainAccessGroup: String
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
+         appGroupName: String = BuildSettings.appGroupName,
+         appKeychainAccessGroup: String = BuildSettings.appKeychainAccessGroup) {
         self.coreDataStack = coreDataStack
+        self.appGroupName = appGroupName
+        self.appKeychainAccessGroup = appKeychainAccessGroup
 
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
@@ -36,8 +44,9 @@ class StatsWidgetsStore {
 
     /// Initialize the local cache for widgets, if it does not exist
     @objc func initializeStatsWidgetsIfNeeded() {
-        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        UserDefaults(suiteName: appGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
+        UserDefaults(suiteName: appGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey)
+
         storeCredentials()
 
         var isReloadRequired = false
@@ -268,8 +277,9 @@ private extension StatsWidgetsStore {
 
     @objc func handleAccountChangedNotification() {
         let isLoggedIn = AccountHelper.isLoggedIn
-        let userDefaults = UserDefaults(suiteName: WPAppGroupName)
-        userDefaults?.setValue(isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+
+        let userDefaults = UserDefaults(suiteName: appGroupName)
+        userDefaults?.setValue(isLoggedIn, forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
 
         guard !isLoggedIn else { return }
 
@@ -277,7 +287,7 @@ private extension StatsWidgetsStore {
         HomeWidgetThisWeekData.delete()
         HomeWidgetAllTimeData.delete()
 
-        userDefaults?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        userDefaults?.setValue(nil, forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey)
 
         WidgetCenter.shared.reloadAllTimelines()
     }
@@ -307,13 +317,13 @@ private extension StatsWidgetsStore {
         // If user is logged in but defaultSiteIdKey is not set
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
               let siteId = account.defaultBlog?.dotComID,
-              let userDefaults = UserDefaults(suiteName: WPAppGroupName),
-              userDefaults.value(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) == nil else {
+              let userDefaults = UserDefaults(suiteName: appGroupName),
+              userDefaults.value(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) == nil else {
             return
         }
 
-        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-        userDefaults.setValue(siteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
+        userDefaults.setValue(siteId, forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey)
         initializeStatsWidgetsIfNeeded()
     }
 
@@ -329,10 +339,10 @@ private extension StatsWidgetsStore {
 
         do {
             try SFHFKeychainUtils.storeUsername(
-                AppConfiguration.Widget.Stats.keychainTokenKey,
+                WidgetStatsConfiguration.keychainTokenKey,
                 andPassword: token,
-                forServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
-                accessGroup: WPAppKeychainAccessGroup,
+                forServiceName: WidgetStatsConfiguration.keychainServiceName,
+                accessGroup: appKeychainAccessGroup,
                 updateExisting: true
             )
         } catch {

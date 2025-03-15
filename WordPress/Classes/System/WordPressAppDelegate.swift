@@ -1,5 +1,6 @@
 import SFHFKeychainUtils
 import UIKit
+import BuildSettingsKit
 import CocoaLumberjackSwift
 import Reachability
 import AutomatticTracks
@@ -202,8 +203,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
         // is no need to inspect the identifier beyond the simple check here.
-        if identifier.contains(WPAppGroupName) {
-            let manager = ShareExtensionSessionManager(appGroup: WPAppGroupName, backgroundSessionIdentifier: identifier)
+        let appGroupName = BuildSettings.appGroupName
+        if identifier.contains(appGroupName) {
+            let manager = ShareExtensionSessionManager(appGroup: appGroupName, backgroundSessionIdentifier: identifier)
             manager.backgroundSessionCompletionBlock = completionHandler
             manager.startBackgroundSession()
         }
@@ -726,7 +728,7 @@ extension WordPressAppDelegate {
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
-        ShareExtensionService.configureShareExtensionMaximumMediaDimension(maxImagesize)
+        ShareExtensionService().configureShareExtensionMaximumMediaDimension(maxImagesize)
 
         saveRecentSitesForExtensions()
     }
@@ -736,18 +738,18 @@ extension WordPressAppDelegate {
     func setupShareExtensionToken() {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            ShareExtensionService.configureShareExtensionToken(authToken)
-            ShareExtensionService.configureShareExtensionUsername(account.username)
+            ShareExtensionService().configureShareExtensionToken(authToken)
+            ShareExtensionService().configureShareExtensionUsername(account.username)
         }
     }
 
     func removeShareExtensionConfiguration() {
-        ShareExtensionService.removeShareExtensionConfiguration()
+        ShareExtensionService().removeShareExtensionConfiguration()
     }
 
     @objc func saveRecentSitesForExtensions() {
         let recentSites = RecentSitesService().recentSites
-        ShareExtensionService.configureShareExtensionRecentSites(recentSites)
+        ShareExtensionService().configureShareExtensionRecentSites(recentSites)
     }
 
     // MARK: - Notification Service Extension
@@ -755,16 +757,18 @@ extension WordPressAppDelegate {
     func configureNotificationExtension() {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            NotificationSupportService.insertServiceExtensionToken(authToken)
-            NotificationSupportService.insertServiceExtensionUsername(account.username)
-            NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
+            let service = NotificationSupportService()
+            service.insertServiceExtensionToken(authToken)
+            service.insertServiceExtensionUsername(account.username)
+            service.insertServiceExtensionUserID(account.userID.stringValue)
         }
     }
 
     func removeNotificationExtensionConfiguration() {
-        NotificationSupportService.deleteServiceExtensionToken()
-        NotificationSupportService.deleteServiceExtensionUsername()
-        NotificationSupportService.deleteServiceExtensionUserID()
+        let service = NotificationSupportService()
+        service.deleteServiceExtensionToken()
+        service.deleteServiceExtensionUsername()
+        service.deleteServiceExtensionUserID()
     }
 }
 

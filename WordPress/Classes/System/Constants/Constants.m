@@ -1,11 +1,5 @@
 #import "Constants.h"
 
-
-/// XMLRPC Constants
-///
-NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
-NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
-
 /// WordPress URL's
 ///
 NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
@@ -16,21 +10,6 @@ NSString *const WPAutomatticCookiesURL                              = @"https://
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
 NSString *const WPComReferrerURL                                    = @"https://wordpress.com";
 NSString *const WPComDomain                                         = @"wordpress.com";
-
-/// Keychain Constants
-///
-/// Note: Multiple compiler flags are set for some builds, so conditional ordering matters.
-///
-#if defined(ALPHA_BUILD)
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.alpha";
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.alpha";
-#elif defined(INTERNAL_BUILD)
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
-#else
-NSString *const WPAppGroupName                                      = @"group.org.wordpress";
-NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
-#endif
 
 /// Apple ID Constants
 ///

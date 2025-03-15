@@ -1,8 +1,11 @@
+import Foundation
 import WidgetKit
 import SwiftUI
+import BuildSettingsKit
+import JetpackStatsWidgetsCore
 
 struct HomeWidgetToday: Widget {
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
 
     private let placeholderContent = HomeWidgetTodayData(siteID: 0,
                                                         siteName: "My WordPress Site",
@@ -16,7 +19,7 @@ struct HomeWidgetToday: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.Kind.homeToday.rawValue,
+            kind: WidgetStatsConfiguration.Kind.homeToday.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(),
                                                             placeholderContent: placeholderContent,
