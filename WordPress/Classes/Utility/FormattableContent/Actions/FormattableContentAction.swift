@@ -1,3 +1,4 @@
+import WordPressShared
 
 protocol FormattableContentActionParser {
     func parse(_ dictionary: [String: AnyObject]?) -> [FormattableContentAction]

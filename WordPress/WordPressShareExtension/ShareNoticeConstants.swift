@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// A collection of notification constants shared between the app extensions
 /// and WPiOS.
 ///
