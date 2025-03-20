@@ -10,7 +10,10 @@ let package = Package(
     products: XcodeSupport.products + [
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
+        .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
+        .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
+        .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
         .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
@@ -60,8 +63,25 @@ let package = Package(
             .product(name: "Gifu", package: "Gifu"),
         ]),
         .target(name: "BuildSettingsKit"),
-        .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "DesignSystem",
+            dependencies: [
+                "BuildSettingsKit",
+                .product(name: "ColorStudio", package: "color-studio"),
+            ],
+            resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(name: "FormattableContentKit", dependencies: ["WordPressShared"]),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "ShareExtensionCore",
+            dependencies: ["BuildSettingsKit", "SFHFKeychainUtils"]
+        ),
+        .target(
+            name: "NotificationServiceExtensionCore",
+            dependencies: ["BuildSettingsKit"]
+        ),
         // SFHFKeychainUtils is an old Objective-C keychain wrapper.
         // The implementatoin predates ARC, hence the dedicated target with ARC disabled, for the time being.
         .target(
@@ -69,6 +89,11 @@ let package = Package(
             cSettings: [.unsafeFlags(["-fno-objc-arc"])]
         ),
         .target(name: "TextBundle"),
+        .target(
+            name: "TracksMini",
+            dependencies: ["BuildSettingsKit"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
@@ -96,7 +121,7 @@ let package = Package(
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
         .target(
             name: "WordPressUI",
-            dependencies: ["AsyncImageKit", "WordPressShared"],
+            dependencies: ["AsyncImageKit", "DesignSystem", "WordPressShared"],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
@@ -166,16 +191,17 @@ enum XcodeSupport {
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
             "BuildSettingsKit",
             "SFHFKeychainUtils",
+            "ShareExtensionCore",
             "WordPressShared",
             "WordPressUI",
             "TextBundle",
+            "TracksMini",
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
-            .product(name: "ColorStudio", package: "color-studio"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
             .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
         ]
@@ -189,8 +215,11 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_App", dependencies: [
                 "DesignSystem",
                 "BuildSettingsKit",
+                "FormattableContentKit",
                 "JetpackStatsWidgetsCore",
+                "NotificationServiceExtensionCore",
                 "SFHFKeychainUtils",
+                "ShareExtensionCore",
                 "WordPressData",
                 "WordPressFlux",
                 "WordPressShared",
@@ -240,19 +269,22 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_ShareExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_DraftActionExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
-                "SFHFKeychainUtils",
-                "WordPressShared",
                 "BuildSettingsKit",
+                "FormattableContentKit",
+                "NotificationServiceExtensionCore",
+                "SFHFKeychainUtils",
+                "TracksMini",
+                "WordPressShared",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 "SFHFKeychainUtils",
+                "TracksMini",
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-                .product(name: "ColorStudio", package: "color-studio"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "BuildSettingsKit",

@@ -1,17 +1,18 @@
 import Foundation
 
-enum BuildSettingsEnvironment {
+public enum BuildSettingsEnvironment: Sendable {
     case live
     case preview
+    case test
 
-    static let current: BuildSettingsEnvironment = {
+    public static let current: BuildSettingsEnvironment = {
 #if DEBUG
         let processInfo = ProcessInfo.processInfo
         if processInfo.isXcodePreview {
             return .preview
         }
         if processInfo.isTesting {
-            fatalError("BuildSettings are unavailable when running unit tests. Make sure to inject the values manually in system under test.")
+            return .test
         }
 #endif
         return .live

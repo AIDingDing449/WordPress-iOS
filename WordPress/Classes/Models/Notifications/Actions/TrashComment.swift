@@ -1,3 +1,7 @@
+import UIKit
+import WordPressUI
+import FormattableContentKit
+
 /// Encapsulates logic to trash a comment
 class TrashComment: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("Trash", comment: "Trashes the comment")

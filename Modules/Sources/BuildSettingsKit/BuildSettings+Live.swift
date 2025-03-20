@@ -4,9 +4,13 @@ extension BuildSettings {
     static let live = BuildSettings(bundle: .app)
 
     init(bundle: Bundle) {
+        brand = AppBrand(rawValue: bundle.infoValue(forKey: "WPAppBrand"))!
         pushNotificationAppID = bundle.infoValue(forKey: "WPPushNotificationAppID")
         appGroupName = bundle.infoValue(forKey: "WPAppGroupName")
         appKeychainAccessGroup = bundle.infoValue(forKey: "WPAppKeychainAccessGroup")
+        eventNamePrefix = bundle.infoValue(forKey: "WPEventNamePrefix")
+        explatPlatform = bundle.infoValue(forKey: "WPExplatPlatform")
+        itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
     }
 }
 

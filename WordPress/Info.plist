@@ -2,12 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>WPAppBrand</key>
+	<string>wordpress</string>
 	<key>WPAppGroupName</key>
 	<string>${WP_APP_GROUP_NAME}</string>
 	<key>WPAppKeychainAccessGroup</key>
 	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPEventNamePrefix</key>
+	<string>wpios</string>
+	<key>WPExplatPlatform</key>
+	<string>wpios</string>
+	<key>WPItunesAppID</key>
+	<string>335703880</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

@@ -1,7 +1,9 @@
 import Aztec
 import BuildSettingsKit
 import CoreData
+import TracksMini
 import WordPressKit
+import ShareExtensionCore
 
 /// Provides site fetching and post/media uploading functionality to app extensions.
 ///
@@ -55,9 +57,7 @@ class AppExtensionsService {
 
     /// Tracks Instance
     ///
-    fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: BuildSettings.current.appGroupName)
-    }()
+    fileprivate lazy var tracks = Tracks()
 
     /// WordPress.com Username
     ///

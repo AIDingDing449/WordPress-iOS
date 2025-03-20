@@ -2,6 +2,7 @@ import SFHFKeychainUtils
 import UIKit
 import BuildSettingsKit
 import CocoaLumberjackSwift
+import ShareExtensionCore
 import Reachability
 import AutomatticTracks
 import AutomatticEncryptedLogs
@@ -133,6 +134,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
             WKWebView.warmup()
+        }
+
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) {
+            BlogSyncFacade().syncBlogs(for: account, success: { /* Do nothing */ }, failure: { _ in /* Do nothing */ })
         }
 
         return true
