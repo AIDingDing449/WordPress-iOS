@@ -37,6 +37,7 @@ class MeViewController: UITableViewController {
         }
 
         ImmuTable.registerRows([
+            VerifyEmailRow.self,
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
             ButtonRow.self,
@@ -47,6 +48,7 @@ class MeViewController: UITableViewController {
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.refreshAccountDetailsAndSettings), name: UIApplication.didBecomeActiveNotification, object: nil)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.accessibilityIdentifier = "Me Table"
@@ -114,8 +116,12 @@ class MeViewController: UITableViewController {
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
         let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
-
         let loggedIn = account != nil
+
+        var verificationSection: ImmuTableSection?
+        if let account, account.verificationStatus == .unverified {
+            verificationSection = ImmuTableSection(rows: [VerifyEmailRow()])
+        }
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
@@ -162,7 +168,14 @@ class MeViewController: UITableViewController {
 
         let shouldShowQRLoginRow = FeatureFlag.qrCodeLogin.enabled && !(account?.settings?.twoStepEnabled ?? false)
 
-        var sections: [ImmuTableSection] = [
+        var sections: [ImmuTableSection] = []
+
+        // Add verification section first if it exists
+        if let verificationSection {
+            sections.append(verificationSection)
+        }
+
+        sections.append(contentsOf: [
             ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
@@ -176,7 +189,7 @@ class MeViewController: UITableViewController {
                 return rows
             }()),
             ImmuTableSection(rows: [helpAndSupportIndicator]),
-        ]
+        ])
 
 #if IS_JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
@@ -405,6 +418,7 @@ class MeViewController: UITableViewController {
             }
             return false
         }
+
         guard let sections = handler?.viewModel.sections,
               let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
               let row = sections[section].rows.firstIndex(where: matchRow) else {
@@ -432,7 +446,7 @@ class MeViewController: UITableViewController {
         return try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
-    fileprivate func refreshAccountDetailsAndSettings() {
+    @objc fileprivate func refreshAccountDetailsAndSettings() {
         guard let account = defaultAccount(), let api = account.wordPressComRestApi else {
             reloadViewModel()
             return
