@@ -10,6 +10,7 @@ final class SidebarViewController: UIHostingController<AnyView> {
 
     init(viewModel: SidebarViewModel) {
         self.viewModel = viewModel
+        self.viewModel.blogListViewModel.sidebarViewModel = viewModel
         super.init(rootView: AnyView(SidebarView(viewModel: viewModel, blogListViewModel: viewModel.blogListViewModel)))
         self.title = Strings.sectionMySites
     }
@@ -25,7 +26,7 @@ final class SidebarViewController: UIHostingController<AnyView> {
     }
 }
 
-private struct SidebarView: View {
+struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @ObservedObject var blogListViewModel: BlogListViewModel
     @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
@@ -221,21 +222,35 @@ private struct SidebarProfileContainerView: View {
     }
 }
 
-private extension BlogListViewModel {
-    /// Returns the most recent sites and mixes and mixes in the rest of the sites
-    /// until the display limimt is reached.
+extension BlogListViewModel {
+    /// Returns a list of sites to display in the sidebar, ensuring that:
+    /// 1. The current site is always included
+    /// 2. The most recent sites are included up to the display limit
+    /// 3. The sites are sorted alphabetically
     var topSites: [BlogListSiteViewModel] {
-        var topSites = recentSites.prefix(SidebarView.displayedSiteLimit)
-        var encounteredIDs = Set(topSites.map(\.id))
-        for site in allSites where !encounteredIDs.contains(site.id) {
-            if topSites.count >= SidebarView.displayedSiteLimit {
+        var displaySites = [BlogListSiteViewModel]()
+        var encounteredIDs = Set<TaggedManagedObjectID<Blog>>()
+
+        // Ensure the current site is included (if there is one)
+        if let currentSite {
+            displaySites.append(currentSite)
+            encounteredIDs.insert(currentSite.id)
+        }
+
+        // Add recent sites up to the limit, if we still have space, add other sites
+        for site in recentSites + allSites {
+            if displaySites.count >= SidebarView.displayedSiteLimit {
                 break
             }
-            encounteredIDs.insert(site.id)
-            topSites.append(site)
+
+            if !encounteredIDs.contains(site.id) {
+                displaySites.append(site)
+                encounteredIDs.insert(site.id)
+            }
         }
-        return Array(topSites).sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
-        }
+
+        // Sort the sites alphabetically
+        return displaySites.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
     }
 }
 

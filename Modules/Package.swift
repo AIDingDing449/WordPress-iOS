@@ -133,7 +133,12 @@ let package = Package(
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
         .target(
             name: "WordPressUI",
-            dependencies: ["AsyncImageKit", "DesignSystem", "WordPressShared"],
+            dependencies: [
+                "AsyncImageKit",
+                "DesignSystem",
+                "WordPressShared",
+                .product(name: "Reachability", package: "Reachability"),
+            ],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
@@ -274,6 +279,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "Nimble", package: "Nimble"),
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
