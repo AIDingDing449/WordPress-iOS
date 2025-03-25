@@ -1,4 +1,5 @@
 import UIKit
+import BuildSettingsKit
 import WordPressShared
 import AutomatticAbout
 
@@ -191,8 +192,7 @@ class MeViewController: UITableViewController {
             ImmuTableSection(rows: [helpAndSupportIndicator]),
         ])
 
-#if IS_JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
+        if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
@@ -208,7 +208,6 @@ class MeViewController: UITableViewController {
             ])
             )
         }
-#endif
 
         sections.append(
             ImmuTableSection(rows: [
@@ -330,7 +329,7 @@ class MeViewController: UITableViewController {
                 return
             }
 
-            self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
+            self.sharePresenter.present(for: BuildSettings.current.shareAppName, in: self, source: .me, sourceView: selectedCell)
         }
     }
 
@@ -363,9 +362,7 @@ class MeViewController: UITableViewController {
     /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
-    #if IS_JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
-    #endif
     }
 
     /// Selects the App Settings row and pushes the App Settings view controller
@@ -559,7 +556,7 @@ extension MeViewController: SearchableActivityConvertable {
 
 // MARK: - Constants
 
-private extension MeViewController {
+extension MeViewController {
     enum RowTitles {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
@@ -568,7 +565,14 @@ private extension MeViewController {
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
-        static let about = AppConstants.Settings.aboutTitle
+        static var about: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+            case .jetpack:
+                NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+            }
+        }
     }
 
     enum HeaderTitles {
@@ -576,7 +580,15 @@ private extension MeViewController {
     }
 
     enum LogoutAlert {
-        static let defaultTitle = AppConstants.Logout.alertTitle
+        static var defaultTitle: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
+            case .jetpack:
+                NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
+            }
+        }
+
         static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",

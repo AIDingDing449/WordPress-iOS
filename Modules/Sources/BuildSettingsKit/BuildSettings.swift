@@ -21,6 +21,17 @@ public struct BuildSettings: Sendable {
     public var explatPlatform: String
     public var itunesAppID: String
     public var appURLScheme: String
+    public var jetpackAppURLScheme: String
+    public var about: ProductAboutDetails
+    public var zendeskSourcePlatform: String
+    public var mobileAnnounceAppID: String
+    public var authKeychainServiceName: String
+
+    public struct ProductAboutDetails: Sendable {
+        public var twitterHandle: String
+        public var twitterURL: URL
+        public var blogURL: URL
+    }
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {
