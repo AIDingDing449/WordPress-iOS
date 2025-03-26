@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressShared
 import WordPressKit
 import FormattableContentKit
 

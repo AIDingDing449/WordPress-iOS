@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressShared
 
 enum DomainSelectionType: Int, Identifiable {
     var id: Int { rawValue }

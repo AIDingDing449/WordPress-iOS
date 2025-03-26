@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 import WordPressUI
 import FormattableContentKit
 

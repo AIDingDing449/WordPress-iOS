@@ -35,9 +35,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var analytics: WPAppAnalytics?
 
-    @objc var internetReachability: Reachability?
-    @objc var connectionAvailable: Bool = true
-
     // Private
 
     private lazy var shortcutCreator = WP3DTouchShortcutCreator()
@@ -90,7 +87,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureWordPressAuthenticator()
 
-        configureReachability()
+        ReachabilityUtils.configure()
+
         configureSelfHostedChallengeHandler()
         updateFeatureFlags()
         updateRemoteConfig()
@@ -181,12 +179,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         updateFeatureFlags()
         updateRemoteConfig()
 
-#if IS_JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
             windowManager.startMigrationFlowIfNeeded()
         }
-#endif
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -384,34 +380,6 @@ extension WordPressAppDelegate {
         utility.setVersion(version)
     }
 
-    func configureReachability() {
-        internetReachability = Reachability.forInternetConnection()
-
-        let reachabilityBlock: NetworkReachable = { [weak self] reachability in
-            guard let reachability else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
-                let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
-
-                DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-                let newValue = reachability.isReachable()
-                self?.connectionAvailable = newValue
-
-                NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
-            }
-        }
-
-        internetReachability?.reachableBlock = reachabilityBlock
-        internetReachability?.unreachableBlock = reachabilityBlock
-
-        internetReachability?.startNotifier()
-
-        connectionAvailable = internetReachability?.isReachable() ?? true
-    }
-
     func configureSelfHostedChallengeHandler() {
         WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
             guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
@@ -534,12 +502,10 @@ extension WordPressAppDelegate {
             return "Post Editor"
         case is LoginNavigationController:
             return "Login View"
-#if IS_JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
         case is MigrationLoadWordPressViewController:
             return "Jetpack Migration Load WordPress View"
-#endif
         default:
             return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         }
