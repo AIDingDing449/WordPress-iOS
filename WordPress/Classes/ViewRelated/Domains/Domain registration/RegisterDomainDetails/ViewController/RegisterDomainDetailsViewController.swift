@@ -1,4 +1,5 @@
 import UIKit
+import SVProgressHUD
 import WordPressEditor
 import WordPressUI
 

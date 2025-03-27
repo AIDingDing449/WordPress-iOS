@@ -1,5 +1,4 @@
-Mises à jour :
-- Correction de problèmes d’interface utilisateur sur iPad.
-- Ajout de l’ID de média et de l’URL à chaque élément multimédia
-- Utilisation du nouvel éditeur rapide Gravatar pour mettre à jour votre avatar.
-- Utilisation d’une approche Web pour la connexion à WordPress.com. Cette méthode devrait être plus fiable pour la plupart des utilisateurs, mais n’hésitez pas à contacter l’assistance si vous rencontrez des difficultés !
+Quoi de neuf ce mois-ci ?
+- Des commentaires revus et améliorés : design mis à jour, indicateurs de profondeur pour les fils de discussion, meilleure prise en charge du contenu enrichi et compositeur plein écran avec enregistrement du brouillon.
+- Images mises en avant : correction d’un problème qui faisait que le Lecteur n’affichait pas les images mises en avant pour certains articles.
+- Correction de bugs et amélioration de la stabilité et des performances

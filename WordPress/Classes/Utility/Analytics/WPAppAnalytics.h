@@ -3,8 +3,6 @@
 
 @class Blog, AbstractPost, AccountService;
 
-typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)(void);
-
 extern NSString * const WPAppAnalyticsDefaultsUserOptedOut;
 extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated;
 extern NSString * const WPAppAnalyticsKeyBlogID;
@@ -13,7 +11,6 @@ extern NSString * const WPAppAnalyticsKeyPostAuthorID;
 extern NSString * const WPAppAnalyticsKeyFeedID;
 extern NSString * const WPAppAnalyticsKeyFeedItemID;
 extern NSString * const WPAppAnalyticsKeyIsJetpack;
-extern NSString * const WPAppAnalyticsKeySessionCount;
 extern NSString * const WPAppAnalyticsKeyEditorSource;
 extern NSString * const WPAppAnalyticsKeyCommentID;
 extern NSString * const WPAppAnalyticsKeyLegacyQuickAction;
@@ -38,23 +35,19 @@ extern NSString * const WPAppAnalyticsValueSiteTypeP2;
  */
 @interface WPAppAnalytics : NSObject
 
+/**
+ *  @brief      Timestamp of the app's opening time.
+ */
+@property (nonatomic, strong, readwrite) NSDate* applicationOpenedTime;
+
 #pragma mark - Init
 
 /**
  *  @brief      Default initializer.
  *
- *  @param      lastVisibleScreenCallback       This block will be executed whenever this object
- *                                              needs to know the last visible screen for tracking
- *                                              purposes.
- *
  *  @returns    The initialized object.
  */
-- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
-
-/**
- *  @brief      The current session count.
- */
-+ (NSInteger)sessionCount;
+- (instancetype)init;
 
 /**
  *  @brief      Returns the site type for the blogID. Default is "blog".
