@@ -1,8 +1,9 @@
-import Foundation
+import UIKit
 import AutomatticTracks
+import SwiftUI
 import SVProgressHUD
 import WordPressKit
-import SwiftUI
+import WordPressShared
 
 class RegisterDomainCoordinator {
 
