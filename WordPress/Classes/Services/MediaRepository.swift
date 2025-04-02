@@ -86,11 +86,11 @@ private extension MediaRepository {
     }
 }
 
-@objc class MediaServiceRemoteFactory: NSObject {
+@objc public class MediaServiceRemoteFactory: NSObject {
 
     @objc(remoteForBlog:error:)
-    func remote(for blog: Blog) throws -> MediaServiceRemote {
-        if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi() {
+    public func remote(for blog: Blog) throws -> MediaServiceRemote {
+        if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi {
             return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 
@@ -132,7 +132,7 @@ extension MediaServiceRemote {
 extension RemoteMedia {
 
     @objc(remoteMediaWithMedia:)
-    static func from(_ media: Media) -> RemoteMedia {
+    public static func from(_ media: Media) -> RemoteMedia {
         let remoteMedia = RemoteMedia()
         remoteMedia.mediaID = media.mediaID
         remoteMedia.url = media.remoteURL.flatMap(URL.init(string:))

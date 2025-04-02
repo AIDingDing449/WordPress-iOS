@@ -14,7 +14,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
         service = makeService(contextManager: contextManager, account: account)
 
         service = AccountSettingsService(
-            userID: account.userID.intValue,
+            userID: account.userID!.intValue,
             remote: AccountSettingsRemote(wordPressComRestApi: account.wordPressComRestApi!),
             coreDataStack: contextManager
         )
@@ -111,7 +111,7 @@ extension AccountSettingsServiceTests {
 
     private func makeService(contextManager: ContextManager, account: WPAccount) -> AccountSettingsService {
         AccountSettingsService(
-            userID: account.userID.intValue,
+            userID: account.userID!.intValue,
             remote: AccountSettingsRemote(wordPressComRestApi: account.wordPressComRestApi!),
             coreDataStack: contextManager
         )

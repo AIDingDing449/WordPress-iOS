@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import CoreData
 
 public extension WPAccount {
@@ -17,16 +18,20 @@ public extension WPAccount {
 
     // This is here in an extension that belongs to the apps target so we can decouple WPAccount from AppConfiguration.
     // Decoupling allows moving the type to WordPressData, see https://github.com/wordpress-mobile/WordPress-iOS/issues/24165.
-    @objc
-    static func tokenForUsername(_ username: String) -> String? {
-        token(forUsername: username, isJetpack: AppConfiguration.isJetpack)
+    @objc(tokenForUsername:)
+    static func objc_tokenForUsername(_ username: String) -> String? {
+        try? token(forUsername: username)
+    }
+
+    static func token(forUsername username: String) throws -> String {
+        try token(forUsername: username, isJetpack: BuildSettings.current.brand == .jetpack)
     }
 
     /// Does this `WPAccount` object have any associated blogs?
     ///
     @objc
     var hasBlogs: Bool {
-        return !blogs.isEmpty
+        return blogs?.isEmpty == false
     }
 
     // MARK: - Object Lookups

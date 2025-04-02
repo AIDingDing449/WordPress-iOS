@@ -24,16 +24,16 @@ public final class SharedDataIssueSolver: NSObject {
 
     /// Helper method for creating an instance in Obj-C
     ///
-    class func instance() -> SharedDataIssueSolver {
+    @objc
+    public class func instance() -> SharedDataIssueSolver {
         return SharedDataIssueSolver()
     }
 
-    public func migrateAuthKey() {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
-              let username = account.username else {
+    func migrateAuthKey() {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
             return
         }
-        migrateAuthKey(for: username)
+        migrateAuthKey(for: account.username)
     }
 
     /// Resolve shared data issue by splitting the keys used to store authentication token and supporting data.
@@ -41,7 +41,7 @@ public final class SharedDataIssueSolver: NSObject {
     /// both apps are logged in with the same account.
     ///
     public func migrateAuthKey(for username: String) {
-        guard AppConfiguration.isJetpack,
+        guard BuildSettings.current.brand == .jetpack,
               let token = try? keychainUtils.getPassword(for: username, serviceName: WPAccountConstants.authToken.rawValue) else {
             return
         }

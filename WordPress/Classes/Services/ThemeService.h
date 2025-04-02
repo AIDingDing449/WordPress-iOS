@@ -1,13 +1,15 @@
 #import "CoreDataStack.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class Theme;
 @class WPAccount;
 
 typedef void(^ThemeServiceSuccessBlock)(void);
-typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
-typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
-typedef void(^ThemeServiceFailureBlock)(NSError *error);
+typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme * _Nullable theme);
+typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> * _Nullable themes, BOOL hasMore, NSInteger totalThemeCount);
+typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
 
 @interface ThemeService : NSObject
 
@@ -41,8 +43,8 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @returns    The progress object.
  */
 - (NSProgress *)getActiveThemeForBlog:(Blog *)blog
-                              success:(ThemeServiceThemeRequestSuccessBlock)success
-                              failure:(ThemeServiceFailureBlock)failure;
+                              success:(nullable ThemeServiceThemeRequestSuccessBlock)success
+                              failure:(nullable ThemeServiceFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of available themes for a blog.
@@ -63,15 +65,15 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (NSProgress *)getThemesForBlog:(Blog *)blog
                             page:(NSInteger)page
-                          search:(NSString *)search
+                          search:(nullable NSString *)search
                             sync:(BOOL)sync
-                         success:(ThemeServiceThemesRequestSuccessBlock)success
-                         failure:(ThemeServiceFailureBlock)failure;
+                         success:(nullable ThemeServiceThemesRequestSuccessBlock)success
+                         failure:(nullable ThemeServiceFailureBlock)failure;
 
 - (NSProgress *)getCustomThemesForBlog:(Blog *)blog
                                   sync:(BOOL)sync
-                               success:(ThemeServiceThemesRequestSuccessBlock)success
-                               failure:(ThemeServiceFailureBlock)failure;
+                               success:(nullable ThemeServiceThemesRequestSuccessBlock)success
+                               failure:(nullable ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Activating themes
 
@@ -87,8 +89,8 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (NSProgress *)activateTheme:(Theme *)theme
                       forBlog:(Blog *)blog
-                      success:(ThemeServiceThemeRequestSuccessBlock)success
-                      failure:(ThemeServiceFailureBlock)failure;
+                      success:(nullable ThemeServiceThemeRequestSuccessBlock)success
+                      failure:(nullable ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Installing themes
 
@@ -104,9 +106,11 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (NSProgress *)installTheme:(Theme *)theme
                       forBlog:(Blog *)blog
-                      success:(ThemeServiceSuccessBlock)success
-                      failure:(ThemeServiceFailureBlock)failure;
+                      success:(nullable ThemeServiceSuccessBlock)success
+                      failure:(nullable ThemeServiceFailureBlock)failure;
 
 
 
 @end
+
+NS_ASSUME_NONNULL_END

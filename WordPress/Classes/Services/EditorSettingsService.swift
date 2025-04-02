@@ -86,7 +86,7 @@ import WordPressKit
     }
 
     func api(for blog: Blog) -> WordPressComRestApi? {
-        return blog.wordPressComRestApi()
+        return blog.wordPressComRestApi
     }
 
     var apiForDefaultAccount: WordPressComRestApi? {
@@ -111,7 +111,7 @@ private extension EditorSettingsService {
     }
 
     func updateSite(withID siteID: Int, editor: EditorSettings.Mobile, account: WPAccount, settings: GutenbergSettings) {
-        if let blog = account.blogs.first(where: { $0.dotComID?.intValue == siteID }) {
+        if let blog = account.blogs?.first(where: { $0.dotComID?.intValue == siteID }) {
             settings.setGutenbergEnabled(editor == .gutenberg, for: blog)
         }
     }

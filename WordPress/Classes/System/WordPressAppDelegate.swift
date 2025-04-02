@@ -630,13 +630,13 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc class func setLogLevel(_ level: DDLogLevel) {
+    @objc public class func setLogLevel(_ level: DDLogLevel) {
         SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjackSwift.dynamicLogLevel = level
     }
 
     /// Logs the error in Sentry.
-    @objc class func logError(_ error: Error) {
+    @objc public class func logError(_ error: Error) {
         crashLogging?.logError(error)
     }
 }
@@ -738,11 +738,11 @@ extension WordPressAppDelegate {
 
     func configureNotificationExtension() {
 
-        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken, let userID = account.userID {
             let service = NotificationSupportService()
             service.insertServiceExtensionToken(authToken)
             service.insertServiceExtensionUsername(account.username)
-            service.insertServiceExtensionUserID(account.userID.stringValue)
+            service.insertServiceExtensionUserID(userID.stringValue)
         }
     }
 

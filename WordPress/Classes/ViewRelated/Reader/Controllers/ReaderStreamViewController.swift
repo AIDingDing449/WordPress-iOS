@@ -435,23 +435,21 @@ import AutomatticTracks
         if isViewLoaded {
             displayLoadingStream()
         }
-        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
+        guard let tagSlug else {
+            return wpAssertionFailure("tag slug is missing")
+        }
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.tagTopicForTag(withSlug: tagSlug,
-            success: { [weak self] (objectID: NSManagedObjectID?) in
-
-                let context = ContextManager.shared.mainContext
-                guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-                    DDLogError("Reader: Error retriving an existing tag topic by its objectID")
-                    self?.displayLoadingStreamFailed()
-                    return
-                }
-                self?.readerTopic = topic
-
-            },
-            failure: { [weak self] (error: Error?) in
+        service.tagTopicForTag(withSlug: tagSlug, success: { [weak self] objectID in
+            let context = ContextManager.shared.mainContext
+            guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                 self?.displayLoadingStreamFailed()
-            })
+                return
+            }
+            self?.readerTopic = topic
+        }, failure: { [weak self] _ in
+            self?.displayLoadingStreamFailed()
+        })
     }
 
     // MARK: - Setup
@@ -633,20 +631,20 @@ import AutomatticTracks
 
     private func removeBlockedPosts() {
         // Fetch account
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext) else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext), let userID = account.userID else {
             return
         }
 
         // Author Predicate
         var predicates = [NSPredicate]()
-        let blockedAuthors = BlockedAuthor.find(.accountID(account.userID), context: viewContext).map { $0.authorID }
+        let blockedAuthors = BlockedAuthor.find(.accountID(userID), context: viewContext).map { $0.authorID }
         if !blockedAuthors.isEmpty {
             predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.authorID)) IN %@", blockedAuthors))
         }
 
         // Site Predicate
         if let topic = readerTopic as? ReaderSiteTopic,
-           let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext) {
+           let blocked = BlockedSite.findOne(accountID: userID, blogID: topic.siteID, context: viewContext) {
             predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.siteID)) = %@", blocked.blogID))
         }
 
