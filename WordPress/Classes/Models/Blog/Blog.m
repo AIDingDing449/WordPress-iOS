@@ -569,9 +569,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureStats:
             return [self supportsRestApi] && [self isViewingStatsAllowed];
         case BlogFeatureStockPhotos:
-            return [self supportsRestApi] && [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
-        case BlogFeatureTenor:
-            return [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
+            return [self supportsRestApi];
         case BlogFeatureSharing:
             return [self supportsSharing];
         case BlogFeatureOAuth2Login:
@@ -588,7 +586,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureJetpackImageSettings:
             return [self supportsJetpackImageSettings];
         case BlogFeatureJetpackSettings:
-            return [self supportsJetpackSettings];
+            return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
@@ -762,14 +760,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
 {
     return [self hasRequiredJetpackVersion:requiredJetpackVersion] || self.isHostedAtWPcom;
-}
-
-- (BOOL)supportsJetpackSettings
-{
-    return [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled]
-    && [self supportsRestApi]
-    && ![self isHostedAtWPcom]
-    && [self isAdmin];
 }
 
 - (BOOL)accountIsDefaultAccount
