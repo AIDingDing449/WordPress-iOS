@@ -86,6 +86,7 @@
 		08F8CD371EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08F8CD341EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg */; };
 		08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */; };
 		099D768327D14B8E00F77EDE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 099D768127D14B8E00F77EDE /* InfoPlist.strings */; };
+		0C128FEA2D9ECE6200C69EBA /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		0C2155A62C39A24D00EFE2C0 /* XcodeTarget_UITests in Frameworks */ = {isa = PBXBuildFile; productRef = 0C2155A52C39A24D00EFE2C0 /* XcodeTarget_UITests */; };
 		0C2155A82C39A25400EFE2C0 /* XcodeTarget_UITests in Frameworks */ = {isa = PBXBuildFile; productRef = 0C2155A72C39A25400EFE2C0 /* XcodeTarget_UITests */; };
 		0C22EE0B2D2749A40058F329 /* MediaHostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C22EE0A2D2749A40058F329 /* MediaHostTests.swift */; };
@@ -765,6 +766,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0107E13828FE9DB200DE87DB;
 			remoteInfo = JetpackIntents;
+		};
+		0C128FEC2D9ECE6200C69EBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F7AE0B42D9B30A100AB4892;
+			remoteInfo = WordPressData;
 		};
 		0C5A8A7A2D9B22F100C25301 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1977,7 +1985,6 @@
 				Utility/Logging/WPLogger.h,
 				Utility/Sharing/WPActivityDefaults.h,
 				Utility/UIAlertControllerProxy.h,
-				Utility/WPAuthTokenIssueSolver.h,
 				Utility/WPError.h,
 				Utility/WPTableViewHandler.h,
 				"ViewRelated/Blog/Blog Details/BlogDetailsViewController.h",
@@ -2139,6 +2146,7 @@
 				0CED2AD92D95BB46003015CF /* Gutenberg.xcframework in Frameworks */,
 				0CED2AE52D95BB46003015CF /* yoga.xcframework in Frameworks */,
 				0CED2ADD2D95BB46003015CF /* React.xcframework in Frameworks */,
+				0C128FEA2D9ECE6200C69EBA /* WordPressData.framework in Frameworks */,
 				0CED2ADF2D95BB46003015CF /* RNTAztecView.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4349,6 +4357,7 @@
 			);
 			dependencies = (
 				0CED2AE42D95BB46003015CF /* PBXTargetDependency */,
+				0C128FED2D9ECE6200C69EBA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
@@ -6110,6 +6119,11 @@
 			isa = PBXTargetDependency;
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
 			targetProxy = 0107E15628FEA03800DE87DB /* PBXContainerItemProxy */;
+		};
+		0C128FED2D9ECE6200C69EBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
+			targetProxy = 0C128FEC2D9ECE6200C69EBA /* PBXContainerItemProxy */;
 		};
 		0C5A8A7B2D9B22F100C25301 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
