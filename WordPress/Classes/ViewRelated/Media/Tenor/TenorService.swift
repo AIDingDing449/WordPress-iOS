@@ -1,3 +1,5 @@
+import BuildSettingsKit
+
 /// Encapsulates search parameters (text, pagination, etc)
 struct TenorSearchParams {
     let text: String
@@ -12,18 +14,23 @@ struct TenorSearchParams {
 }
 
 class TenorService {
-    static let tenor: TenorClient = {
-        TenorClient.configure(apiKey: ApiCredentials.tenorApiKey)
-        return TenorClient.shared
-    }()
+
+    private let tenor: TenorClient
+
+    init(apiKey: String = BuildSettings.current.secrets.tenorApiKey) {
+        TenorClient.configure(apiKey: apiKey)
+        self.tenor = TenorClient.shared
+    }
 
     func search(params: TenorSearchParams, completion: @escaping (TenorResultsPage) -> Void) {
         let tenorPageable = params.pageable as? TenorPageable
         let currentPageIndex = tenorPageable?.pageIndex
 
-        TenorService.tenor.search(for: params.text,
-                                  limit: params.limit,
-                                  from: tenorPageable?.position) { gifs, position, error in
+        tenor.search(
+            for: params.text,
+            limit: params.limit,
+            from: tenorPageable?.position
+        ) { gifs, position, error in
 
             guard let gifObjects = gifs, error == nil else {
                 completion(TenorResultsPage.empty())
