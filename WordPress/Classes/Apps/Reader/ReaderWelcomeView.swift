@@ -28,14 +28,14 @@ struct ReaderWelcomeView: View {
         .background {
             ZStack {
                 Rectangle()
-                    .fill(Color(CSColor.WordPressBlue.base))
+                    .fill(Color(CSColor.WordPressBlue.base.withAlphaComponent(0.75)))
                 Rectangle()
                     .fill(
                         LinearGradient(
                             gradient: Gradient(
                                 stops: [
-                                    .init(color: .white.opacity(0.0), location: 0.0),
-                                    .init(color: .white.opacity(1.0), location: 0.5)
+                                    .init(color: Color(.systemBackground).opacity(0.0), location: 0.0),
+                                    .init(color: Color(.systemBackground).opacity(1.0), location: 0.5)
                                 ]
                             ),
                             startPoint: .top,
@@ -48,6 +48,7 @@ struct ReaderWelcomeView: View {
             Image("wp-logotype")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
+                .tint(Color.primary)
                 .frame(height: 20)
         }
         .edgesIgnoringSafeArea(.top)

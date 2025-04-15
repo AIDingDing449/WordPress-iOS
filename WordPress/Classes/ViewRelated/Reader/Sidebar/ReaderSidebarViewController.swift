@@ -3,7 +3,7 @@ import SwiftUI
 import Combine
 import WordPressUI
 
-final class ReaderSidebarViewController: UIHostingController<AnyView> {
+class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
@@ -80,7 +80,10 @@ private struct ReaderSidebarView: View {
 
     var body: some View {
         list
-            .searchable(text: $searchText)
+            .searchable(
+                text: $searchText,
+                placement: (viewModel.isReaderAppModeEnabled && viewModel.isCompact) ? .navigationBarDrawer(displayMode: .always) : .automatic
+            )
             .toolbar {
                 EditButton()
             }
@@ -118,8 +121,8 @@ private struct ReaderSidebarView: View {
     @ViewBuilder
     private var regularContent: some View {
         Section {
-            let screens = ReaderStaticScreen.allCases
-            ForEach(ReaderStaticScreen.allCases) {
+            let screens = viewModel.menu
+            ForEach(screens) {
                 makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName)
                     .tag(ReaderSidebarItem.main($0))
                     .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
@@ -140,14 +143,16 @@ private struct ReaderSidebarView: View {
             }
         }
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
-            Label {
-                Text(Strings.subscriptions)
-            } icon: {
-                ReaderSidebarImage(name: "reader-menu-subscriptions")
-            }
+            if !viewModel.menu.contains(.subscrtipions) {
+                Label {
+                    Text(Strings.subscriptions)
+                } icon: {
+                    ReaderSidebarImage(name: "reader-menu-subscriptions")
+                }
                 .tag(ReaderSidebarItem.allSubscriptions)
                 .listItemTint(AppColor.primary)
                 .withDisabledSelection(isEditing)
+            }
 
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
                 .environment(\.siteIconBackgroundColor, Color(viewModel.isCompact ? .secondarySystemBackground : .systemBackground))

@@ -5,6 +5,9 @@ import WordPressUI
 
 final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {
     private var menuStore = ReaderMenuStore()
+    private let library = ReaderPresenter(
+        viewModel: ReaderSidebarViewModel(isReaderAppModeEnabled: true)
+    )
     private let notificationsButtonViewModel = NotificationsButtonViewModel()
     private var cancellables: [AnyCancellable] = []
 
@@ -38,7 +41,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     private func setupViewControllers() {
         self.viewControllers = [
             makeHomeViewController(),
-            makeFollowingViewController(),
+            makeLibraryViewController(),
             makeDiscoverViewController(),
             makeNotificationsViewController(),
             makeMeViewController()
@@ -56,17 +59,28 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "reader-menu-home"),
             selectedImage: nil
         )
+        // TODO: (reader) remove it; had to use due to how ghosts are implemented (separate table)
+        homeVC.tabBarItem.scrollEdgeAppearance = {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            return appearance
+        }()
         return UINavigationController(rootViewController: homeVC)
     }
 
-    private func makeFollowingViewController() -> UIViewController {
-        let followingVC = ReaderFollowingViewController()
-        followingVC.tabBarItem = UITabBarItem(
-            title: SharedStrings.Reader.following,
+    private func makeLibraryViewController() -> UIViewController {
+        let libraryVC = library.sidebar
+        libraryVC.tabBarItem = UITabBarItem(
+            title: SharedStrings.Reader.library,
             image: UIImage(named: "reader-menu-subscriptions"),
             selectedImage: nil
         )
-        return UINavigationController(rootViewController: followingVC)
+        libraryVC.tabBarItem.scrollEdgeAppearance = {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            return appearance
+        }()
+        return library.prepareForLibraryPresentation()
     }
 
     private func makeDiscoverViewController() -> UIViewController {
@@ -83,6 +97,11 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "reader-menu-explorer"),
             selectedImage: nil
         )
+        discoverVC.tabBarItem.scrollEdgeAppearance = {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            return appearance
+        }()
         let navigationVC = UINavigationController(rootViewController: discoverVC)
         navigationVC.navigationBar.prefersLargeTitles = true
         return navigationVC
@@ -96,7 +115,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "tab-bar-notifications"),
             selectedImage: UIImage(named: "tab-bar-notifications")
         )
-        notificationsVC.isReaderModeEnabled = true
+        notificationsVC.isReaderAppModeEnabled = true
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         notificationsVC.enableLargeTitles()
 

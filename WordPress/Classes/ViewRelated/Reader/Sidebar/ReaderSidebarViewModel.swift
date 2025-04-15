@@ -14,14 +14,26 @@ final class ReaderSidebarViewModel: ObservableObject {
     private var isRestoringSelection = false
 
     @Published var isCompact = false
+    let isReaderAppModeEnabled: Bool
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
+    let menu: [ReaderStaticScreen]
+
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
-         contextManager: CoreDataStackSwift = ContextManager.shared) {
+         contextManager: CoreDataStackSwift = ContextManager.shared,
+         isReaderAppModeEnabled: Bool = false) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
-        self.restoreSelection(defaultValue: .main(.recent))
+
+        self.isReaderAppModeEnabled = isReaderAppModeEnabled
+        if isReaderAppModeEnabled {
+            menu = [.subscrtipions, .lists, .tags, .saved, .likes]
+        } else {
+            menu = [.recent, .discover, .saved, .likes, .search]
+            restoreSelection(defaultValue: .main(.recent))
+        }
+
         self.reloadMenuIfNeeded()
     }
 
@@ -79,22 +91,28 @@ enum ReaderSidebarNavigation {
 
 /// One of the predefined main navigation areas in the reader. The app displays
 /// these even if the respective "topics" were not loaded yet.
-enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
+enum ReaderStaticScreen: String, Identifiable, Hashable, CaseIterable {
     case recent
     case discover
     case saved
     case likes
     case search
+    case subscrtipions
+    case lists
+    case tags
 
     var id: ReaderStaticScreen { self }
 
     var localizedTitle: String {
         switch self {
-        case .recent: NSLocalizedString("reader.sidebar.recent", value: "Recent", comment: "Reader sidebar menu item")
-        case .discover: NSLocalizedString("reader.sidebar.discover", value: "Discover", comment: "Reader sidebar menu item")
-        case .saved: NSLocalizedString("reader.sidebar.saved", value: "Saved", comment: "Reader sidebar menu item")
-        case .likes: NSLocalizedString("reader.sidebar.likes", value: "Likes", comment: "Reader sidebar menu item")
-        case .search: NSLocalizedString("reader.sidebar.search", value: "Search", comment: "Reader sidebar menu item")
+        case .recent: SharedStrings.Reader.recent
+        case .discover: SharedStrings.Reader.discover
+        case .saved: SharedStrings.Reader.saved
+        case .likes: SharedStrings.Reader.likes
+        case .search: SharedStrings.Reader.search
+        case .subscrtipions: SharedStrings.Reader.subscriptions
+        case .lists: SharedStrings.Reader.lists
+        case .tags: SharedStrings.Reader.tags
         }
     }
 
@@ -105,6 +123,9 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
         case .saved: "reader-menu-bookmark"
         case .likes: "reader-menu-star"
         case .search: "reader-menu-search"
+        case .subscrtipions: "reader-menu-subscriptions"
+        case .lists: "reader-menu-list"
+        case .tags: "reader-menu-tag"
         }
     }
 
@@ -115,6 +136,7 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
         case .saved: nil
         case .likes: .likes
         case .search: nil
+        case .subscrtipions, .tags, .lists: nil
         }
     }
 
