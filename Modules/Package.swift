@@ -42,7 +42,7 @@ let package = Package(
         .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.7.5"),
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
         .package(url: "https://github.com/SVProgressHUD/SVProgressHUD", from: "2.3.1"),
-        .package(url: "https://github.com/tonymillion/Reachability", from: "3.7.5"),
+        .package(url: "https://github.com/Automattic/Reachability", branch: "framework-support-via-spm"),
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
@@ -95,6 +95,17 @@ let package = Package(
                 "BuildSettingsKit",
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                // Even though the extension is all in Swift, we need to include the Objective-C
+                // version of CocoaLumberjack to avoid linking issues with other dependencies that
+                // use it.
+                //
+                // Example:
+                //
+                // Undefined symbols for architecture arm64:
+                //  "_OBJC_CLASS_$_DDLog", referenced from:
+                //       in SharedCoreDataStack.o
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ],
             resources: [.process("Resources/Extensions.xcdatamodeld")]

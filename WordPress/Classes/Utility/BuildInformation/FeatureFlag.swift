@@ -21,7 +21,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case authenticateUsingApplicationPassword
     case newGutenberg
     case newGutenbergThemeStyles
-    case newGutenbergPlugins
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
@@ -73,8 +72,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return app == .reader
         case .newGutenbergThemeStyles:
             return false
-        case .newGutenbergPlugins:
-            return false
         case .selfHostedSiteUserManagement:
             return false
         case .readerGutenbergCommentComposer:
@@ -120,7 +117,6 @@ extension FeatureFlag {
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
-        case .newGutenbergPlugins: "Experimental Block Editor Plugins"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"

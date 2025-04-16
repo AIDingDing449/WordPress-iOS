@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
-# Sentry
+# The names for WordPress and Jetpack are currently set but unused.
+# They will be once we'll the split build step from the upload step in CI.
+APP_STORE_CONNECT_BUILD_NAME_WORDPRESS = 'WordPress'
+APP_STORE_CONNECT_BUILD_NAME_JETPACK = 'Jetpack'
+APP_STORE_CONNECT_BUILD_NAME_READER = 'Reader'
+
 SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
@@ -164,12 +169,14 @@ platform :ios do
       workspace: WORKSPACE_PATH,
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: APP_STORE_CONNECT_BUILD_NAME_WORDPRESS,
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
     upload_build_to_testflight(
+      ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
       whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
       distribution_groups: ['Internal a8c Testers', 'Public Beta Testers'],
       beta_app_description_path: WORDPRESS_BETA_APP_DESCRIPTION_PATH
@@ -232,11 +239,13 @@ platform :ios do
       clean: true,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: APP_STORE_CONNECT_BUILD_NAME_JETPACK,
       derived_data_path: DERIVED_DATA_PATH,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
     upload_build_to_testflight(
+      ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
       whats_new_path: JETPACK_RELEASE_NOTES_PATH,
       distribution_groups: ['Beta Testers'],
       beta_app_description_path: JETPACK_BETA_APP_DESCRIPTION_PATH
@@ -266,7 +275,9 @@ platform :ios do
     )
   end
 
-  lane :build_for_app_store_connect_reader do
+  lane :build_for_app_store_connect_reader do |build_number: ENV.fetch('BUILDKITE_BUILD_NUMBER', nil)|
+    UI.user_error!('No build number provided and BUILDKITE_BUILD_NUMBER environment variable is not set') if build_number.nil?
+
     sentry_check_cli_installed
 
     update_certs_and_profiles_app_store_reader
@@ -277,9 +288,33 @@ platform :ios do
       clean: true,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: APP_STORE_CONNECT_BUILD_NAME_READER,
       derived_data_path: DERIVED_DATA_PATH,
+      xcargs: { VERSION_LONG: build_number, VERSION_SHORT: '0.0' }.compact,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
+  end
+
+  lane :upload_to_app_store_connect_reader do
+    # Eventually, this will be replaced with a real release notes file. Or maybe not.
+    temp_release_notes = File.join(Dir.tmpdir, 'reader_release_notes.md')
+
+    begin
+      File.write(temp_release_notes, 'Thank you for testing the new Reader app. Please get in touch with any feedback or suggestions.')
+
+      upload_build_to_testflight(
+        ipa_path: File.join(BUILD_PRODUCTS_PATH, "#{APP_STORE_CONNECT_BUILD_NAME_READER}.ipa"),
+        whats_new_path: temp_release_notes,
+        # The action fails with "Cannot add internal group to a build," despite the build having been added to the internal group.
+        #
+        # Groups are required when distributing to external testers, but maybe they are not when it's only internal?
+        # distribution_groups: ['Internal Automattic Testers Automatic Distribution'],
+        distribution_groups: [],
+        beta_app_description_path: BETA_APP_DESCRIPTION_PATH_READER
+      )
+    ensure
+      FileUtils.rm_rf(temp_release_notes)
+    end
   end
 
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to Firebase App Distribution
@@ -398,13 +433,18 @@ platform :ios do
     ENV.fetch('BUILDKITE', false)
   end
 
-  def upload_build_to_testflight(whats_new_path:, distribution_groups:, beta_app_description_path:)
+  def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)
+    # Explicitly disable distributing to external testers if there are no external groups.
+    distribute_external = distribution_groups.empty? == false
+
     upload_to_testflight(
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
+      ipa: ipa_path,
       beta_app_description: File.read(beta_app_description_path),
       changelog: File.read(whats_new_path),
-      distribute_external: true,
+      distribute_external: distribute_external,
+      notify_external_testers: distribute_external,
       groups: distribution_groups,
       # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
       reject_build_waiting_for_review: true
