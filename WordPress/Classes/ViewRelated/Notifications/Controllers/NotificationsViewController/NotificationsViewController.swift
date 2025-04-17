@@ -83,7 +83,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     /// JetpackLoginVC being presented.
     ///
-    internal var jetpackLoginViewController: JetpackLoginViewController? = nil
+    internal var jetpackLoginViewController: ConnectJetpackViewController? = nil
 
     /// Timestamp of the most recent note before updates
     /// Used to count notifications to show the second notifications prompt
@@ -119,7 +119,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: - View Lifecycle
 
     static func showInPopover(from presentingVC: UIViewController, sourceItem: UIPopoverPresentationControllerSourceItem) {
-        let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
+        let notificationsVC = Notifications.instantiateInitialViewController()
         notificationsVC.isSidebarModeEnabled = true
 
         let navigationVC = UINavigationController(rootViewController: notificationsVC)

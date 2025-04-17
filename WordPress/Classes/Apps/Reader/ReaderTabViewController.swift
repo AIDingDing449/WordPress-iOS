@@ -108,8 +108,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     }
 
     private func makeNotificationsViewController() -> UIViewController {
-        let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil)
-            .instantiateInitialViewController() as! NotificationsViewController
+        let notificationsVC = Notifications.instantiateInitialViewController()
         notificationsVC.tabBarItem = UITabBarItem(
             title: Strings.notifications,
             image: UIImage(named: "tab-bar-notifications"),

@@ -39,11 +39,11 @@
       </MacroExpansion>
       <TestPlans>
          <TestPlanReference
-            reference = "container:WordPressTest/WordPressUnitTests.xctestplan"
-            default = "YES">
+            reference = "container:UITests/WordPressUITests.xctestplan">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:UITests/WordPressUITests.xctestplan">
+            reference = "container:../Tests/KeystoneTests/WordPressUnitTests.xctestplan"
+            default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>
