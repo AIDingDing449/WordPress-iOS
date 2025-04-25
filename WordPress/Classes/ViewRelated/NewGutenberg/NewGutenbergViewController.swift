@@ -65,9 +65,16 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
+    // New service for fetching raw block editor settings
+    lazy var rawBlockEditorSettingsService: RawBlockEditorSettingsService? = {
+        return RawBlockEditorSettingsService(blog: post.blog)
+    }()
+
     // MARK: - GutenbergKit
 
-    private let editorViewController: GutenbergKit.EditorViewController
+    private var editorViewController: GutenbergKit.EditorViewController
+    private var activityIndicator: UIActivityIndicatorView?
+    private var hasEditorStarted = false
 
     lazy var autosaver = Autosaver() {
         self.performAutoSave()
@@ -202,7 +209,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         configureNavigationBar()
         refreshInterface()
 
-        fetchBlockSettings()
+        // Show activity indicator while fetching settings
+        showActivityIndicator()
+
+        // Fetch block editor settings
+        fetchBlockEditorSettings()
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -316,6 +327,70 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
         }
     }
+
+    // MARK: - Activity Indicator
+
+    private func showActivityIndicator() {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .gray
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(indicator)
+
+        NSLayoutConstraint.activate([
+            indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+
+        indicator.startAnimating()
+        self.activityIndicator = indicator
+    }
+
+    private func hideActivityIndicator() {
+        activityIndicator?.stopAnimating()
+        activityIndicator?.removeFromSuperview()
+        activityIndicator = nil
+    }
+
+    // MARK: - Block Editor Settings
+
+    private func fetchBlockEditorSettings() {
+        guard let service = rawBlockEditorSettingsService else {
+            startEditor()
+            return
+        }
+
+        Task { @MainActor in
+            // Start the editor with default settings after 3 seconds
+            let timeoutTask = Task {
+                try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
+                if !Task.isCancelled {
+                    startEditor()
+                }
+            }
+
+            do {
+                let settings = try await service.fetchSettings()
+                timeoutTask.cancel()
+                startEditor(with: settings)
+            } catch {
+                timeoutTask.cancel()
+                DDLogError("Error fetching block editor settings: \(error)")
+                startEditor()
+            }
+        }
+    }
+
+    private func startEditor(with settings: [String: Any]? = nil) {
+        guard !hasEditorStarted else { return }
+        hasEditorStarted = true
+
+        if let settings {
+            var updatedConfig = self.editorViewController.configuration
+            updatedConfig.updateEditorSettings(settings)
+            self.editorViewController.updateConfiguration(updatedConfig)
+        }
+        self.editorViewController.startEditorSetup()
+    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
@@ -327,6 +402,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             // is still reflecting the actual startup time of the editor
             editorSession.start()
         }
+        self.hideActivityIndicator()
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
