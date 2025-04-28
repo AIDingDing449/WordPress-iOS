@@ -17,11 +17,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
-    private let containerStackView = UIStackView()
-    private let tableView = UITableView(frame: .zero, style: .plain)
-
-    // Reply properties
-    private var addCommentButton: CommentLargeButton?
+    let tableView = UITableView(frame: .zero, style: .plain)
 
     @objc public weak var commentDelegate: CommentDetailsDelegate?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
@@ -196,7 +192,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
             : UIImage(systemName: "square.and.arrow.up"),
             style: .plain,
             target: self,
-            action: #selector(shareCommentURL)
+            action: #selector(buttonShareCommentTapped)
         )
         button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
         return button
@@ -241,8 +237,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureView()
-        configureReplyView()
         configureNavigationBar()
         configureTable()
         configureSections()
@@ -263,7 +257,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     @objc public func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
-        addCommentButton?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
@@ -325,14 +318,6 @@ private extension CommentDetailViewController {
         return .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
     }
 
-    func configureView() {
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerStackView)
-        containerStackView.axis = .vertical
-        containerStackView.addArrangedSubview(tableView)
-        view.pinSubviewToAllEdges(containerStackView)
-    }
-
     func configureNavigationBar() {
         configureNavBarButton()
     }
@@ -351,16 +336,24 @@ private extension CommentDetailViewController {
         tableView.dataSource = self
         tableView.separatorInsetReference = .fromAutomaticInsets
 
-        // get rid of the separator line for the last cell.
+        // get rid of the separator lines
+        tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
         // assign 20pt leading inset to the table view, as per the design.
-        tableView.directionalLayoutMargins = .init(top: tableView.directionalLayoutMargins.top,
-                                                   leading: Constants.tableHorizontalInset,
-                                                   bottom: tableView.directionalLayoutMargins.bottom,
-                                                   trailing: Constants.tableHorizontalInset)
+        tableView.directionalLayoutMargins = .init(
+            top: tableView.directionalLayoutMargins.top,
+            leading: Constants.tableHorizontalInset,
+            bottom: tableView.directionalLayoutMargins.bottom,
+            trailing: Constants.tableHorizontalInset
+        )
 
         tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+
+        view.addSubview(tableView)
+        tableView.pinEdges()
+
+        headerCell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 54).isActive = true
     }
 
     func configureContentRows() -> [RowType] {
@@ -428,14 +421,16 @@ private extension CommentDetailViewController {
 
         // otherwise, if this is a comment to a post, show the post title instead.
         headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
-        headerCell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 54).isActive = true
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
         let viewModel = CommentCellViewModel(comment: comment, notification: notification)
 
         cell.configure(viewModel: viewModel, helper: helper) { [weak self] _ in
-            self?.tableView.performBatchUpdates({})
+            guard let self else { return }
+            UIView.setAnimationsEnabled(false)
+            self.tableView.performBatchUpdates({})
+            UIView.setAnimationsEnabled(true)
         }
 
         cell.configureForCommentDetails()
@@ -446,11 +441,18 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonType = .info
-        cell.isAccessoryButtonEnabled = true
-        cell.accessoryButtonAction = { [weak self] senderView in
-            self?.presentUserInfoSheet(senderView)
+        if comment.allowsModeration() {
+            cell.accessoryButtonType = .info
+            cell.accessoryButtonAction = { [weak self] senderView in
+                self?.presentUserInfoSheet(senderView)
+            }
+        } else {
+            cell.accessoryButtonType = .ellipsis
+            cell.accessoryButtonAction = { [weak self] senderView in
+                self?.shareComment(sourceItem: senderView)
+            }
         }
+        cell.isAccessoryButtonEnabled = true
 
         cell.replyButtonAction = { [weak self] in
             self?.buttonAddCommentTapped()
@@ -655,7 +657,11 @@ private extension CommentDetailViewController {
                                      })
     }
 
-    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem) {
+    @objc private func buttonShareCommentTapped(_ button: UIBarButtonItem) {
+        shareComment(sourceItem: button)
+    }
+
+    private func shareComment(sourceItem: (any UIPopoverPresentationControllerSourceItem)) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -664,7 +670,7 @@ private extension CommentDetailViewController {
         WPAnalytics.track(.siteCommentsCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+        activityViewController.popoverPresentationController?.sourceItem = sourceItem
         present(activityViewController, animated: true, completion: nil)
     }
 
@@ -693,10 +699,7 @@ private extension String {
     static let trashButtonAccessibilityId = "trash-comment-button"
     static let deleteButtonAccessibilityId = "delete-comment-button"
 
-    // MARK: Localization
-    static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
-                                                          + "%1$@ is a placeholder for the comment author."
-                                                          + "Example: Reply to Pamela Nguyen")
+    // MARK: Localizatio
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
     static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
@@ -979,19 +982,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 // MARK: - Reply Handling
 
 private extension CommentDetailViewController {
-
-    func configureReplyView() {
-        let button = CommentLargeButton()
-
-        button.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        button.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        button.onTap = { [weak self] in
-            self?.buttonAddCommentTapped()
-        }
-        button.isHidden = true
-        containerStackView.addArrangedSubview(button)
-        addCommentButton = button
-    }
 
     @objc func buttonAddCommentTapped() {
         let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
