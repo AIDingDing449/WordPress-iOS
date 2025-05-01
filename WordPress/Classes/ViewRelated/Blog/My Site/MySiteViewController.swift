@@ -2,6 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 import WordPressUI
+import WordPressKit
 import GutenbergKit
 import Combine
 
@@ -70,10 +71,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     // MARK: - Dependencies
 
     private let overlaysCoordinator: MySiteOverlaysCoordinator
-    private lazy var editorSettingsService: RawBlockEditorSettingsService? = {
-        guard let blog, RemoteFeatureFlag.newGutenberg.enabled() else { return nil }
-        return RawBlockEditorSettingsService(blog: blog)
-    }()
 
     // TODO: (reader) factor if out of `MySiteVC` for a production version
     var isReaderAppModeEnabled = false
@@ -387,21 +384,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            // Update editor settings service with new blog and fetch settings
-            editorSettingsService = RawBlockEditorSettingsService(blog: blog)
-            fetchEditorSettings()
-        }
-    }
-
-    private func fetchEditorSettings() {
-        guard let service = editorSettingsService else { return }
-
-        Task { @MainActor in
-            do {
-                _ = try await service.fetchSettings()
-            } catch {
-                DDLogError("Error fetching editor settings: \(error)")
-            }
+            RawBlockEditorSettingsService.getService(forBlog: blog).refreshSettings()
         }
     }
 

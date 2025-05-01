@@ -65,11 +65,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
-    // New service for fetching raw block editor settings
-    lazy var rawBlockEditorSettingsService: RawBlockEditorSettingsService? = {
-        return RawBlockEditorSettingsService(blog: post.blog)
-    }()
-
     // MARK: - GutenbergKit
 
     private var editorViewController: GutenbergKit.EditorViewController
@@ -354,10 +349,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // MARK: - Block Editor Settings
 
     private func fetchBlockEditorSettings() {
-        guard let service = rawBlockEditorSettingsService else {
-            startEditor()
-            return
-        }
+        let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
+        service.refreshSettings()
 
         Task { @MainActor in
             // Start the editor with default settings after 3 seconds
@@ -369,7 +362,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
 
             do {
-                let settings = try await service.fetchSettings()
+                let settings = try await service.getSettings()
                 timeoutTask.cancel()
                 startEditor(with: settings)
             } catch {
