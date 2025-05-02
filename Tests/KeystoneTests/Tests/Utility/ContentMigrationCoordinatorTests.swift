@@ -1,6 +1,7 @@
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
@@ -205,7 +206,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
     func test_coordinatorShouldObserveLogoutNotifications() {
         XCTAssertNotNil(mockNotificationCenter.observerSelector)
         XCTAssertNotNil(mockNotificationCenter.observedNotificationName)
-        XCTAssertEqual(mockNotificationCenter.observedNotificationName, Foundation.Notification.Name.WPAccountDefaultWordPressComAccountChanged)
+        XCTAssertEqual(mockNotificationCenter.observedNotificationName, Foundation.Notification.Name.wpAccountDefaultWordPressComAccountChanged)
     }
 
     func test_givenLoginNotifications_coordinatorShouldDoNothing() {
@@ -309,10 +310,10 @@ private final class MockNotificationCenter: NotificationCenter {
     }
 
     func makeLoginNotification() -> Foundation.Notification {
-        return Foundation.Notification(name: .WPAccountDefaultWordPressComAccountChanged, object: String())
+        return Foundation.Notification(name: .wpAccountDefaultWordPressComAccountChanged, object: String())
     }
 
     func makeLogoutNotification() -> Foundation.Notification {
-        return Foundation.Notification(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        return Foundation.Notification(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
     }
 }

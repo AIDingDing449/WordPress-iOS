@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 enum Notifications {
@@ -13,9 +14,9 @@ enum Notifications {
 
 /// Facilitates showing the `CommentDetailViewController` within the context of Notifications.
 protocol CommentDetailsNotificationDelegate: AnyObject {
-    func previousNotificationTapped(current: Notification?)
-    func nextNotificationTapped(current: Notification?)
-    func commentWasModerated(for notification: Notification?)
+    func previousNotificationTapped(current: WordPressData.Notification?)
+    func nextNotificationTapped(current: WordPressData.Notification?)
+    func commentWasModerated(for notification: WordPressData.Notification?)
 }
 
 class NotificationCommentDetailCoordinator: NSObject {
@@ -25,7 +26,7 @@ class NotificationCommentDetailCoordinator: NSObject {
     private var viewController: NotificationCommentDetailViewController?
     private let managedObjectContext = ContextManager.shared.mainContext
 
-    private var notification: Notification? {
+    private var notification: WordPressData.Notification? {
         didSet {
             markNotificationReadIfNeeded()
         }
@@ -36,11 +37,11 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // Closure to be executed whenever the notification that's being currently displayed, changes.
     // This happens due to Navigation Events (Next / Previous)
-    var onSelectedNoteChange: ((Notification) -> Void)?
+    var onSelectedNoteChange: ((WordPressData.Notification) -> Void)?
 
     // Keep track of Notifications that have moderated Comments so they can be updated
     // the next time the Notifications list is displayed.
-    var notificationsCommentModerated: [Notification] = []
+    var notificationsCommentModerated: [WordPressData.Notification] = []
 
     // MARK: - Init
 
@@ -51,7 +52,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Public Methods
 
-    func createViewController(with notification: Notification) -> NotificationCommentDetailViewController? {
+    func createViewController(with notification: WordPressData.Notification) -> NotificationCommentDetailViewController? {
         self.notification = notification
         viewController = NotificationCommentDetailViewController(notification: notification, notificationDelegate: self)
         updateNavigationButtonStates()
@@ -72,7 +73,7 @@ private extension NotificationCommentDetailCoordinator {
         NotificationSyncMediator()?.markAsRead(notification)
     }
 
-    func updateViewWith(notification: Notification) {
+    func updateViewWith(notification: WordPressData.Notification) {
         trackDetailsOpened(for: notification)
         onSelectedNoteChange?(notification)
 
@@ -84,7 +85,7 @@ private extension NotificationCommentDetailCoordinator {
         refreshViewControllerWith(notification)
     }
 
-    func showNotificationDetails(with notification: Notification) {
+    func showNotificationDetails(with notification: WordPressData.Notification) {
         guard let viewController,
               let notificationDetailsViewController = Notifications.storyboard
             .instantiateViewController(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces()) as? NotificationDetailsViewController else {
@@ -103,7 +104,7 @@ private extension NotificationCommentDetailCoordinator {
         navigationController?.pushViewController(notificationDetailsViewController, animated: false)
     }
 
-    func refreshViewControllerWith(_ notification: Notification) {
+    func refreshViewControllerWith(_ notification: WordPressData.Notification) {
         self.notification = notification
         viewController?.refreshViewController(notification: notification)
         updateNavigationButtonStates()
@@ -129,7 +130,7 @@ private extension NotificationCommentDetailCoordinator {
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
     }
 
-    func trackDetailsOpened(for notification: Notification) {
+    func trackDetailsOpened(for notification: WordPressData.Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }
@@ -139,7 +140,7 @@ private extension NotificationCommentDetailCoordinator {
 
 extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelegate {
 
-    func previousNotificationTapped(current: Notification?) {
+    func previousNotificationTapped(current: WordPressData.Notification?) {
         guard let current,
               let previousNotification = notificationsNavigationDataSource?.notification(preceding: current) else {
                   return
@@ -149,7 +150,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
         updateViewWith(notification: previousNotification)
     }
 
-    func nextNotificationTapped(current: Notification?) {
+    func nextNotificationTapped(current: WordPressData.Notification?) {
         guard let current,
               let nextNotification = notificationsNavigationDataSource?.notification(succeeding: current) else {
                   return
@@ -159,7 +160,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
         updateViewWith(notification: nextNotification)
     }
 
-    func commentWasModerated(for notification: Notification?) {
+    func commentWasModerated(for notification: WordPressData.Notification?) {
         guard let notification,
               !notificationsCommentModerated.contains(notification) else {
                   return

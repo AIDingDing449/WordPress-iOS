@@ -5,7 +5,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Properties
 
-    private var notification: Notification {
+    private var notification: WordPressData.Notification {
         didSet {
             title = notification.title
         }
@@ -75,7 +75,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Init
 
-    init(notification: Notification,
+    init(notification: WordPressData.Notification,
          notificationDelegate: CommentDetailsNotificationDelegate) {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
@@ -101,7 +101,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         configureNavBarButtons()
     }
 
-    func refreshViewController(notification: Notification) {
+    func refreshViewController(notification: WordPressData.Notification) {
         self.notification = notification
         loadComment()
     }

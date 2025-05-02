@@ -1,0 +1,90 @@
+import Foundation
+
+/// This Extension encapsulates all of the Blog-Capabilities related helpers.
+///
+extension Blog {
+    /// Enumeration that contains all of the Blog's available capabilities.
+    ///
+    public enum Capability: String {
+        case DeleteOthersPosts = "delete_others_posts"
+        case DeletePosts = "delete_posts"
+        case EditOthersPages = "edit_others_pages"
+        case EditOthersPosts = "edit_others_posts"
+        case EditPages = "edit_pages"
+        case EditPosts = "edit_posts"
+        case EditThemeOptions = "edit_theme_options"
+        case EditUsers = "edit_users"
+        case ListUsers = "list_users"
+        case ManageCategories = "manage_categories"
+        case ManageOptions = "manage_options"
+        case PromoteUsers = "promote_users"
+        case PublishPosts = "publish_posts"
+        case UploadFiles = "upload_files"
+        case ViewStats = "view_stats"
+    }
+
+    /// Returns true if a given capability is enabled. False otherwise
+    ///
+    public func isUserCapableOf(_ capability: Capability) -> Bool {
+        return isUserCapableOf(capability.rawValue)
+    }
+
+    /// Returns true if the current user is allowed to list a Blog's Users
+    ///
+    @objc public func isListingUsersAllowed() -> Bool {
+        return isUserCapableOf(.ListUsers)
+    }
+
+    /// Returns true if the current user is allowed to publish to the Blog
+    ///
+    @objc public func isPublishingPostsAllowed() -> Bool {
+        return isUserCapableOf(.PublishPosts)
+    }
+
+    /// Returns true if the current user is allowed to upload files to the Blog
+    ///
+    @objc public func isUploadingFilesAllowed() -> Bool {
+        return isUserCapableOf(.UploadFiles)
+    }
+
+    /// Returns true if the current user is allowed to see Jetpack's Backups
+    ///
+    @objc public func isBackupsAllowed() -> Bool {
+        return isUserCapableOf("backup") || isUserCapableOf("backup-daily") || isUserCapableOf("backup-realtime")
+    }
+
+    /// Returns true if the current user is allowed to see Jetpack's Scan
+    ///
+    @objc public func isScanAllowed() -> Bool {
+        return !hasBusinessPlan && isUserCapableOf("scan")
+    }
+
+    /// Returns true if the current user is allowed to list and edit the blog's Pages
+    ///
+    @objc public func isListingPagesAllowed() -> Bool {
+        return isAdmin || isUserCapableOf(.EditPages)
+    }
+
+    /// Returns true if the current user is allowed to view Stats
+    ///
+    @objc public func isViewingStatsAllowed() -> Bool {
+        return isAdmin || isUserCapableOf(.ViewStats)
+    }
+
+    private func isUserCapableOf(_ capability: String) -> Bool {
+        return capabilities?[capability] as? Bool ?? false
+    }
+
+    public var userCanUploadMedia: Bool {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
+        capabilities != nil ? isUploadingFilesAllowed() : true
+    }
+
+    /// Only WordPress.com hosted sites we administer may be managed
+    ///
+    /// - Returns: Whether site management is permitted
+    ///
+    @objc public func supportsSiteManagementServices() -> Bool {
+        return isHostedAtWPcom && isAdmin
+    }
+}

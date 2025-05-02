@@ -1,12 +1,13 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class BlogTitleTests: CoreDataTestCase {
 
     private var blog: Blog!
 
     override func setUp() {
-        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as? Blog
+        blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: mainContext) as? Blog
         blog.url = Constants.blogURL
         blog.xmlrpc = Constants.blogURL
     }

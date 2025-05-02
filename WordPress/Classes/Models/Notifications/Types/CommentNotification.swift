@@ -4,13 +4,13 @@ struct CommentNotification: LikeableNotification {
 
     // MARK: - Properties
 
-    private let note: Notification
+    private let note: WordPressData.Notification
     private let commentID: UInt
     private let siteID: UInt
 
     // MARK: - Init
 
-    init?(note: Notification) {
+    init?(note: WordPressData.Notification) {
         guard let siteID = note.metaSiteID?.uintValue,
               let commentID = note.metaCommentID?.uintValue
         else {

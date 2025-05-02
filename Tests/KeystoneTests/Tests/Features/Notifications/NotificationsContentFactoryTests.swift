@@ -1,4 +1,5 @@
 import XCTest
+import WordPressData
 @testable import WordPress
 @testable import FormattableContentKit
 
@@ -35,7 +36,7 @@ final class NotificationsContentFactoryTests: CoreDataTestCase {
         return try JSONObject(fromFileNamed: "notifications-user-content.json")
     }
 
-    func loadLikeNotification() throws -> WordPress.Notification {
+    func loadLikeNotification() throws -> WordPressData.Notification {
         return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 }

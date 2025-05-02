@@ -1,14 +1,11 @@
 #import "MenuItemCategoriesViewController.h"
-#import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "Menu.h"
-#import "MenuItem.h"
-#import "Blog.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 static NSUInteger const CategorySyncLimit = 1000;
 static NSString * const CategorySortKey = @"categoryName";

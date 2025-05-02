@@ -82,10 +82,10 @@ final class NotificationsViewModel {
     }
 
     func loadNotification(
-        near note: Notification,
-        allNotifications: [Notification],
+        near note: WordPressData.Notification,
+        allNotifications: [WordPressData.Notification],
         withIndexDelta delta: Int
-    ) -> Notification? {
+    ) -> WordPressData.Notification? {
         guard let noteIndex = allNotifications.firstIndex(of: note) else {
             return nil
         }
@@ -95,7 +95,7 @@ final class NotificationsViewModel {
             return nil
         }
 
-        func notMatcher(_ note: Notification) -> Bool {
+        func notMatcher(_ note: WordPressData.Notification) -> Bool {
             return note.kind != .matcher
         }
 
@@ -113,7 +113,7 @@ final class NotificationsViewModel {
 
     // MARK: - Handling Inline Actions
 
-    func sharePostActionTapped(with notification: Notification) -> ShareablePost? {
+    func sharePostActionTapped(with notification: WordPressData.Notification) -> ShareablePost? {
         guard let url = notification.url else {
             self.crashLogger.logMessage("Failed to share a notification post due to null url", level: .error)
             return nil
@@ -165,7 +165,7 @@ final class NotificationsViewModel {
 
     // MARK: - Helpers
 
-    private func createSharingTitle(from notification: Notification) -> String {
+    private func createSharingTitle(from notification: WordPressData.Notification) -> String {
         guard notification.kind == .like,
               let header = notification.header,
               header.count == 2,

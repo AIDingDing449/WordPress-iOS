@@ -43,7 +43,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
             }
         }
     }
-    private var notification: Notification?
+    private var notification: WordPressData.Notification?
     private let helper = ReaderCommentsHelper()
 
     private var isNotificationComment: Bool {
@@ -216,7 +216,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     init(comment: Comment,
-         notification: Notification,
+         notification: WordPressData.Notification,
          notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.comment = comment
@@ -262,7 +262,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     // Update the Notification Comment being displayed.
-    func refreshView(comment: Comment, notification: Notification) {
+    func refreshView(comment: Comment, notification: WordPressData.Notification) {
         hideNoResults()
         self.notification = notification
         displayComment(comment)

@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 final class DashboardBloganuaryCardCellTests: CoreDataTestCase {
 
@@ -138,10 +139,10 @@ private extension DashboardBloganuaryCardCellTests {
 
     @discardableResult
     func makeBloggingPromptSettings(markAsBloggingSite: Bool = true, promptCardEnabled: Bool = true) -> BloggingPromptSettings {
-        let settings = NSEntityDescription.insertNewObject(forEntityName: "BloggingPromptSettings",
+        let settings = NSEntityDescription.insertNewObject(forEntityName: BloggingPromptSettings.entityName(),
                                                            into: mainContext) as! WordPress.BloggingPromptSettings
 
-        let reminderDays = NSEntityDescription.insertNewObject(forEntityName: "BloggingPromptSettingsReminderDays",
+        let reminderDays = NSEntityDescription.insertNewObject(forEntityName: BloggingPromptSettingsReminderDays.entityName(),
                                                                into: mainContext) as! WordPress.BloggingPromptSettingsReminderDays
         reminderDays.monday = false
         reminderDays.tuesday = false

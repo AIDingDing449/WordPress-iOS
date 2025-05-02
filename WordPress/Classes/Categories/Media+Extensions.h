@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import "Media.h"
+@import WordPressData;
 
 @interface Media (Extensions)
 

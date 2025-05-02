@@ -1,8 +1,4 @@
 #import "MediaService.h"
-#import "Media.h"
-#import "WPAccount.h"
-@import WordPressShared;
-#import "Blog.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
@@ -10,6 +6,7 @@
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressKit;
 @import WordPressUI;
 @import WordPressShared;

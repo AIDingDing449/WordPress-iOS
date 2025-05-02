@@ -1,4 +1,4 @@
-#import "MenuItem.h"
+@import WordPressData;
 #import "Menu+ViewDesign.h"
 
 NS_ASSUME_NONNULL_BEGIN

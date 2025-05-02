@@ -2,7 +2,6 @@
 
 #import "AccountService.h"
 #import "BlogService.h"
-#import "Blog.h"
 
 #import "BlogDetailsViewController.h"
 #import "WPAppAnalytics.h"
@@ -13,6 +12,7 @@
 #endif
 
 @import Gridicons;
+@import WordPressData;
 @import WordPressShared;
 @import WordPressUI;
 
@@ -87,7 +87,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
-                                                     name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                     name:NSNotification.wpAccountDefaultWordPressComAccountChangedNotificationName
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self

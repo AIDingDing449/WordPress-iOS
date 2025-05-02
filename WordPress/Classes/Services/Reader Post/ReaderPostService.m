@@ -2,10 +2,7 @@
 
 #import "AccountService.h"
 #import "ReaderGapMarker.h"
-#import "ReaderPost.h"
 #import "ReaderSiteService.h"
-#import "SourcePostAttribution.h"
-#import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
@@ -13,6 +10,7 @@
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
 

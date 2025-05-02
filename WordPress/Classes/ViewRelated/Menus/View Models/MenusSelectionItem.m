@@ -1,6 +1,5 @@
 #import "MenusSelectionItem.h"
-#import "Menu.h"
-#import "MenuLocation.h"
+@import WordPressData;
 
 NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
 NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSelectionViewItemUpdatedItemObjectNotification";

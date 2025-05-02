@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
-#import "LocalCoreDataService.h"
-
+@import WordPressData;
 
 @class Media;
 @class RemoteVideoPressVideo;

@@ -7,6 +7,7 @@
 #else
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 @import WordPressShared;
 @import Gridicons;

@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import Gridicons
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 import WordPressUI
 import FormattableContentKit
@@ -9,8 +10,8 @@ import FormattableContentKit
 ///
 ///
 protocol NotificationsNavigationDataSource: AnyObject {
-    func notification(succeeding note: Notification) -> Notification?
-    func notification(preceding note: Notification) -> Notification?
+    func notification(succeeding note: WordPressData.Notification) -> WordPressData.Notification?
+    func notification(preceding note: WordPressData.Notification) -> WordPressData.Notification?
 }
 
 // MARK: - Renders a given Notification entity, onscreen
@@ -75,7 +76,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     /// Notification being displayed
     ///
-    var note: Notification! {
+    var note: WordPressData.Notification! {
         didSet {
             guard oldValue != note && isViewLoaded else {
                 return
@@ -110,7 +111,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     /// Closure to be executed whenever the notification that's being currently displayed, changes.
     /// This happens due to Navigation Events (Next / Previous)
     ///
-    var onSelectedNoteChange: ((Notification) -> Void)?
+    var onSelectedNoteChange: ((WordPressData.Notification) -> Void)?
 
     var likesListController: LikesListController?
 
@@ -785,7 +786,7 @@ extension NotificationDetailsViewController {
         refreshView(with: next)
     }
 
-    private func refreshView(with note: Notification) {
+    private func refreshView(with note: WordPressData.Notification) {
         onSelectedNoteChange?(note)
         trackDetailsOpened(for: note)
 
@@ -799,7 +800,7 @@ extension NotificationDetailsViewController {
         showConfettiIfNeeded()
     }
 
-    private func showCommentDetails(with note: Notification) {
+    private func showCommentDetails(with note: WordPressData.Notification) {
         guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note) else {
             DDLogError("Notification Details: failed creating Comment Detail view.")
             return
@@ -875,7 +876,7 @@ private extension NotificationDetailsViewController {
 // MARK: - Tracks
 extension NotificationDetailsViewController {
     /// Tracks notification details opened
-    private func trackDetailsOpened(for note: Notification) {
+    private func trackDetailsOpened(for note: WordPressData.Notification) {
         let properties = ["notification_type": note.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }

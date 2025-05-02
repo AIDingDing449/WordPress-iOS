@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressData
 import WordPressKit
 import WordPressShared
 
@@ -144,8 +145,8 @@ struct DomainsService {
         removeDomains(removedDomainNames, fromSite: siteID, in: context)
 
         // Let's try to only update objects that have changed
-        let remoteChanges = remoteDomains.filter {
-            return !localDomains.contains($0)
+        let remoteChanges = remoteDomains.filter { domain in
+            return !localDomains.contains(domain)
         }
 
         for remoteDomain in remoteChanges {

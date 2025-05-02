@@ -27,7 +27,7 @@ class LikesListController: NSObject {
     private let formatter = FormattableContentFormatter()
     private let content: ContentIdentifier
     private let siteID: NSNumber
-    private var notification: Notification? = nil
+    private var notification: WordPressData.Notification? = nil
     private var readerPost: ReaderPost? = nil
     private let tableView: UITableView
     private var loadingIndicator = UIActivityIndicatorView()
@@ -89,7 +89,7 @@ class LikesListController: NSObject {
 
     /// Init with Notification
     ///
-    init?(tableView: UITableView, notification: Notification, delegate: LikesListControllerDelegate? = nil) {
+    init?(tableView: UITableView, notification: WordPressData.Notification, delegate: LikesListControllerDelegate? = nil) {
 
         guard let siteID = notification.metaSiteID else {
             return nil

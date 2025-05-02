@@ -6,7 +6,6 @@
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
 #import "StatsViewController.h"
-#import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
@@ -17,6 +16,7 @@
 
 @import Gridicons;
 @import Reachability;
+@import WordPressData;
 @import WordPressShared;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";

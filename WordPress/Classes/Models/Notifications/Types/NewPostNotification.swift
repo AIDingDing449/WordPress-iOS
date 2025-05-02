@@ -1,16 +1,17 @@
 import Foundation
+import WordPressData
 
 struct NewPostNotification: LikeableNotification {
 
     // MARK: - Properties
 
-    private let note: Notification
+    private let note: WordPressData.Notification
     private let postID: UInt
     private let siteID: UInt
 
     // MARK: - Init
 
-    init?(note: Notification) {
+    init?(note: WordPressData.Notification) {
         guard let postID = note.metaPostID?.uintValue, let siteID = note.metaSiteID?.uintValue else {
             return nil
         }

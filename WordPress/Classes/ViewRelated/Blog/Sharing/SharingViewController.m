@@ -1,5 +1,4 @@
 #import "SharingViewController.h"
-#import "Blog.h"
 #import "BlogService.h"
 #import "SharingConnectionsViewController.h"
 #ifdef KEYSTONE
@@ -8,6 +7,7 @@
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressUI;
 @import WordPressShared;
 

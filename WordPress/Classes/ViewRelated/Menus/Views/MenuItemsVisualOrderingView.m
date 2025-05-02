@@ -1,6 +1,7 @@
 #import "MenuItemsVisualOrderingView.h"
 #import "MenuItemView.h"
-#import "MenuItem.h"
+@import WordPressData;
+
 
 @interface MenuItemsVisualOrderingView ()
 

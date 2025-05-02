@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "CoreDataStack.h"
+@import WordPressData;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnullability-completeness"

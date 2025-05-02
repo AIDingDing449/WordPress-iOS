@@ -2,11 +2,12 @@ import Foundation
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 class PostTests: CoreDataTestCase {
 
     fileprivate func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
+        return NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: mainContext) as! Blog
     }
 
     fileprivate func newTestPost() -> Post {
@@ -14,7 +15,7 @@ class PostTests: CoreDataTestCase {
     }
 
     fileprivate func newTestPostCategory() -> PostCategory {
-        return NSEntityDescription.insertNewObject(forEntityName: "Category", into: mainContext) as! PostCategory
+        return NSEntityDescription.insertNewObject(forEntityName: PostCategory.entityName(), into: mainContext) as! PostCategory
     }
 
     fileprivate func newTestPostCategory(_ name: String) -> PostCategory {

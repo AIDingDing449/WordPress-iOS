@@ -1,9 +1,6 @@
 #import "MenuItemTagsViewController.h"
 #import "PostTagService.h"
-#import "PostTag.h"
-#import "Menu.h"
-#import "MenuItem.h"
-#import "Blog.h"
+@import WordPressData;
 
 static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 

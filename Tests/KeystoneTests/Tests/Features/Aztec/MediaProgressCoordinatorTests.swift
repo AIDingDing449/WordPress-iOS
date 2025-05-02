@@ -2,13 +2,14 @@ import Foundation
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 class MediaProgressCoordinatorTests: CoreDataTestCase {
 
     var mediaProgressCoordinator: MediaProgressCoordinator!
 
     fileprivate func makeTestMedia() -> Media {
-        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
+        return NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: mainContext) as! Media
     }
 
     override func setUp() {

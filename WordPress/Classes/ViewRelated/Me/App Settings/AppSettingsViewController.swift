@@ -3,6 +3,7 @@ import BuildSettingsKit
 import UIKit
 import SwiftUI
 import Gridicons
+import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import SVProgressHUD
@@ -71,7 +72,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     @objc
-    private func accountSettingsDidChange(_ notification: Notification) {
+    private func accountSettingsDidChange(_ notification: Foundation.Notification) {
         reloadViewModel()
     }
 

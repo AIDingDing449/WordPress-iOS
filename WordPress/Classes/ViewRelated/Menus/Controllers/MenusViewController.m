@@ -1,9 +1,5 @@
 #import "MenusViewController.h"
-#import "Blog.h"
 #import "MenusService.h"
-#import "Menu.h"
-#import "MenuLocation.h"
-#import "MenuItem.h"
 #import "MenuHeaderViewController.h"
 #import "MenuDetailsViewController.h"
 #import "MenuItemsViewController.h"
@@ -16,6 +12,7 @@
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressShared;
 
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;

@@ -1,6 +1,5 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
-#import "Media.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "MediaService.h"
@@ -9,6 +8,7 @@
 #else
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 @import Gridicons;
 @import WordPressShared;

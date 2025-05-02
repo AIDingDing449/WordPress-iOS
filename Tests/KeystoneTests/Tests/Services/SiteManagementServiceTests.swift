@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class SiteManagementServiceTests: CoreDataTestCase {
     var mockRemoteService: MockSiteManagementServiceRemote!
@@ -61,7 +62,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
     }
 
     func insertBlog(_ context: NSManagedObjectContext) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
         blog.xmlrpc = "http://mock.blog/xmlrpc.php"
         blog.url = "http://mock.blog/"
         blog.dotComID = 999999

@@ -202,6 +202,7 @@ enum XcodeSupport {
             .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
             .library(name: "XcodeTarget_Keystone", targets: ["XcodeTarget_Keystone"]),
             .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
+            .library(name: "XcodeTarget_WordPressData", targets: ["XcodeTarget_WordPressData"]),
             .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
             .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
             .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
@@ -235,6 +236,16 @@ enum XcodeSupport {
             "WordPressUI",
             "TextBundle",
             "TracksMini",
+            // Even though the extensions are all in Swift, we need to include the Objective-C
+            // version of CocoaLumberjack to avoid linking issues with other dependencies that
+            // use it.
+            //
+            // Example:
+            //
+            // Undefined symbols for architecture arm64:
+            //  "_OBJC_CLASS_$_DDLog", referenced from:
+            //       in AppExtensionsService.o
+            .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
@@ -307,6 +318,17 @@ enum XcodeSupport {
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "Nimble", package: "Nimble"),
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
+                // Needed by WordPressData because of how linkage works...
+                //
+                "BuildSettingsKit",
+                "FormattableContentKit",
+                "SFHFKeychainUtils",
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+                .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
             .xcodeTarget("XcodeTarget_WordPressAuthentificatorTests", dependencies: wordPresAuthentificatorDependencies + testDependencies),
@@ -319,6 +341,18 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "TracksMini",
                 "WordPressShared",
+                // Even though the extensions are all in Swift, we need to include the Objective-C
+                // version of CocoaLumberjack to avoid linking issues with other dependencies that
+                // use it.
+                //
+                // Example:
+                //
+                // EmitSwiftModule normal arm64 (in target 'WordPressNotificationServiceExtension' from project 'WordPress')
+                //    cd /path/to/repo/WordPress
+                //
+                // <unknown>:0: error: missing required modules: 'CocoaLumberjack', 'CocoaLumberjackSwiftSupport'
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "BuildSettingsKit",
@@ -327,18 +361,54 @@ enum XcodeSupport {
                 "TracksMini",
                 "WordPressShared",
                 "WordPressUI",
+                // Even though the extensions are all in Swift, we need to include the Objective-C
+                // version of CocoaLumberjack to avoid linking issues with other dependencies that
+                // use it.
+                //
+                // Example:
+                //
+                // Undefined symbols for architecture arm64:
+                //  "_OBJC_CLASS_$_DDLog", referenced from:
+                //       in AppExtensionsService.o
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
+                // Even though the extensions are all in Swift, we need to include the Objective-C
+                // version of CocoaLumberjack to avoid linking issues with other dependencies that
+                // use it.
+                //
+                // Example:
+                //
+                // Undefined symbols for architecture arm64:
+                //  "_OBJC_CLASS_$_DDLog", referenced from:
+                //       in AppExtensionsService.o
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]),
             .xcodeTarget("XcodeTarget_UITests", dependencies: [
                 "UITestsFoundation",
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
             ]),
+            .xcodeTarget(
+                "XcodeTarget_WordPressData",
+                dependencies: [
+                    "BuildSettingsKit",
+                    "FormattableContentKit",
+                    "SFHFKeychainUtils",
+                    "WordPressShared",
+                    .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                    .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
+                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+                    .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+                    .product(name: "WordPressAPI", package: "wordpress-rs"),
+                    .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+                ]
+            ),
         ]
     }
 }

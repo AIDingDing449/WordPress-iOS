@@ -1,5 +1,4 @@
 #import "SharingDetailViewController.h"
-#import "Blog.h"
 #import "BlogService.h"
 #import "SharingAuthorizationHelper.h"
 #ifdef KEYSTONE
@@ -8,6 +7,7 @@
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressShared;
 
 static NSString *const CellIdentifier = @"CellIdentifier";

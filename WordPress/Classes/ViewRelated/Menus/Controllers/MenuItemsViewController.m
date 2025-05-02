@@ -1,6 +1,4 @@
 #import "MenuItemsViewController.h"
-#import "Menu.h"
-#import "MenuItem.h"
 #import "MenuItemAbstractView.h"
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
@@ -12,6 +10,7 @@
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressShared;
 
 static CGFloat const ItemHoriztonalDragDetectionWidthRatio = 0.05;

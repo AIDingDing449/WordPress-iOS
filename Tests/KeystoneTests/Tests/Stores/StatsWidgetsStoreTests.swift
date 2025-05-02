@@ -2,6 +2,7 @@ import XCTest
 import JetpackStatsWidgetsCore
 
 @testable import WordPress
+@testable import WordPressData
 
 class StatsWidgetsStoreTests: CoreDataTestCase {
     private var sut: StatsWidgetsStore!
@@ -47,7 +48,7 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
             .build()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
 
-        NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
             XCTAssertFalse(self.statsWidgetsHaveData())

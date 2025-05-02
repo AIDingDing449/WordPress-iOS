@@ -1,4 +1,4 @@
-#import "LocalCoreDataService.h"
+@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 
