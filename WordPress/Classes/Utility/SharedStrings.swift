@@ -16,9 +16,23 @@ enum SharedStrings {
         static let view = NSLocalizedString("shared.button.view", value: "View", comment: "A shared button title used in different contexts")
         static let share = NSLocalizedString("shared.button.share", value: "Share", comment: "A shared button title used in different contexts")
         static let copy = NSLocalizedString("shared.button.copy", value: "Copy", comment: "A shared button title used in different contexts")
+        static let send = NSLocalizedString("shared.button.send", value: "Send", comment: "A shared button title used in different contexts (send email, send message, sent invites)")
         static let copyLink = NSLocalizedString("shared.button.copyLink", value: "Copy Link", comment: "A shared button title used in different contexts")
         static let `continue` = NSLocalizedString("shared.button.continue", value: "Continue", comment: "A shared button title used in different contexts")
         static let undo = NSLocalizedString("shared.button.undo", value: "Undo", comment: "A shared button title used in different contexts")
+    }
+
+    enum Misc {
+        static let sortBy = NSLocalizedString("shared.misc.sortBy", value: "Sort By", comment: "A button title used in different contexts")
+        static let showAll = NSLocalizedString("shared.misc.showAll", value: "Show All", comment: "A default filter value")
+        static let `default` = NSLocalizedString("shared.misc.default", value: "Default", comment: "As in default value")
+        static let ascending = NSLocalizedString("shared.misc.sortAascending", value: "Ascending", comment: "Sort ordering")
+        static let descending = NSLocalizedString("shared.misc.sortDescending", value: "Descending", comment: "Sort ordering")
+
+        static func `default`(value: String) -> String {
+            let format = NSLocalizedString("shared.misc.defaultWithValue", value: "Default (%@)", comment: "Default value with a value. Example usage when ordering items: Default (Date Edited).")
+            return String(format: format, value)
+        }
     }
 
     enum Error {

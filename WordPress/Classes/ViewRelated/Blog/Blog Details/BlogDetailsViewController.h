@@ -78,6 +78,10 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
 @property (nonatomic, copy, nullable) void (^callback)(void);
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
+                                 image:(UIImage * __nonnull)image
+                              callback:(void(^_Nullable)(void))callback;
+
+- (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
                             identifier:(NSString * __nonnull)identifier
                accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                                  image:(UIImage * __nonnull)image

@@ -43,8 +43,8 @@ public class MySiteMoreMenuScreen: ScreenObject {
         $0.cells["Settings Row"]
     }
 
-    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["People Row"]
+    private let usersButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Users Row"]
     }
 
     var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
@@ -54,7 +54,7 @@ public class MySiteMoreMenuScreen: ScreenObject {
     var jetpackScanButton: XCUIElement { jetpackScanButtonGetter(app) }
     var mediaButton: XCUIElement { mediaButtonGetter(app) }
     var mySiteNavigationBar: XCUIElement { mySiteNavigationBarGetter(app) }
-    var peopleButton: XCUIElement { peopleButtonGetter(app) }
+    var usersButton: XCUIElement { usersButtonGetter(app) }
     var postsButton: XCUIElement { postsButtonGetter(app) }
     var settingsButton: XCUIElement { settingsButtonGetter(app) }
     var statsButton: XCUIElement { statsButtonGetter(app) }
@@ -112,9 +112,9 @@ public class MySiteMoreMenuScreen: ScreenObject {
     }
 
     @discardableResult
-    public func goToPeople() throws -> PeopleScreen {
-        peopleButton.tap()
-        return try PeopleScreen()
+    public func goToUsers() throws -> UsersScreen {
+        usersButton.tap()
+        return try UsersScreen()
     }
 
     public static func isLoaded() -> Bool {

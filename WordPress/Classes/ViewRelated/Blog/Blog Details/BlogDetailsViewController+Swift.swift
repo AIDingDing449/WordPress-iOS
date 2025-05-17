@@ -4,6 +4,32 @@ import WordPressShared
 // MARK: - BlogDetailsViewController (Misc)
 
 extension BlogDetailsViewController {
+    @objc public var shouldShowSubscribersRow: Bool {
+        FeatureFlag.newsletterSubscribers.enabled && blog.supports(.people)
+    }
+
+    @objc public func makeSubscribersRow() -> BlogDetailsRow {
+        BlogDetailsRow(title: Strings.subscribers, image: UIImage(named: "wpl-mail") ?? UIImage()) { [weak self] in
+            guard let self else { return }
+            guard let blog = SubscribersBlog(blog: self.blog) else {
+                return wpAssertionFailure("incompatible blog")
+            }
+            let vc = SubscribersViewController(blog: blog)
+            self.presentationDelegate?.presentBlogDetailsViewController(vc)
+        }
+    }
+
+    @objc public func makePeopleRow() -> BlogDetailsRow {
+        let row = BlogDetailsRow(
+            title: shouldShowSubscribersRow ? Strings.users : NSLocalizedString("People", comment: "Noun. Title. Links to the people management feature."),
+            image: UIImage(named: "site-menu-people") ?? UIImage()
+        ) { [weak self] in
+            self?.showPeople()
+        }
+        row.accessibilityIdentifier = "Users Row"
+        return row
+    }
+
     @objc public func isDashboardEnabled() -> Bool {
         return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
     }
@@ -359,4 +385,9 @@ extension BlogDetailsViewController {
 
 private enum Constants {
     static let calypsoDashboardPath = "https://wordpress.com/home/"
+}
+
+private enum Strings {
+    static let users = NSLocalizedString("mySite.menu.users", value: "Users", comment: "Title for the menu item")
+    static let subscribers = NSLocalizedString("mySite.menu.subscribers", value: "Subscribers", comment: "Title for the menu item")
 }

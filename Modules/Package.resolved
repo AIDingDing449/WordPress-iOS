@@ -389,7 +389,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "revision" : "5bc08764d2025e21685816065f611e884c8672d1"
+        "revision" : "cc7fd8a7ea609fc139e7b9d9f53b12c51002ddf4"
       }
     },
     {

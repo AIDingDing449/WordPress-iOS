@@ -12,14 +12,16 @@ extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description 
     }
 }
 
-extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == Button<Text> {
-    static func failure(error: Error, onRetry: @escaping () -> Void) -> Self {
+extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == Button<Text>? {
+    static func failure(error: Error, onRetry: (() -> Void)? = nil) -> Self {
         EmptyStateView {
             Label(SharedStrings.Error.generic, systemImage: "exclamationmark.circle")
         } description: {
             Text(error.localizedDescription)
         } actions: {
-            Button(SharedStrings.Button.retry, action: onRetry)
+            if let onRetry {
+                Button(SharedStrings.Button.retry, action: onRetry)
+            }
         }
     }
 }

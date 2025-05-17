@@ -12,11 +12,11 @@ final class MySiteTests: XCTestCase {
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20112.
     //
     // It would be wise to add similar tests for each item in the menu (then remove this comment).
-    func testLoadsPeopleScreen() throws {
+    func testLoadsUsersScreen() throws {
         try MySiteScreen()
             .goToMoreMenu()
         try MySiteMoreMenuScreen()
-            .goToPeople()
+            .goToUsers()
             .assertScreenIsLoaded()
     }
 

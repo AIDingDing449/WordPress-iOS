@@ -59,7 +59,9 @@ class InvitePersonViewController: UITableViewController {
             inviteRole = RemoteRole.follower
         }
         roles += blogRoles.map({ $0.toUnmanaged() })
-        roles.append(inviteRole)
+        if !FeatureFlag.newsletterSubscribers.enabled {
+            roles.append(inviteRole)
+        }
         return roles
     }
 
