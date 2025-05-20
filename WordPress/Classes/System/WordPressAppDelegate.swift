@@ -457,7 +457,9 @@ extension WordPressAppDelegate {
         }
 
         trackDeepLink(for: url) { url in
-            UniversalLinkRouter.shared.handle(url: url)
+            DispatchQueue.main.async {
+                UniversalLinkRouter.shared.handle(url: url)
+            }
         }
     }
 
@@ -473,24 +475,19 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
-        guard isIterableDeepLink(url) else {
-            completion(url)
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) {(_, response, error) in
-            if let url = response?.url {
-                completion(url)
+        let task = URLSession.shared.dataTask(with: url) { _, response, error in
+            guard let url = response?.url else {
+                wpAssertionFailure(
+                    "Received a deep link response without URL attached.",
+                    userInfo: ["response": response ?? "no response"]
+                )
+                return
             }
+
+            completion(url)
         }
         task.resume()
     }
-
-    private func isIterableDeepLink(_ url: URL) -> Bool {
-        return url.absoluteString.contains(WordPressAppDelegate.iterableDomain)
-    }
-
-    private static let iterableDomain = "links.wp.a8cmail.com"
 }
 
 // MARK: - Helpers
