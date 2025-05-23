@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-03-11 09:54:08+0000 */
+/* Translation-Revision-Date: 2025-05-13 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -98,9 +98,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB on your site. */
 "%@ of %@ on your site" = "你的网站%2$@中的%1$@ ";
-
-/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
-"%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$@";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ 千的五次方";
@@ -239,9 +236,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "（无标题）";
 
-/* Lets a user know that a local draft does not have a title. */
-"(no title)" = "(无标题)";
-
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*\"约翰-勃兰特 \"回应了您的文章。";
 
@@ -349,6 +343,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* My Profile 'About me' label */
 "About Me" = "关于我";
+
+/* Link to About screen for Jetpack for iOS */
+"About Reader for iOS" = "关于 iOS 版阅读器";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "关于 WordPress";
@@ -646,9 +643,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "需要有效的互联网连接才能查看活动";
 
-/* An error message shown when there is no internet connection. */
-"An active internet connection is required to view plans" = "必须连接互联网才能查看套餐";
-
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "需要有效的互联网连接才能查看插件";
@@ -697,9 +691,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "年度站点统计信息";
-
-/* the comment has an anonymous author. */
-"Anonymous" = "匿名";
 
 /* Verb. Opens the editor to answer the blogging prompt. */
 "Answer" = "回复";
@@ -926,9 +917,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for button on the post details page when there are no comments. */
 "Be the first to comment" = "成为第一个发表评论的用户";
 
-/* Message shown encouraging the user to leave a comment on a post in the reader. */
-"Be the first to leave a comment." = "率先发表评论。";
-
 /* Beauty site intent topic */
 "Beauty" = "美容";
 
@@ -1111,7 +1099,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action title
    Cancel button
    Cancel button label
-   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
@@ -1168,8 +1155,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "标题";
 
-/* Alert title.
-   Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+/* Alert title. */
 "Careful!" = "小心！";
 
 /* Example prompt for the Prompts card in Feature Introduction. */
@@ -1178,8 +1164,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "分类目录";
 
-/* Category menu item in share extension.
-   Menu item label for linking a specific category. */
+/* Category menu item in share extension. */
 "Category" = "分类";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -1336,9 +1321,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
 "Claim your free domain" = "声明您的免费域";
 
-/* Name of setting configured when a site uses a list of blog posts as its homepage */
-"Classic Blog" = "经典博客";
-
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "清除设备媒体缓存";
 
@@ -1366,7 +1348,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
-   Dismiss the current view
    Dismisses the current screen */
 "Close" = "关闭";
 
@@ -1408,9 +1389,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Columns Settings" = "列设置";
-
-/* Menu item label for linking a comic page. */
-"Comics" = "漫画";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -1462,7 +1440,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
-   Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "评论";
 
@@ -1571,9 +1548,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "请通过 %@ 与我们联系";
-
-/* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "内容结构\n区块：%1$li，字词：%2$li，字符：%3$li";
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
@@ -1789,9 +1763,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Current" = "当前";
 
-/* Label title. Refers to the current WordPress.com plan for a user's site. */
-"Current Plan" = "当前套餐";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "当前主题";
 
@@ -1893,9 +1864,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for selecting a default category for a post */
 "Default Category" = "默认分类";
 
-/* Menu name for the defaut menu that is automatically generated. */
-"Default Menu" = "默认菜单";
-
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "默认文章形式";
@@ -1904,7 +1872,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "新文章的默认设置";
 
 /* Delete
-   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title of the trash confirmation alert. */
 "Delete" = "删除";
@@ -2013,8 +1980,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Discussion" = "讨论";
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "关闭";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
@@ -2167,9 +2133,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label for number of file downloads. */
 "Downloads" = "下载";
-
-/* Name for the status of a draft post. */
-"Draft" = "草稿";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "草稿";
@@ -2551,9 +2514,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "外部";
 
-/* Status for Media object that is failed upload or export. */
-"Failed" = "失败";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "未能将通知标为已读";
 
@@ -2565,6 +2525,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Failed to insert media.\nTap for more info." = "未能插入媒体。\n点按获取更多信息。";
+
+/* A message indicating that we couldn't load the user's settings. */
+"Failed to load settings" = "无法加载设置";
 
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "无法保存文件。\n请轻点以查看选项。";
@@ -2666,9 +2629,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "修复威胁";
-
-/* Button title. Follow the comments on a post. */
-"Follow" = "关注";
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "关注对话";
@@ -2792,9 +2752,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "获取账户信息";
-
-/* Cancel */
-"Give Up" = "放弃";
 
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "将一些区块添加到您的博文或页面，试试看吧！";
@@ -3422,8 +3379,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Line Height" = "行高";
 
-/* Label for link title in Clicks stat.
-   Menu item label for linking a custom source URL. */
+/* Label for link title in Clicks stat. */
 "Link" = "链接";
 
 /* Menus title label when editing a menu item as a link. */
@@ -3485,12 +3441,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading site People. */
 "Loading People..." = "正在加载人员信息…";
 
-/* Text displayed while loading plans details */
-"Loading Plan..." = "正在加载套餐...";
-
-/* Text displayed while loading plans details */
-"Loading Plans..." = "正在加载套餐...";
-
 /* Text displayed while loading an specific plugin */
 "Loading Plugin..." = "正在加载插件...";
 
@@ -3525,23 +3475,11 @@ translators: %s: Block name e.g. \"Image block\" */
    Text displayed while loading time zones */
 "Loading..." = "正在载入...";
 
-/* Status for Media object that is only exists locally. */
-"Local" = "本地";
-
 /* Local Services site intent topic */
 "Local Services" = "本地服务";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "本地更改";
-
-/* Title for alert when a generic error happened when trying to find the location of the device */
-"Location" = "位置";
-
-/* Explaining to the user that location services need to be enable in order to geotag a post. */
-"Location Services must be enabled before WordPress can add your current location. Please enable Location Services from the Settings app." = "必须启用“位置服务”，WordPress 才能添加您的当前位置。请在“设置”应用程序中启用“位置服务”。";
-
-/* Used when geo-tagging posts, if the geo-tagging failed. */
-"Location unknown" = "位置未知";
 
 /* No comment provided by engineer. */
 "Lock icon" = "锁形图标";
@@ -3581,6 +3519,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "从Jetpack注销登录？";
+
+/* LogOut confirmation text, whenever there are no local changes */
+"Log out of Reader?" = "注销阅读器？";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "注销 WordPress？";
@@ -3850,9 +3791,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "我的站点";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "我的 WordPress 站点";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "我的十大咖啡馆";
 
@@ -3929,9 +3867,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* New Post 3D Touch Shortcut */
 "New Post" = "新建文章";
 
-/* Menu item title text used as default when creating a new menu item. */
-"New item" = "新建项目";
-
 /* Placeholder text for password field */
 "New password" = "新密码";
 
@@ -3987,9 +3922,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "没有可用预览 URL";
 
-/* Label used for posts without a title in spotlight search. */
-"No Title" = "无标题";
-
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "No activities available" = "无可用的活动";
 
@@ -4022,8 +3954,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "暂无评论";
 
-/* An error message title shown when there is no internet connection.
-   Displayed during Site Creation, when searching for Verticals and the network is unavailable.
+/* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "没有连接";
 
@@ -4243,7 +4174,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "好";
@@ -4300,8 +4230,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading time zones */
 "Oops" = "出错啦";
 
-/* An informal exclaimation meaning `something went wrong`.
-   Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
+/* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "糟糕！";
 
 /* No comment provided by engineer. */
@@ -4320,8 +4249,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "打开邮件";
 
-/* Go to the settings app
-   Title of a button that opens the apps settings in the system Settings.app */
+/* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "打开设置";
 
 /* No comment provided by engineer. */
@@ -4338,9 +4266,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "在新窗口\/选项卡中打开链接";
-
-/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
-"Open subscription settings for the post" = "打开此文章的订阅设置";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "打开“我”部分";
@@ -4416,8 +4341,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Padding" = "内边距";
 
-/* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page
+/* Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "页面";
 
@@ -4471,12 +4395,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Paste block after" = "在以下位置后粘贴区块";
 
 /* Button title for Pending comment state.
-   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "待审";
-
-/* Name for the status of a post pending review. */
-"Pending review" = "等待复审";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature.
@@ -4506,10 +4426,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "选择用户名";
-
-/* Action title. Noun. Links to a blog's Plans screen.
-   Title for the plan selector */
-"Plans" = "套餐";
 
 /* User action to play a video on the editor. */
 "Play video" = "播放视频";
@@ -4670,8 +4586,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Section title for Popular Languages */
 "Popular languages" = "热门语言";
 
-/* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
+/* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "发布";
 
@@ -4792,9 +4707,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "面向加州用户的隐私声明";
 
-/* Name for the status of a post that is marked private. */
-"Private" = "私密";
-
 /* No comment provided by engineer. */
 "Problem displaying block. \nTap to attempt block recovery." = "显示区块时出现问题。 \n点击尝试恢复区块。";
 
@@ -4809,12 +4721,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "购买您的域时遇到问题。请重试。";
-
-/* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
-"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "继续当前操作会将所有 WordPress.com 数据从此设备中移除，并删除本地保存的所有草稿。您不会丢失已保存在 WordPress.com 博客中的任何内容。";
-
-/* Menu item label for linking a project page. */
-"Projects" = "项目";
 
 /* Title of the notification presented when a prompt is skipped */
 "Prompt skipped" = "已跳过提示";
@@ -4832,17 +4738,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label for the publish date button. */
 "Publish Date" = "发布日期";
 
-/* A short phrase indicating a post is due to be immedately published. */
-"Publish Immediately" = "立即发布";
-
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "在以下网站发布页面：";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "在以下站点发布文章：";
 
-/* Name for the status of a published post.
-   Period Stats 'Published' header
+/* Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "已发布";
 
@@ -5044,12 +4946,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Verb. Button title. Reply to a comment. */
 "Reply" = "回复";
 
-/* Notifications Reply Accessibility Identifier */
-"Reply Text" = "回复文本";
-
-/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
-   Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
-   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "回复 %1$@";
 
 /* An explaination of a setting. */
@@ -5138,9 +5035,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to retry all failed media uploads. */
 "Retry all" = "全部重试";
 
-/* No comment provided by engineer. */
-"Retry?" = "重试?";
-
 /* Share extension error dialog cancel button text */
 "Return to post" = "返回文章";
 
@@ -5184,7 +5078,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
    Title for the button that will save the site icon
@@ -5251,8 +5144,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "正在扫描文件";
 
-/* Name for the status of a scheduled post
-   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "已定时";
 
 /* No comment provided by engineer. */
@@ -5455,11 +5347,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "“设置”更新失败";
 
-/* Spoken accessibility label */
-"Share" = "分享";
-
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "与朋友分享 Jetpack";
+
+/* Title for a button that recommends the app to others */
+"Share Reader with a friend" = "与好友共享阅读器";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "将 WordPress 与您的朋友分享";
@@ -5772,9 +5664,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Domain Address field State */
 "State" = "州\/省\/自治区\/直辖市";
 
-/* Name of setting configured when a site uses a static page as its homepage */
-"Static Homepage" = "静态主页";
-
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
@@ -5804,9 +5693,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "删除线";
-
-/* Status for Media object that is only has the mediaID locally. */
-"Stub" = "存根";
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "提交以待审核";
@@ -5897,8 +5783,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "平板电脑";
 
-/* Menu item label for linking a specific tag.
-   Section header for tag name in Tag Details View. */
+/* Section header for tag name in Tag Details View. */
 "Tag" = "标签";
 
 /* Title of the alert indicating that a tag with that name already exists. */
@@ -6033,9 +5918,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "使用条款";
 
-/* Menu item label for linking a testimonial post. */
-"Testimonials" = "褒奖";
-
 /* Title of a button style */
 "Text Only" = "仅显示文字";
 
@@ -6119,9 +6001,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "无法将图片添加到媒体库。";
-
-/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
-"The internet connection appears to be offline." = "似乎您没有联网。";
 
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "可以创建的站点类型";
@@ -6210,9 +6089,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "编辑您的评论时出现意外错误";
 
-/* Message shown when comments for a post can not be loaded. */
-"There has been an unexpected error while loading the comments." = "加载评论时出现意外错误。";
-
 /* Register domain - Error message displayed whenever registering domain fails unexpectedly */
 "There has been an unexpected error while registering your domain" = "注册您的域时出现意外错误";
 
@@ -6221,9 +6097,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新“通知设置”时发生意外错误";
-
-/* Displayed whenever a Comment Update Fails */
-"There has been an unexpected error while updating your comment" = "更新您的评论时出现意外错误";
 
 /* Generic error alert message */
 "There has been an unexpected error." = "发生意外错误。";
@@ -6245,12 +6118,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A general error message shown to the user when there was an API communication failure. */
 "There was a problem communicating with the site." = "与站点通信时出现问题。";
 
-/* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
-"There was a problem connecting to WordPress.com. Please log in again." = "连接到 WordPress.com 时出现问题。请重新登录。";
-
-/* A short error message letting the user know about a problem displaying a post. */
-"There was a problem displaying this post." = "显示该文章时出现问题。";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "加载数据时出现问题，请刷新页面以重试。";
 
@@ -6260,18 +6127,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "在保存对共享管理的更改时出错。";
 
-/* Explaining to the user there was an error trying to obtain the current location of the user. */
-"There was a problem when trying to access your location. Please try again later." = "尝试访问您的位置时出错。请稍后重试。";
-
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "修改密码时出错";
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "加载活动时出现错误";
-
-/* Text displayed when there is a failure loading the plan list */
-"There was an error loading plans" = "加载套餐时出错。";
 
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "加载插件时出错";
@@ -6284,9 +6145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "加载历史记录时出错";
-
-/* Text displayed when there is a failure loading the plan details */
-"There was an error loading the plan" = "加载套餐时出错";
 
 /* Text displayed when there is a failure loading the history feed */
 "There was an error loading the scan history" = "加载扫描历史记录时出错";
@@ -6525,8 +6383,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes the comment */
 "Trash" = "移到回收站";
 
-/* Name for the status of a trashed post
-   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "已放入回收站";
 
@@ -6540,7 +6397,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Try & Customize" = "尝试与定制";
 
 /* Retries an Action
-   Retry
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "重试";
@@ -6842,8 +6698,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "上传失败";
 
-/* Label for the date a media asset (image / video) was uploaded
-   Status for Media object that is uploaded and sync with server. */
+/* Label for the date a media asset (image / video) was uploaded */
 "Uploaded" = "已上传";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
@@ -6861,8 +6716,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the user uploaded themes section, should be the same as in Calypso */
 "Uploaded themes" = "已上传的主题";
 
-/* \"Uploading\" Status text
-   Status for Media object that is being uploaded. */
+/* \"Uploading\" Status text */
 "Uploading" = "正在上传";
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
@@ -7184,12 +7038,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
 "Weekly Roundup: %@" = "每周综述：%@";
 
-/* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "欢迎使用 Jetpack";
-
-/* Post Signup Interstitial Title Text for WordPress iOS */
-"Welcome to WordPress" = "欢迎来到 WordPress";
-
 /* A message title */
 "Welcome to the Reader" = "欢迎使用阅读器";
 
@@ -7252,6 +7100,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "What's New in Jetpack" = "Jetpack 的新变化";
 
 /* Opens the What's New / Feature Announcement modal */
+"What's New in Reader" = "阅读器的新功能";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress 的新变化";
 
 /* Title of alert helping users understand their site address */
@@ -7293,38 +7144,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "WordPress 应用程序设置";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress App——适用于任何屏幕的App";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 博客";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress 帮助";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress 媒体库";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "WordPress 通知设置";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress 通知";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress 插件";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress 个人资料";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress 阅读器";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "WordPress 站点详细信息";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress 主题";
@@ -7334,9 +7164,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for label when the user's site is a multisite. */
 "WordPress multisites are not supported" = "不支持WordPress多站点。";
-
-/* Explaining to the user why the app needs access to the device location. */
-"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress 必须获得访问设备当前位置的权限才能将其添加到您的文章。请更新您的隐私设置。";
 
 /* Downloadable/Restorable items: WordPress root */
 "WordPress root" = "WordPress 根";
@@ -7352,9 +7179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com 账户";
-
-/* Title for the Plans list header */
-"WordPress.com Plans" = "WordPress.com 套餐";
 
 /* Title for the WordPress.com themes section, should be the same as in Calypso */
 "WordPress.com Themes" = "WordPress.com 主题";
@@ -7383,9 +7207,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "写文章";
-
-/* Placeholder text for inline compose view */
-"Write a reply" = "写回复";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "写回复…";
@@ -7488,9 +7309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "您没有任何已放入垃圾桶的文章";
 
-/* Error message that informs reader comments from a private blog cannot be fetched. */
-"You don't have permission to view this private blog." = "您无权查看此私人博客。";
-
 /* Description for the first domain purchased with a paid plan. */
 "You have a free one-year domain registration with your plan." = "您的套餐中包括为期一年的免费域名注册。";
 
@@ -7506,8 +7324,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
 "You have no reminders set." = "您没有设置提醒。";
 
-/* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
+/* Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "尚有未保存的更改。";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
@@ -7593,6 +7410,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "密码不得少于 6 个字符。要提高密码强度，请使用大小写字母、数字和 ! \" ? $ % ^ & ) 等符号。";
+
+/* Message of Export Content confirmation alert */
+"Your posts, pages, and settings will be mailed to the account's email address." = "系统会将您的文章、页面和设置发送到该账户的电子邮件地址。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "文章、页面和设置将通过邮件发送给您（地址为：%@）。";
@@ -7684,23 +7504,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility identifier for an 'Add Comment' button */
 "addCommentButton.accessibilityIdentifity" = "添加评论";
 
-/* Error message shown a URL does not point to an existing site. */
-"addSite.restApiNotAvailable" = "此地址下的站点不是 WordPress 站点。 站点必须使用 WordPress，我们才能建立连接。";
-
-/* Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site */
-"addSite.selfHosted.authenticationFailed" = "无法使用应用程序密码验证登录。";
+/* Error message when user cancels login */
+"addSite.selfHosted.cancelled" = "登录已取消";
 
 /* A message to inform users to type the site address in the text field. */
 "addSite.selfHosted.enterSiteAddress" = "输入您要连接的 WordPress 站点的地址。";
 
-/* Error message when user input is not a WordPress site */
-"addSite.selfHosted.invalidUrl" = "该站点地址无效。";
-
 /* Error message shown when failing to load details from a self-hosted WordPress site */
 "addSite.selfHosted.loadingSiteInfoFailure" = "无法加载 WordPress 站点详细信息";
 
-/* Error message shown when application-password authentication is disabled on a self-hosted WordPress site */
-"addSite.selfHosted.noLoginUrlFound" = "需要在 WordPress 站点上启用应用程序密码验证。";
+/* Error message when user signs in with an unexpected usern. The first argument is the expected username */
+"addSite.selfHosted.mismatchUser" = "请使用已登录的用户登录。 用户名：%@";
 
 /* Error message shown when failing to save a self-hosted site to user's device */
 "addSite.selfHosted.savingSiteFailure" = "无法保存 WordPress 站点，请稍后再试。";
@@ -7708,14 +7522,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the page to add a self-hosted site */
 "addSite.selfHosted.title" = "添加自托管站点";
 
-/* Error message when an unknown error occurred when adding a self-hosted site */
-"addSite.selfHosted.unknownError" = "出错了。 请重试。";
+/* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
+"addSite.selfHosted.xmlrpcDisabled" = "无法关联 WordPress 站点。 服务器可能已禁用 XML-RPC。 请联系您的托管服务提供商以解决此问题。";
 
 /* Age between dates equaling one hour. */
 "an hour" = "一小时";
 
 /* This is the string we display when prompting the user to review the Jetpack app */
 "appRatings.jetpack.prompt" = "您认为 Jetpack 怎么样？";
+
+/* This is the string we display when prompting the user to review the Reader app */
+"appRatings.reader.prompt" = "您对阅读器作何评价？";
 
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "您认为 WordPress 怎么样？";
@@ -8435,6 +8252,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the alert asking for feedback */
 "experimentalFeatures.editorFeedbackTitle" = "分享反馈";
 
+/* Communicates the future removal of the option to disable the experimental editor, displayed beneath the experimental features list */
+"experimentalFeatures.editorNote" = "实验性区块编辑器将在今后的版本中成为默认设置，并且将无法禁用。";
+
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "实验性功能";
 
@@ -8480,14 +8300,8 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "重试";
 
-/* Error message format when REST API returns an error response. The first argument is error message. */
-"generic.error.rest-api-error" = "您的站点发送了错误响应：%@";
-
 /* A generic title for an error */
 "generic.error.title" = "错误";
-
-/* Error message when failing to parse API responses */
-"generic.error.unparsableResponse" = "您的站点发送了应用程序无法解析的响应";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "设置博客发布提醒";
@@ -8659,6 +8473,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "安装 Jetpack 的 WordPress 性能更优";
+
+/* Title for the button that starts the Jetpack connection process */
+"jetpack.connection.connect.button" = "关联您的站点";
+
+/* Error message shown when WordPress.com authentication fails */
+"jetpack.connection.error.authentication" = "WordPress.com 账户无效";
+
+/* Error message shown when a connection step is attempted in an invalid order */
+"jetpack.connection.error.context" = "此步骤尚未准备就绪";
+
+/* Title for the retry button shown when a connection step fails */
+"jetpack.connection.retry.button" = "重试";
+
+/* Status message when a connection step is pending */
+"jetpack.connection.stage.pending" = "正在等待开始";
+
+/* Status message when a connection step is in progress */
+"jetpack.connection.stage.processing" = "进行中...";
+
+/* Status message when a connection step is completed successfully */
+"jetpack.connection.stage.success" = "已完成";
+
+/* Title for the finalization step in Jetpack connection flow */
+"jetpack.connection.step.finalize.title" = "完成连接";
+
+/* Title for the install step in Jetpack connection flow */
+"jetpack.connection.step.install.title" = "安装 Jetpack";
+
+/* Title for the login step in Jetpack connection flow */
+"jetpack.connection.step.login.title" = "登录 WordPress.com";
+
+/* Title for the site connection step in Jetpack connection flow */
+"jetpack.connection.step.site.title" = "关联您的站点";
+
+/* Title for the user connection step in Jetpack connection flow */
+"jetpack.connection.step.user.title" = "关联您的 WordPress.com 账户";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "切换到新版 Jetpack 应用";
@@ -8879,11 +8729,44 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "您无权查看此私人博客。";
 
+/* Button to dismiss the re-authentication view */
+"login.appPasswordReAuth.cancelButton" = "取消";
+
+/* Description explaining why the user needs to re-authenticate */
+"login.appPasswordReAuth.description" = "该应用程序关联的密码已从您的个人资料中删除。\n请重新登录，为该应用程序创建新的专用密码。";
+
+/* Button to start the re-authentication process */
+"login.appPasswordReAuth.signInButton" = "登录";
+
+/* Title shown when the application password is invalid */
+"login.appPasswordReAuth.title" = "应用程序密码无效";
+
 /* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
 "login.twoFactorInstructions.details" = "请输入您的身份验证应用程序中的 WordPress.com 账户验证码。";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
+
+/* Button title when verification link sending failed */
+"me.verifyEmail.button.retry" = "重试";
+
+/* Button title to send verification link */
+"me.verifyEmail.button.send" = "重发电子邮件";
+
+/* Button title while verification link is being sent */
+"me.verifyEmail.button.sending" = "正在发送...";
+
+/* Button title after verification link is sent */
+"me.verifyEmail.button.sent" = "电子邮件已发送";
+
+/* Message for email verification card */
+"me.verifyEmail.message.noEmail" = "验证您的电子邮件地址，以确保您的账户安全并使用更多功能。\n请在您的收件箱中查看确认电子邮件，或点击“%@”以获取新的确认电子邮件。";
+
+/* Message for email verification card with email address */
+"me.verifyEmail.message.withEmail" = "验证您的电子邮件地址，以确保您的账户安全并使用更多功能。\n请在您的 %1$@ 收件箱中查看确认电子邮件，或点击“%2$@”以获取新的确认电子邮件。";
+
+/* Title for email verification card */
+"me.verifyEmail.title" = "验证您的电子邮件地址";
 
 /* Me tab menu items */
 "meMenu.submitFeedback" = "发送反馈";
@@ -8986,6 +8869,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "选择项目";
+
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "图像游乐场";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "此应用程序需要获取照相机的访问权限，才可以拍摄新媒体。如要允许此操作，请更改隐私设置。";
@@ -9431,6 +9317,9 @@ Example: Reply to Pamela Nguyen */
 /* Message shown while loading plugin details */
 "pluginDetails.loading" = "正在加载插件信息...";
 
+/* Placeholder message shown when a plugin has no description */
+"pluginDetails.noDescription" = "此插件未提供任何描述。";
+
 /* Title of the changelog section in plugin details */
 "pluginDetails.section.changelog" = "变更日志";
 
@@ -9719,30 +9608,6 @@ Example: Reply to Pamela Nguyen */
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "将可见性更改为“私人”即会立即发布此文章";
 
-/* Localized post type: `Page` */
-"postType.page" = "页面";
-
-/* Localized post type: `Post` */
-"postType.post" = "文章";
-
-/* Details for a 'Private' privacy setting */
-"postVisibility.private.details" = "仅站点管理员和编辑可见";
-
-/* Title for a 'Private' privacy setting */
-"postVisibility.private.title" = "私人";
-
-/* Details for a 'Password Protected' privacy setting */
-"postVisibility.protected.details" = "所有人可见，但需要密码";
-
-/* Title for a 'Password Protected' privacy setting */
-"postVisibility.protected.title" = "受密码保护";
-
-/* Details for a 'Public' (default) privacy setting */
-"postVisibility.public.details" = "所有人可见";
-
-/* Title for a 'Public' (default) privacy setting */
-"postVisibility.public.title" = "公开";
-
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
 
@@ -9963,6 +9828,18 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
 
+/* No comment provided by engineer. */
+"reachability-utils.alert.cancel" = "确定";
+
+/* No comment provided by engineer. */
+"reachability-utils.alert.retry" = "重试？";
+
+/* No comment provided by engineer. */
+"reachability-utils.alert.title" = "无连接";
+
+/* Message of error prompt shown when no internet connection is available */
+"reachability-utils.alert.utils" = "网络连接似乎已断开。";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "博客 %@ 将不再显示在您的阅读器中。 轻点以撤消。";
 
@@ -9999,8 +9876,26 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "退订";
 
+/* Button title. Follow the comments on a post. */
+"reader.comments.buttonFollow" = "关注";
+
 /* Informational message, should be short. */
 "reader.comments.commentsClosed" = "评论已关闭";
+
+/* Empty state view title */
+"reader.comments.emptyStateTitle" = "率先发表评论。";
+
+/* Empty state view title */
+"reader.comments.errorLoadingComments" = "加载评论时出现意外错误。";
+
+/* VoiceOver hint */
+"reader.comments.followingSettingAccessibilityIdentifier" = "打开此文章的通知设置";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"reader.comments.noPermissionToViewPrivateBlog" = "您无权查看此私人博客。";
+
+/* Navigation title */
+"reader.comments.title" = "评论";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "查看站点中的文章";
@@ -10078,8 +9973,23 @@ but tapping on this button will remove their like from the post. */
 /* Screen header details */
 "reader.following.header.details" = "时刻关注您订阅的博客。";
 
+/* Empty state view */
+"reader.following.lists.emptyTitle" = "列表为空";
+
+/* Screen header details */
+"reader.home.header.details" = "时刻关注您订阅的博客。";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.home.title" = "主页";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.library.title" = "媒体库";
+
 /* Used in multiple contexts, usually as a screen title */
 "reader.likes.title" = "点赞数";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.lists.title" = "列表";
 
 /* Reader logged-out screen details */
 "reader.loggedOut.details" = "使用 WordPress.com 账户登录，以关注您喜爱的博客";
@@ -10322,7 +10232,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title of a Reader tab showing Posts matching a user's search query */
 "reader.search.tab.posts" = "文章";
 
-/* Title of the Reader's search feature */
+/* Title of the Reader's search feature
+   Used in multiple contexts, usually as a screen title */
 "reader.search.title" = "搜索";
 
 /* Screen title. Reader select interests title label text. */
@@ -10348,21 +10259,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Reader select interests title label text */
 "reader.select.tags.title" = "发现并关注您喜欢的博客";
-
-/* Reader sidebar menu item */
-"reader.sidebar.discover" = "发现";
-
-/* Reader sidebar menu item */
-"reader.sidebar.likes" = "点赞数";
-
-/* Reader sidebar menu item */
-"reader.sidebar.recent" = "最近";
-
-/* Reader sidebar menu item */
-"reader.sidebar.saved" = "已保存";
-
-/* Reader sidebar menu item */
-"reader.sidebar.search" = "搜索";
 
 /* Reader sidebar section title */
 "reader.sidebar.section.favorites.title" = "收藏夹";
@@ -10412,7 +10308,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Number of subscriptions on a site (singular) */
 "reader.subscriptions.subscriptionsSingular" = "%@ 位订阅者";
 
-/* Navigation bar title */
+/* Used in multiple contexts, usually as a screen title */
 "reader.subscriptions.title" = "订阅";
 
 /* A suggestion of topics the user might want to subscribe to */
@@ -10454,17 +10350,35 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "已关注";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.tags.title" = "标签";
+
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "取消关注 %@";
 
 /* Field title */
 "reader.userProfile.site" = "站点";
 
+/* Reader Welcome screen login button */
+"reader.welcome.continueText" = "继续使用 WordPress.com";
+
+/* Reader Welcome screen */
+"reader.welcome.subtitle" = "加入最大的博客社区";
+
+/* Reader app primary navigation tab bar */
+"readerApp.tabBar.me" = "我";
+
+/* Reader app primary navigation tab bar */
+"readerApp.tabBar.notifications" = "通知";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "返回";
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "忽略";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.displaySettingsLabel" = "阅读偏好";
 
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "有关 WordPress.com 的更多信息";
@@ -10733,10 +10647,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Message shown when there are no inactive plugins on the site */
 "site.plugins.empty.inactive" = "没有未激活的插件";
 
-/* The plugin fillter option for displaying active plugins
-   The plugin fillter option for displaying all plugins
-   The plugin fillter option for displaying inactive plugins */
+/* The plugin fillter option for displaying active plugins */
+"site.plugins.filter.option.active" = "已启用";
+
+/* The plugin fillter option for displaying all plugins */
 "site.plugins.filter.option.all" = "全部";
+
+/* The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.inactive" = "未启用";
 
 /* Title of the plugin filter picker */
 "site.plugins.filter.title" = "筛选";
@@ -11436,114 +11354,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "状态";
 
-/* Preview title of all-time posts and most views widget */
-"widget.allTimePostViews.previewTitle" = "历年文章数和浏览次数之最";
-
-/* Preview title of all-time views widget */
-"widget.allTimeViews.previewTitle" = "历年浏览次数";
-
-/* Preview title of all-time views and visitors widget */
-"widget.allTimeViewsVisitors.previewTitle" = "历年浏览次数和访客人数";
-
-/* Title of best views ever label in all time widget */
-"widget.alltime.bestviews.label" = "最受欢迎的文章";
-
-/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
-"widget.alltime.bestviewsshort.label" = "浏览次数之最";
-
-/* Title of the no data view in all time widget */
-"widget.alltime.nodata.view.title" = "无法加载所有时间的统计信息。";
-
-/* Title of the no site view in all time widget */
-"widget.alltime.nosite.view.title" = "创建或添加站点以查看所有时间的统计信息。";
-
-/* Title of posts label in all time widget */
-"widget.alltime.posts.label" = "文章";
-
-/* Description of all time widget in the preview */
-"widget.alltime.preview.description" = "在您的WordPress网站上了解全部时间活动更新。";
-
-/* Title of all time widget */
-"widget.alltime.title" = "全部时间";
-
-/* Title of the unconfigured view in all time widget */
-"widget.alltime.unconfigured.view.title" = "登录WordPress以查看全部时间统计数据。";
-
-/* Title of the unconfigured view in all time widget */
-"widget.jetpack.alltime.unconfigured.view.title" = "登录 Jetpack，查看所有时间的统计信息。";
-
-/* Title of the unconfigured view in this week widget */
-"widget.jetpack.thisweek.unconfigured.view.title" = "登录 Jetpack，查看本周的统计信息。";
-
-/* Title of the unconfigured view in today widget */
-"widget.jetpack.today.unconfigured.view.title" = "登录 Jetpack，查看今天的统计信息。";
-
-/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
-"widget.lockscreen.alltimeview.label" = "历年浏览次数";
-
-/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
-"widget.lockscreen.todayview.label" = "今日浏览次数";
-
-/* Title of the no data view in this week widget */
-"widget.thisweek.nodata.view.title" = "无法加载本周的统计信息。";
-
-/* Title of the no site view in this week widget */
-"widget.thisweek.nosite.view.title" = "创建或添加站点以查看本周的统计信息。";
-
-/* Description of all time widget in the preview */
-"widget.thisweek.preview.description" = "在您的WordPress网站上了解本周活动更新。";
-
-/* Title of this week widget */
-"widget.thisweek.title" = "本周";
-
-/* Title of the unconfigured view in this week widget */
-"widget.thisweek.unconfigured.view.title" = "登录WordPress以查看本周统计数据。";
-
-/* Title of comments label in today widget */
-"widget.today.comments.label" = "评论";
-
-/* Title of the disabled view in today widget */
-"widget.today.disabled.view.title" = "统计信息功能已转移至 Jetpack 应用。您可以免费切换，并且只需 1 分钟即可完成。";
-
-/* Title of likes label in today widget */
-"widget.today.likes.label" = "赞";
-
-/* Fallback title of the no data view in the stats widget */
-"widget.today.nodata.view.fallbackTitle" = "无法加载站点统计信息。";
-
-/* Title of the no data view in today widget */
-"widget.today.nodata.view.title" = "无法加载今天的统计信息。";
-
-/* Title of the no site view in today widget */
-"widget.today.nosite.view.title" = "创建或添加站点以查看今天的统计信息。";
-
-/* Description of today widget in the preview */
-"widget.today.preview.description" = "在您的WordPress网站上了解今日活动。";
-
-/* Title of today widget */
-"widget.today.title" = "今日";
-
-/* Title of the unconfigured view in today widget */
-"widget.today.unconfigured.view.title" = "登录WordPress以查看今日统计数据。";
-
-/* Error message to show if a widget view is unavailable */
-"widget.today.view.unavailable.title" = "视图是不可用的";
-
-/* Title of views label in today widget */
-"widget.today.views.label" = "查看数";
-
-/* Title of visitors label in today widget */
-"widget.today.visitors.label" = "访客数";
-
-/* Preview title of today's likes and commnets widget */
-"widget.todayLikesComments.previewTitle" = "今日点赞数和评论数";
-
-/* Preview title of today's views widget */
-"widget.todayViews.previewTitle" = "今日浏览次数";
-
-/* Preview title of today's views and visitors widget */
-"widget.todayViewsVisitors.previewTitle" = "今日浏览次数和访客人数";
-
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "今后将无法再访问。";
 
@@ -11573,9 +11383,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "出错了，请稍后重试。";
-
-/* Error message when failing to find selected media file on the user's device. */
-"wordpress.api.upload.media.fileNotFound" = "无法在设备上找到媒体文件";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "切换到 Jetpack 应用";
@@ -11621,6 +11428,21 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message when user signs in with an unexpected email address. The first argument is the expected email address */
 "wpComLogin.error.mismatchedEmail" = "请使用电子邮件地址 %@ 登录";
+
+/* Message shown when user denies WordPress.com login, offering option to try with different account */
+"wpComLogin.loginDenied.message" = "如有需要，您可以使用其他账户登录。 轻点“%@”以开始。";
+
+/* Title of alert shown when user cancels WordPress.com login */
+"wpComLogin.loginDenied.title" = "登录已取消";
+
+/* Button title for signing in with a different WordPress.com account */
+"wpComLogin.loginDenied.useDifferentAccount" = "使用其他账户";
+
+/* Button title to log out the current WordPress.com account */
+"wpcom.token.alert.button.logout" = "注销";
+
+/* Button title to Sign In to WordPress.com */
+"wpcom.token.alert.button.signin" = "登录";
 
 /* Message title to be displayed when the user needs to re-authenticate their WordPress.com account. */
 "wpcom.token.fix.signin" = "登录 WordPress.com";

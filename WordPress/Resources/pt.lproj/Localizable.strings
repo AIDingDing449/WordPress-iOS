@@ -59,9 +59,6 @@
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Sem título)";
 
-/* Lets a user know that a local draft does not have a title. */
-"(no title)" = "(sem título)";
-
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Adicionar novo menu";
 
@@ -190,9 +187,6 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Texto alternativo (Alt)";
 
-/* An error message shown when there is no internet connection. */
-"An active internet connection is required to view plans" = "É necessária uma ligação à Internet para ver os planos";
-
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "É necessária uma ligação à Internet para ver os plugins";
@@ -223,9 +217,6 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Ocorreu um erro desconhecido. Por favor, tente de novo.";
-
-/* the comment has an anonymous author. */
-"Anonymous" = "Anónimo";
 
 /* App Settings Title
    Link to App Settings section
@@ -304,9 +295,6 @@
    Previous web page */
 "Back" = "Voltar";
 
-/* Message shown encouraging the user to leave a comment on a post in the reader. */
-"Be the first to leave a comment." = "Seja o primeiro a deixar um comentário.";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citação";
@@ -355,7 +343,6 @@
    Cancel action title
    Cancel button
    Cancel button label
-   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
@@ -400,15 +387,13 @@
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "Legenda";
 
-/* Alert title.
-   Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+/* Alert title. */
 "Careful!" = "Cuidado!";
 
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categorias";
 
-/* Category menu item in share extension.
-   Menu item label for linking a specific category. */
+/* Category menu item in share extension. */
 "Category" = "Categoria";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -447,7 +432,6 @@
 
 /* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
-   Dismiss the current view
    Dismisses the current screen */
 "Close" = "Fechar";
 
@@ -485,7 +469,6 @@
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
-   Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Comentários";
 
@@ -631,9 +614,6 @@
 /* No comment provided by engineer. */
 "Current" = "Actual";
 
-/* Label title. Refers to the current WordPress.com plan for a user's site. */
-"Current Plan" = "Plano actual";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Tema actual";
 
@@ -659,9 +639,6 @@
    Title for selecting a default category for a post */
 "Default Category" = "Categoria por omissão";
 
-/* Menu name for the defaut menu that is automatically generated. */
-"Default Menu" = "Menu por omissão";
-
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Formato de artigo por omissão";
@@ -670,7 +647,6 @@
 "Defaults for New Posts" = "Por omissão para novos artigos";
 
 /* Delete
-   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title of the trash confirmation alert. */
 "Delete" = "Eliminar";
@@ -745,8 +721,7 @@
 "Discussion" = "Discussão";
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Ignorar";
 
 /* Display Name label text.
@@ -772,9 +747,6 @@
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Duplo toque para ignorar";
-
-/* Name for the status of a draft post. */
-"Draft" = "Rascunho";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Rascunhos";
@@ -887,9 +859,6 @@
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "A exportar conteúdo...";
 
-/* Status for Media object that is failed upload or export. */
-"Failed" = "Falhou";
-
 /* Label for the Featured Image area in post settings. */
 "Featured Image" = "Imagem de destaque";
 
@@ -922,9 +891,6 @@
    User's First Name */
 "First Name" = "Nome";
 
-/* Button title. Follow the comments on a post. */
-"Follow" = "Seguir";
-
 /* User role badge */
 "Follower" = "Seguidor";
 
@@ -951,9 +917,6 @@
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "A obter informações da conta";
-
-/* Cancel */
-"Give Up" = "Desistir";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -1198,8 +1161,7 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Gosta do comentário.";
 
-/* Label for link title in Clicks stat.
-   Menu item label for linking a custom source URL. */
+/* Label for link title in Clicks stat. */
 "Link" = "Ligação";
 
 /* Menus title label when editing a menu item as a link. */
@@ -1228,12 +1190,6 @@
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "A carregar menus...";
 
-/* Text displayed while loading plans details */
-"Loading Plan..." = "A carregar plano...";
-
-/* Text displayed while loading plans details */
-"Loading Plans..." = "A carregar planos...";
-
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "A carregar plugins...";
 
@@ -1246,18 +1202,6 @@
    Text displayed in HUD while a media item is being loaded.
    Text displayed while loading time zones */
 "Loading..." = "A carregar...";
-
-/* Status for Media object that is only exists locally. */
-"Local" = "Local";
-
-/* Title for alert when a generic error happened when trying to find the location of the device */
-"Location" = "Localização";
-
-/* Explaining to the user that location services need to be enable in order to geotag a post. */
-"Location Services must be enabled before WordPress can add your current location. Please enable Location Services from the Settings app." = "O serviço de localização tem que estar activado para que o WordPress possa adicionar a sua localização. Por favor active os Serviços de localização nas definições do iOS.";
-
-/* Used when geo-tagging posts, if the geo-tagging failed. */
-"Location unknown" = "Localização desconhecida";
 
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Ficheiros de relatório por data de criação.";
@@ -1401,9 +1345,6 @@
 /* New Post 3D Touch Shortcut */
 "New Post" = "Novo artigo";
 
-/* Menu item title text used as default when creating a new menu item. */
-"New item" = "Novo item";
-
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Mais recentes";
 
@@ -1445,8 +1386,7 @@
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Sem comentários";
 
-/* An error message title shown when there is no internet connection.
-   Displayed during Site Creation, when searching for Verticals and the network is unavailable.
+/* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Sem ligação";
 
@@ -1522,7 +1462,6 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -1558,8 +1497,7 @@
    Title for the view when there's an error loading time zones */
 "Oops" = "Ups";
 
-/* An informal exclaimation meaning `something went wrong`.
-   Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
+/* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "Ups!";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -1569,8 +1507,7 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Abrir Mail";
 
-/* Go to the settings app
-   Title of a button that opens the apps settings in the system Settings.app */
+/* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Abrir definições";
 
 /* No comment provided by engineer. */
@@ -1620,8 +1557,7 @@
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFONE";
 
-/* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page
+/* Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
@@ -1647,12 +1583,8 @@
 "Password" = "Senha";
 
 /* Button title for Pending comment state.
-   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Pendente";
-
-/* Name for the status of a post pending review. */
-"Pending review" = "Pendente de revisão";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature.
@@ -1667,10 +1599,6 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Biblioteca de fotografias";
-
-/* Action title. Noun. Links to a blog's Plans screen.
-   Title for the plan selector */
-"Plans" = "Planos";
 
 /* User action to play a video on the editor. */
 "Play video" = "Reproduzir vídeo";
@@ -1722,8 +1650,7 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Idiomas populares";
 
-/* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
+/* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Publicar";
 
@@ -1794,22 +1721,12 @@
    Privacy Settings Title */
 "Privacy Settings" = "Definições de privacidade";
 
-/* Name for the status of a post that is marked private. */
-"Private" = "Privada";
-
-/* Menu item label for linking a project page. */
-"Projects" = "Projectos";
-
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publicar";
 
-/* A short phrase indicating a post is due to be immedately published. */
-"Publish Immediately" = "Publicar imediatamente";
-
-/* Name for the status of a published post.
-   Period Stats 'Published' header
+/* Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicado";
 
@@ -1898,9 +1815,6 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "Responder";
 
-/* Notifications Reply Accessibility Identifier */
-"Reply Text" = "Texto de resposta";
-
 /* Settings: Comments Approval settings */
 "Require name and email" = "É necessário nome e email";
 
@@ -1941,9 +1855,6 @@
    User action to retry media upload. */
 "Retry" = "Tentar de novo";
 
-/* No comment provided by engineer. */
-"Retry?" = "Tentar de novo?";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Reverter alteração pendente";
 
@@ -1963,7 +1874,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
    Title for the button that will save the site icon
@@ -1973,8 +1883,7 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "A guardar...";
 
-/* Name for the status of a scheduled post
-   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -2012,9 +1921,6 @@
 
 /* Message to show when setting save failed */
 "Settings update failed" = "Falhou ao actualizar opções";
-
-/* Spoken accessibility label */
-"Share" = "Partilhar";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -2189,8 +2095,7 @@
 /* Switches the Editor to Rich Text Mode */
 "Switch to Visual Mode" = "Mudar para modo visual";
 
-/* Menu item label for linking a specific tag.
-   Section header for tag name in Tag Details View. */
+/* Section header for tag name in Tag Details View. */
 "Tag" = "Etiqueta";
 
 /* Label for tagline blog setting
@@ -2215,9 +2120,6 @@
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Termos do serviço";
-
-/* Menu item label for linking a testimonial post. */
-"Testimonials" = "Testemunhos";
 
 /* Title of a button style */
 "Text Only" = "Apenas texto";
@@ -2251,9 +2153,6 @@
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Não foi possível adicionar a imagem à biblioteca multimédia.";
-
-/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
-"The internet connection appears to be offline." = "Parece não existir conexão à internet.";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "O idioma principal do site.";
@@ -2296,15 +2195,6 @@
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Ocorreu um erro inesperado ao editar o seu comentário";
 
-/* Message shown when comments for a post can not be loaded. */
-"There has been an unexpected error while loading the comments." = "Ocorreu um erro inesperado ao carregar os comentários.";
-
-/* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
-"There was a problem connecting to WordPress.com. Please log in again." = "Ocorreu um problema ao ligar a WordPress.com. Por favor inicie sessão de novo.";
-
-/* A short error message letting the user know about a problem displaying a post. */
-"There was a problem displaying this post." = "Ocorreu um problema ao mostrar este artigo.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Ocorreu um problema ao remover o bloco do site especificado.";
 
@@ -2314,14 +2204,8 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Ocorreu um erro ao carregar actividades";
 
-/* Text displayed when there is a failure loading the plan list */
-"There was an error loading plans" = "Ocorreu um erro ao carregar planos";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Ocorreu um erro ao carregar os plugins";
-
-/* Text displayed when there is a failure loading the plan details */
-"There was an error loading the plan" = "Ocorreu um erro ao carregar o plano";
 
 /* Error message when time zones can't be loaded */
 "There was an error loading time zones" = "Ocorreu um erro ao carregar os fusos horários";
@@ -2390,8 +2274,7 @@
    Trashes the comment */
 "Trash" = "Lixo";
 
-/* Name for the status of a trashed post
-   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "No lixo";
 
@@ -2402,7 +2285,6 @@
 "Try & Customize" = "Tentar e personalizar";
 
 /* Retries an Action
-   Retry
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Tentar de novo";
@@ -2526,15 +2408,13 @@
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "O carregamento falhou.";
 
-/* Label for the date a media asset (image / video) was uploaded
-   Status for Media object that is uploaded and sync with server. */
+/* Label for the date a media asset (image / video) was uploaded */
 "Uploaded" = "Carregado";
 
 /* Title for the user uploaded themes section, should be the same as in Calypso */
 "Uploaded themes" = "Temas carregados";
 
-/* \"Uploading\" Status text
-   Status for Media object that is being uploaded. */
+/* \"Uploading\" Status text */
 "Uploading" = "A carregar";
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
@@ -2651,9 +2531,6 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Definições de visualização web";
 
-/* Post Signup Interstitial Title Text for WordPress iOS */
-"Welcome to WordPress" = "Bemvindo ao Wordpress!";
-
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo ao Leitor";
 
@@ -2669,12 +2546,6 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Site WordPress";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Ajuda do WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Notificações do WordPress";
-
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress demasiado antiga";
 
@@ -2686,9 +2557,6 @@
 
 /* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Conta do WordPress.com";
-
-/* Title for the Plans list header */
-"WordPress.com Plans" = "Planos de WordPress.com";
 
 /* Title for the WordPress.com themes section, should be the same as in Calypso */
 "WordPress.com Themes" = "Temas de WordPress.com";
@@ -2734,8 +2602,7 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Tem alterações feitas em %d artigos que ainda não foram carregados para o seu site. Ao terminar a sessão agora estas alterações são eliminadas. Quer terminar sessão na mesma?";
 
-/* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
+/* Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Tem alterações por guardar.";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
@@ -2785,24 +2652,6 @@
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL desconhecido";
-
-/* Title of posts label in all time widget */
-"widget.alltime.posts.label" = "Conteúdos";
-
-/* Title of comments label in today widget */
-"widget.today.comments.label" = "Comentários";
-
-/* Title of likes label in today widget */
-"widget.today.likes.label" = "Gostos";
-
-/* Title of today widget */
-"widget.today.title" = "Hoje";
-
-/* Title of views label in today widget */
-"widget.today.views.label" = "Visualizações";
-
-/* Title of visitors label in today widget */
-"widget.today.visitors.label" = "Visitantes";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "irá estar indisponível de futuro.";

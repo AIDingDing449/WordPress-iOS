@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-03-14 00:41:38+0000 */
+/* Translation-Revision-Date: 2025-05-13 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -98,9 +98,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB on your site. */
 "%@ of %@ on your site" = "Sitenizde %2$@ alanın %1$@ kadarı";
-
-/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
-"%@ of %@ used on your site" = "Sitenizde %2$@ alanın %1$@ kadarı kullanılıyor";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ katrilyon";
@@ -238,9 +235,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Adlandırılmamış)";
-
-/* Lets a user know that a local draft does not have a title. */
-"(no title)" = "(başlıksız)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* yazınıza yanıt verdi";
@@ -646,9 +640,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "Etkinlikleri görüntülemek için etkin bir internet bağlantısı gereklidir";
 
-/* An error message shown when there is no internet connection. */
-"An active internet connection is required to view plans" = "Paketleri görüntüleyebilmek için etkin bir İnternet bağlantısı gereklidir";
-
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Eklentileri görüntüleyebilmek için etkin bir internet bağlantısı gereklidir";
@@ -697,9 +688,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "Yıllık site istatistikleri";
-
-/* the comment has an anonymous author. */
-"Anonymous" = "Anonim";
 
 /* Verb. Opens the editor to answer the blogging prompt. */
 "Answer" = "Yanıt";
@@ -926,9 +914,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for button on the post details page when there are no comments. */
 "Be the first to comment" = "İlk yorumu siz yapın";
 
-/* Message shown encouraging the user to leave a comment on a post in the reader. */
-"Be the first to leave a comment." = "İlk yorumu siz yapın.";
-
 /* Beauty site intent topic */
 "Beauty" = "Güzellik";
 
@@ -1111,7 +1096,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action title
    Cancel button
    Cancel button label
-   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
@@ -1168,8 +1152,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "Alt yazı";
 
-/* Alert title.
-   Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+/* Alert title. */
 "Careful!" = "Dikkatli olun!";
 
 /* Example prompt for the Prompts card in Feature Introduction. */
@@ -1178,8 +1161,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategoriler";
 
-/* Category menu item in share extension.
-   Menu item label for linking a specific category. */
+/* Category menu item in share extension. */
 "Category" = "Kategori";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -1336,9 +1318,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
 "Claim your free domain" = "Ücretsiz etki alanınızı kullanın";
 
-/* Name of setting configured when a site uses a list of blog posts as its homepage */
-"Classic Blog" = "Klasik blog";
-
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Aygıtın ortam ön belleğini temizle";
 
@@ -1366,7 +1345,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
-   Dismiss the current view
    Dismisses the current screen */
 "Close" = "Kapat";
 
@@ -1408,9 +1386,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Sütun ayarları";
-
-/* Menu item label for linking a comic page. */
-"Comics" = "Çizgi romanlar";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -1462,7 +1437,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
-   Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Yorumlar";
 
@@ -1571,9 +1545,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Bizimle %@ üzerinden görüşün";
-
-/* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "İçerik yapısı\nBloklar: %1$li, Sözcükler: %2$li, Karakterler: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
@@ -1789,9 +1760,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Current" = "Geçerli";
 
-/* Label title. Refers to the current WordPress.com plan for a user's site. */
-"Current Plan" = "Geçerli paket";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Geçerli tema";
 
@@ -1893,9 +1861,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for selecting a default category for a post */
 "Default Category" = "Varsayılan kategori";
 
-/* Menu name for the defaut menu that is automatically generated. */
-"Default Menu" = "Varsayılan menü";
-
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Varsayılan yazı biçimi";
@@ -1904,7 +1869,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "Yeni yazı varsayılanları";
 
 /* Delete
-   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title of the trash confirmation alert. */
 "Delete" = "Sil";
@@ -2013,8 +1977,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Discussion" = "Tartışma";
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Yok say";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
@@ -2167,9 +2130,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label for number of file downloads. */
 "Downloads" = "İndirmeler";
-
-/* Name for the status of a draft post. */
-"Draft" = "Taslak";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Taslaklar";
@@ -2551,9 +2511,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "Dış";
 
-/* Status for Media object that is failed upload or export. */
-"Failed" = "Tamamlanamadı";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Bildirim okundu olarak işaretlenemedi";
 
@@ -2565,6 +2522,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Failed to insert media.\nTap for more info." = "Ortam eklenemedi.\nAyrıntılı bilgi almak için dokunun.";
+
+/* A message indicating that we couldn't load the user's settings. */
+"Failed to load settings" = "Ayarlar yüklenemedi";
 
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "Dosyalar kaydedilemedi.\nSeçenekler için dokunun.";
@@ -2666,9 +2626,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Tehditler düzeltiliyor";
-
-/* Button title. Follow the comments on a post. */
-"Follow" = "Takip et";
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Yazışmayı takip et";
@@ -2792,9 +2749,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Hesap bilgileri alınıyor";
-
-/* Cancel */
-"Give Up" = "Vazgeç";
 
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Yazınıza veya sayfanıza birkaç blok ekleyerek deneyin!";
@@ -3422,8 +3376,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Line Height" = "Satır yüksekliği";
 
-/* Label for link title in Clicks stat.
-   Menu item label for linking a custom source URL. */
+/* Label for link title in Clicks stat. */
 "Link" = "Bağlantı";
 
 /* Menus title label when editing a menu item as a link. */
@@ -3485,12 +3438,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading site People. */
 "Loading People..." = "Kişiler yükleniyor...";
 
-/* Text displayed while loading plans details */
-"Loading Plan..." = "Paket yükleniyor...";
-
-/* Text displayed while loading plans details */
-"Loading Plans..." = "Paketler yükleniyor...";
-
 /* Text displayed while loading an specific plugin */
 "Loading Plugin..." = "Eklenti yükleniyor...";
 
@@ -3525,23 +3472,11 @@ translators: %s: Block name e.g. \"Image block\" */
    Text displayed while loading time zones */
 "Loading..." = "Yükleniyor...";
 
-/* Status for Media object that is only exists locally. */
-"Local" = "Yerel";
-
 /* Local Services site intent topic */
 "Local Services" = "Yerel hizmetler";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Yerel değişiklikler";
-
-/* Title for alert when a generic error happened when trying to find the location of the device */
-"Location" = "Konum";
-
-/* Explaining to the user that location services need to be enable in order to geotag a post. */
-"Location Services must be enabled before WordPress can add your current location. Please enable Location Services from the Settings app." = "Geçerli konumunuzu eklemeden önce konum servisleri açılmalıdır. Lütfen Ayarlar uygulamasından Konum Servislerini açın.";
-
-/* Used when geo-tagging posts, if the geo-tagging failed. */
-"Location unknown" = "Konum bilinmiyor";
 
 /* No comment provided by engineer. */
 "Lock icon" = "Kilit simgesi";
@@ -3581,6 +3516,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Jetpack oturumu kapatılsın mı?";
+
+/* LogOut confirmation text, whenever there are no local changes */
+"Log out of Reader?" = "Okuyucunun oturumu kapatılsın mı?";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "WordPress oturumu kapatılsın mı?";
@@ -3850,9 +3788,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Benim sitem";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "WordPress sitelerim";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "En sevdiğim on kafe";
 
@@ -3929,9 +3864,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Yeni yazı";
 
-/* Menu item title text used as default when creating a new menu item. */
-"New item" = "Yeni öge";
-
 /* Placeholder text for password field */
 "New password" = "Yeni parola";
 
@@ -3987,9 +3919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Kullanılabilecek bir ön izleme adresi yok";
 
-/* Label used for posts without a title in spotlight search. */
-"No Title" = "Başlık yok";
-
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "No activities available" = "Herhangi bir etkinlik yok";
 
@@ -4022,8 +3951,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Henüz bir yorum yok";
 
-/* An error message title shown when there is no internet connection.
-   Displayed during Site Creation, when searching for Verticals and the network is unavailable.
+/* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Bağlantı yok";
 
@@ -4243,7 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "Tamam";
@@ -4300,8 +4227,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading time zones */
 "Oops" = "Kusura bakmayın";
 
-/* An informal exclaimation meaning `something went wrong`.
-   Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
+/* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "Sorun çıktı!";
 
 /* No comment provided by engineer. */
@@ -4320,8 +4246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "E-postayı aç";
 
-/* Go to the settings app
-   Title of a button that opens the apps settings in the system Settings.app */
+/* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Ayarları aç";
 
 /* No comment provided by engineer. */
@@ -4338,9 +4263,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Bağlantıyı yeni pencerede\/sekmede aç";
-
-/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
-"Open subscription settings for the post" = "Yazının abonelik ayarlarını açın";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Ben bölümünü aç";
@@ -4416,8 +4338,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Padding" = "İç kenar boşluğu";
 
-/* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page
+/* Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Sayfa";
 
@@ -4471,12 +4392,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Paste block after" = "Bloğu arkasına yapıştır";
 
 /* Button title for Pending comment state.
-   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Bekliyor";
-
-/* Name for the status of a post pending review. */
-"Pending review" = "Değerlendirilmeyi bekliyor";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature.
@@ -4506,10 +4423,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Kullanıcı adı seçin";
-
-/* Action title. Noun. Links to a blog's Plans screen.
-   Title for the plan selector */
-"Plans" = "Paketler";
 
 /* User action to play a video on the editor. */
 "Play video" = "Videoyu oynat";
@@ -4670,8 +4583,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Section title for Popular Languages */
 "Popular languages" = "Yaygın kullanılan diller";
 
-/* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
+/* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Yazı";
 
@@ -4792,9 +4704,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Californiya kullanıcıları için gizlilik notu";
 
-/* Name for the status of a post that is marked private. */
-"Private" = "Özel";
-
 /* No comment provided by engineer. */
 "Problem displaying block. \nTap to attempt block recovery." = "Blok görüntülenirken bir sorun çıktı \nBloğu kurtarmayı denemek için dokunun.";
 
@@ -4809,12 +4718,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "Etki alanınız satın alınırken sorun çıktı. Lütfen yeniden deneyin.";
-
-/* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
-"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "İlerlerseniz bu aygıttaki tüm WordPress.com verileri ve tüm yerel taslaklarınız silinecek. WordPress.com blogunuza\/bloglarınıza kaydedilmiş olan verileri kaybetmeyeceksiniz.";
-
-/* Menu item label for linking a project page. */
-"Projects" = "Projeler";
 
 /* Title of the notification presented when a prompt is skipped */
 "Prompt skipped" = "İstem atlandı";
@@ -4832,17 +4735,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label for the publish date button. */
 "Publish Date" = "Yayınlanma Tarihi";
 
-/* A short phrase indicating a post is due to be immedately published. */
-"Publish Immediately" = "Hemen yayınla";
-
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Sayfayı şurada yayınla:";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Yazıyı şurada yayınla:";
 
-/* Name for the status of a published post.
-   Period Stats 'Published' header
+/* Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Yayınlanmış";
 
@@ -5044,12 +4943,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Verb. Button title. Reply to a comment. */
 "Reply" = "Yanıtla";
 
-/* Notifications Reply Accessibility Identifier */
-"Reply Text" = "Yanıt metni";
-
-/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
-   Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
-   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@ için yanıt verin";
 
 /* An explaination of a setting. */
@@ -5138,9 +5032,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to retry all failed media uploads. */
 "Retry all" = "Tümünü yeniden dene";
 
-/* No comment provided by engineer. */
-"Retry?" = "Yeniden denensin mi?";
-
 /* Share extension error dialog cancel button text */
 "Return to post" = "Yazıya dön";
 
@@ -5184,7 +5075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
    Title for the button that will save the site icon
@@ -5251,8 +5141,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Dosyalar taranıyor";
 
-/* Name for the status of a scheduled post
-   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Zamanlandı";
 
 /* No comment provided by engineer. */
@@ -5455,11 +5344,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "Ayarlar güncellenemedi";
 
-/* Spoken accessibility label */
-"Share" = "Paylaş";
-
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Jetpack uygulamasını arkadaşınızla paylaşın";
+
+/* Title for a button that recommends the app to others */
+"Share Reader with a friend" = "Okuyucuyu bir arkadaşınızla paylaşın";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "WordPress'i bir arkadaşınızla paylaşın";
@@ -5772,9 +5661,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Domain Address field State */
 "State" = "İl";
 
-/* Name of setting configured when a site uses a static page as its homepage */
-"Static Homepage" = "Sabit giriş sayfası";
-
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
@@ -5804,9 +5690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "Üstü çizili";
-
-/* Status for Media object that is only has the mediaID locally. */
-"Stub" = "Yerel";
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Değerlendirilmek üzere gönder";
@@ -5897,8 +5780,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
 
-/* Menu item label for linking a specific tag.
-   Section header for tag name in Tag Details View. */
+/* Section header for tag name in Tag Details View. */
 "Tag" = "Etiket";
 
 /* Title of the alert indicating that a tag with that name already exists. */
@@ -6033,9 +5915,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Hizmet koşulları";
 
-/* Menu item label for linking a testimonial post. */
-"Testimonials" = "Görüşler";
-
 /* Title of a button style */
 "Text Only" = "Yalnızca metin";
 
@@ -6119,9 +5998,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Görsel ortam kitaplığına eklenemedi.";
-
-/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
-"The internet connection appears to be offline." = "Internet bağlantınız çevrim dışı görünüyor.";
 
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Oluşturulabilecek site türleri";
@@ -6210,9 +6086,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Yorumunuz düzenlenirken beklenmeyen bir sorun çıktı";
 
-/* Message shown when comments for a post can not be loaded. */
-"There has been an unexpected error while loading the comments." = "Yorumlar yüklenirken beklenmeyen bir sorun çıktı.";
-
 /* Register domain - Error message displayed whenever registering domain fails unexpectedly */
 "There has been an unexpected error while registering your domain" = "Etki alanınız kaydedilirken beklenmeyen bir sorun çıktı";
 
@@ -6221,9 +6094,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Bildirim ayarlarınız güncellenirken beklenmeyen bir sorun çıktı";
-
-/* Displayed whenever a Comment Update Fails */
-"There has been an unexpected error while updating your comment" = "Yorumunuz güncellenirken beklenmeyen bir sorun çıktı";
 
 /* Generic error alert message */
 "There has been an unexpected error." = "Beklenmedik bir sorun çıktı.";
@@ -6245,12 +6115,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A general error message shown to the user when there was an API communication failure. */
 "There was a problem communicating with the site." = "Siteyle iletişim kurulurken bir sorun çıktı.";
 
-/* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
-"There was a problem connecting to WordPress.com. Please log in again." = "WordPress.com sitesi ile bağlantı kurulurken bir sorun çıktı. Lütfen yeniden oturum açın.";
-
-/* A short error message letting the user know about a problem displaying a post. */
-"There was a problem displaying this post." = "Bu yazıyı görüntülenirken bir sorun çıktı.";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Verileriniz yüklenirken bir sorun çıktı. Sayfanızı yenileyip yeniden deneyin.";
 
@@ -6260,18 +6124,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Paylaşım yönetiminde değişiklikler kaydedilirken bir sorun çıktı.";
 
-/* Explaining to the user there was an error trying to obtain the current location of the user. */
-"There was a problem when trying to access your location. Please try again later." = "Konumunuza erişilirken bir sorun çıktı. Lütfen bir süre sonra yeniden deneyin.";
-
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Parolanız değiştirilirken sorun çıktı";
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Etkinlikler yüklenirken bir sorun çıktı";
-
-/* Text displayed when there is a failure loading the plan list */
-"There was an error loading plans" = "Paketler yüklenirken bir sorun çıktı";
 
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Eklentiler yüklenirken bir sorun çıktı";
@@ -6284,9 +6142,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "Geçmiş yüklenirken bir hata oluştu";
-
-/* Text displayed when there is a failure loading the plan details */
-"There was an error loading the plan" = "Paket yüklenirken bir sorun çıktı";
 
 /* Text displayed when there is a failure loading the history feed */
 "There was an error loading the scan history" = "Tarama geçmişi yüklenirken bir sorun çıktı";
@@ -6525,8 +6380,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes the comment */
 "Trash" = "Çöp";
 
-/* Name for the status of a trashed post
-   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Çöpe atıldı";
 
@@ -6540,7 +6394,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Try & Customize" = "Dene ve özelleştir";
 
 /* Retries an Action
-   Retry
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Yeniden deneyin";
@@ -6842,8 +6695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Yüklenemedi";
 
-/* Label for the date a media asset (image / video) was uploaded
-   Status for Media object that is uploaded and sync with server. */
+/* Label for the date a media asset (image / video) was uploaded */
 "Uploaded" = "Yüklendi";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
@@ -6861,8 +6713,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the user uploaded themes section, should be the same as in Calypso */
 "Uploaded themes" = "Yüklenmiş temalar";
 
-/* \"Uploading\" Status text
-   Status for Media object that is being uploaded. */
+/* \"Uploading\" Status text */
 "Uploading" = "Yükleniyor";
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
@@ -7184,12 +7035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
 "Weekly Roundup: %@" = "Haftalık özet: %@";
 
-/* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "Jetpack uygulamasına hoş geldiniz";
-
-/* Post Signup Interstitial Title Text for WordPress iOS */
-"Welcome to WordPress" = "WordPress kullanmaya hoş geldiniz";
-
 /* A message title */
 "Welcome to the Reader" = "Okuyucuya hoş geldiniz";
 
@@ -7252,6 +7097,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "What's New in Jetpack" = "Jetpack yenilikleri";
 
 /* Opens the What's New / Feature Announcement modal */
+"What's New in Reader" = "Okuyucudaki Yenilikler";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress yenilikleri";
 
 /* Title of alert helping users understand their site address */
@@ -7293,38 +7141,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "WordPress uygulama ayarları";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress uygulamaları - Her ekran için uygulamalar";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress bloğu";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress yardımı";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress ortam kitaplığı";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "WordPress bildirim ayarları";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress bildirimleri";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress eklentileri";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress profili";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress okuyucusu";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "WordPress sitesi bilgileri";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress temaları";
@@ -7334,9 +7161,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for label when the user's site is a multisite. */
 "WordPress multisites are not supported" = "WordPress çoklu siteleri desteklenmez";
-
-/* Explaining to the user why the app needs access to the device location. */
-"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress geçerli yazıya konum bilgilerini ekleyebilmek için aygıtınızın konumuna erişme iznine gerek duyuyor. Lütfen gizlilik ayarlarınızı güncelleyin.";
 
 /* Downloadable/Restorable items: WordPress root */
 "WordPress root" = "WordPress kök klasörü";
@@ -7352,9 +7176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com hesabı";
-
-/* Title for the Plans list header */
-"WordPress.com Plans" = "WordPress.com paketleri";
 
 /* Title for the WordPress.com themes section, should be the same as in Calypso */
 "WordPress.com Themes" = "WordPress.com temaları";
@@ -7383,9 +7204,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Yazı yaz";
-
-/* Placeholder text for inline compose view */
-"Write a reply" = "Yanıt yazın";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Yanıt yazın…";
@@ -7488,9 +7306,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Herhangi bir silinmiş yazınız yok";
 
-/* Error message that informs reader comments from a private blog cannot be fetched. */
-"You don't have permission to view this private blog." = "Bu özel blogu görüntülemek için izniniz yok.";
-
 /* Description for the first domain purchased with a paid plan. */
 "You have a free one-year domain registration with your plan." = "Paketinizde ücretsiz bir yıllık etki alanı kaydı var.";
 
@@ -7506,8 +7321,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
 "You have no reminders set." = "Ayarlanmış bir hatırlatıcınız yok.";
 
-/* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
+/* Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Kaydedilmemiş değişiklikleriniz var.";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
@@ -7593,6 +7407,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Parolanız en az altı karakter uzunluğunda olmalıdır. Zorlaştırmak için, büyük harf, küçük harf, sayı ve ! \"? $% ^ &) gibi karakterler kullanın.";
+
+/* Message of Export Content confirmation alert */
+"Your posts, pages, and settings will be mailed to the account's email address." = "Gönderileriniz, sayfalarınız ve ayarlarınız hesabın e-posta adresine e-posta ile gönderilecek.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Yazılarınız, sayfalarınız ve ayarlarınız %@ adresine e-posta ile gönderilecek.";
@@ -7684,23 +7501,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility identifier for an 'Add Comment' button */
 "addCommentButton.accessibilityIdentifity" = "Yorum Ekle";
 
-/* Error message shown a URL does not point to an existing site. */
-"addSite.restApiNotAvailable" = "Bu adresteki site bir WordPress sitesi değil. Siteyle bağlantı kurabilmemiz için sitede WordPress kullanılmalıdır.";
-
-/* Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site */
-"addSite.selfHosted.authenticationFailed" = "Uygulama Şifresi doğrulaması kullanılarak oturum açılamıyor.";
+/* Error message when user cancels login */
+"addSite.selfHosted.cancelled" = "Oturum açma iptal edildi";
 
 /* A message to inform users to type the site address in the text field. */
 "addSite.selfHosted.enterSiteAddress" = "Bağlanmak istediğiniz WordPress sitesinin adresini girin.";
 
-/* Error message when user input is not a WordPress site */
-"addSite.selfHosted.invalidUrl" = "Site adresi geçerli değil.";
-
 /* Error message shown when failing to load details from a self-hosted WordPress site */
 "addSite.selfHosted.loadingSiteInfoFailure" = "WordPress sitesi ayrıntıları yüklenemiyor";
 
-/* Error message shown when application-password authentication is disabled on a self-hosted WordPress site */
-"addSite.selfHosted.noLoginUrlFound" = "Uygulama Şifresi doğrulamasının WordPress sitesinde etkinleştirilmesi gerekiyor.";
+/* Error message when user signs in with an unexpected usern. The first argument is the expected username */
+"addSite.selfHosted.mismatchUser" = "Lütfen oturum açmış bir kullanıcı ile giriş yapın. Kullanıcı adı: %@";
 
 /* Error message shown when failing to save a self-hosted site to user's device */
 "addSite.selfHosted.savingSiteFailure" = "WordPress sitesi kaydedilemiyor, lütfen daha sonra tekrar deneyin.";
@@ -7708,14 +7519,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the page to add a self-hosted site */
 "addSite.selfHosted.title" = "Kullanıcı Tarafından Barındırılan Site Ekleyin";
 
-/* Error message when an unknown error occurred when adding a self-hosted site */
-"addSite.selfHosted.unknownError" = "Bir sorun oluştu. Lütfen tekrar deneyin.";
+/* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
+"addSite.selfHosted.xmlrpcDisabled" = "WordPress sitesine bağlanılamadı. XML-RPC sunucuda devre dışı bırakılmış olabilir. Bu sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
 
 /* Age between dates equaling one hour. */
 "an hour" = "bir saat";
 
 /* This is the string we display when prompting the user to review the Jetpack app */
 "appRatings.jetpack.prompt" = "Jetpack hakkında ne düşünüyorsunuz?";
+
+/* This is the string we display when prompting the user to review the Reader app */
+"appRatings.reader.prompt" = "Okuyucu hakkında ne düşünüyorsunuz?";
 
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "WordPress hakkında ne düşünüyorsunuz?";
@@ -8435,6 +8249,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the alert asking for feedback */
 "experimentalFeatures.editorFeedbackTitle" = "Görüşlerinizi Paylaşın";
 
+/* Communicates the future removal of the option to disable the experimental editor, displayed beneath the experimental features list */
+"experimentalFeatures.editorNote" = "Deneysel Blok Düzenleyici gelecekteki bir sürümde varsayılan olacak ve bunu devre dışı bırakma özelliği kaldırılacak.";
+
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Deneysel İşlevler";
 
@@ -8480,14 +8297,8 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Yeniden dene";
 
-/* Error message format when REST API returns an error response. The first argument is error message. */
-"generic.error.rest-api-error" = "Siteniz bir hata yanıtı gönderdi: %@";
-
 /* A generic title for an error */
 "generic.error.title" = "Hata";
-
-/* Error message when failing to parse API responses */
-"generic.error.unparsableResponse" = "Siteniz, uygulamanın ayrıştıramadığı bir yanıt gönderdi";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Blog hatırlatıcıları ayarlayın";
@@ -8659,6 +8470,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress, Jetpack ile daha iyi";
+
+/* Title for the button that starts the Jetpack connection process */
+"jetpack.connection.connect.button" = "Sitenizi bağlayın";
+
+/* Error message shown when WordPress.com authentication fails */
+"jetpack.connection.error.authentication" = "Geçersiz WordPress.com Hesabı";
+
+/* Error message shown when a connection step is attempted in an invalid order */
+"jetpack.connection.error.context" = "Bu adım henüz hazır değil";
+
+/* Title for the retry button shown when a connection step fails */
+"jetpack.connection.retry.button" = "Tekrar dene";
+
+/* Status message when a connection step is pending */
+"jetpack.connection.stage.pending" = "Başlaması bekleniyor";
+
+/* Status message when a connection step is in progress */
+"jetpack.connection.stage.processing" = "Devam ediyor...";
+
+/* Status message when a connection step is completed successfully */
+"jetpack.connection.stage.success" = "Tamamlandı";
+
+/* Title for the finalization step in Jetpack connection flow */
+"jetpack.connection.step.finalize.title" = "Bağlantıyı Sonlandırın";
+
+/* Title for the install step in Jetpack connection flow */
+"jetpack.connection.step.install.title" = "Jetpack'i yükleyin";
+
+/* Title for the login step in Jetpack connection flow */
+"jetpack.connection.step.login.title" = "WordPress.com’da oturum açın";
+
+/* Title for the site connection step in Jetpack connection flow */
+"jetpack.connection.step.site.title" = "Sitenize bağlanın";
+
+/* Title for the user connection step in Jetpack connection flow */
+"jetpack.connection.step.user.title" = "WordPress.com hesabınıza bağlanın";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Yeni Jetpack uygulamasına geçin";
@@ -8879,11 +8726,44 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Bu özel blogu görüntülemek için izniniz yok.";
 
+/* Button to dismiss the re-authentication view */
+"login.appPasswordReAuth.cancelButton" = "İptal Et";
+
+/* Description explaining why the user needs to re-authenticate */
+"login.appPasswordReAuth.description" = "Uygulamaya atanan uygulama parolası artık profilinizde yok.\nUygulamanın kullanacağı yeni bir uygulama şifresi oluşturmak için lütfen tekrar oturum açın.";
+
+/* Button to start the re-authentication process */
+"login.appPasswordReAuth.signInButton" = "Oturum Aç";
+
+/* Title shown when the application password is invalid */
+"login.appPasswordReAuth.title" = "Geçersiz uygulama şifresi";
+
 /* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
 "login.twoFactorInstructions.details" = "Lütfen kimlik doğrulayıcı uygulamanızdaki WordPress.com doğrulama kodunu girin.";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "istenmeyen olarak işaretlendi";
+
+/* Button title when verification link sending failed */
+"me.verifyEmail.button.retry" = "Yeniden Dene";
+
+/* Button title to send verification link */
+"me.verifyEmail.button.send" = "E-postayı tekrar gönder";
+
+/* Button title while verification link is being sent */
+"me.verifyEmail.button.sending" = "Gönderiliyor...";
+
+/* Button title after verification link is sent */
+"me.verifyEmail.button.sent" = "E-posta gönderildi";
+
+/* Message for email verification card */
+"me.verifyEmail.message.noEmail" = "Hesabınızın güvenliğini sağlamak ve daha fazla özelliğe erişmek için e-postanızı doğrulayın.\nOnay e-postası için gelen kutunuzu kontrol edin veya yeni bir e-posta almak için '%@' öğesine tıklayın.";
+
+/* Message for email verification card with email address */
+"me.verifyEmail.message.withEmail" = "Hesabınızın güvenliğini sağlamak ve daha fazla özelliğe erişmek için e-postanızı doğrulayın.\nOnay e-postası için %1$@ adresinden gelen kutunuzu kontrol edin veya yeni bir e-posta almak için '%2$@' öğesine tıklayın.";
+
+/* Title for email verification card */
+"me.verifyEmail.title" = "E-posta Adresinizi Doğrulayın";
 
 /* Me tab menu items */
 "meMenu.submitFeedback" = "Geri bildirim gönder";
@@ -9434,6 +9314,9 @@ Example: Reply to Pamela Nguyen */
 /* Message shown while loading plugin details */
 "pluginDetails.loading" = "Eklenti bilgileri yükleniyor...";
 
+/* Placeholder message shown when a plugin has no description */
+"pluginDetails.noDescription" = "Bu eklenti herhangi bir açıklama sağlamadı.";
+
 /* Title of the changelog section in plugin details */
 "pluginDetails.section.changelog" = "Değişiklik Günlüğü";
 
@@ -9722,30 +9605,6 @@ Example: Reply to Pamela Nguyen */
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Görünürlüğü \"Özel\" olarak değiştirdiğinizde gönderi hemen yayımlanır";
 
-/* Localized post type: `Page` */
-"postType.page" = "sayfa";
-
-/* Localized post type: `Post` */
-"postType.post" = "gönderi";
-
-/* Details for a 'Private' privacy setting */
-"postVisibility.private.details" = "Yalnızca site yöneticileri ve düzenleyicileri tarafından görülebilir";
-
-/* Title for a 'Private' privacy setting */
-"postVisibility.private.title" = "Gizli";
-
-/* Details for a 'Password Protected' privacy setting */
-"postVisibility.protected.details" = "Herkes tarafından görülebilir ancak şifre gerektirir";
-
-/* Title for a 'Password Protected' privacy setting */
-"postVisibility.protected.title" = "Şifre korumalı";
-
-/* Details for a 'Public' (default) privacy setting */
-"postVisibility.public.details" = "Herkes tarafından görülebilir";
-
-/* Title for a 'Public' (default) privacy setting */
-"postVisibility.public.title" = "Herkese açık";
-
 /* Button cancel */
 "postVisibilityPicker.cancel" = "İptal Et";
 
@@ -9966,6 +9825,18 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Oturum açtınız!";
 
+/* No comment provided by engineer. */
+"reachability-utils.alert.cancel" = "Tamam";
+
+/* No comment provided by engineer. */
+"reachability-utils.alert.retry" = "Tekrar denensin mi?";
+
+/* No comment provided by engineer. */
+"reachability-utils.alert.title" = "Bağlantı yok";
+
+/* Message of error prompt shown when no internet connection is available */
+"reachability-utils.alert.utils" = "İnternet bağlantısı çevrimdışı gibi duruyor.";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "%@ bloğu artık okuyucunuzda görüntülenmeyecek. Geri almak için dokunun.";
 
@@ -10002,8 +9873,26 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Takip Etmeyi Bırak";
 
+/* Button title. Follow the comments on a post. */
+"reader.comments.buttonFollow" = "Takip et";
+
 /* Informational message, should be short. */
 "reader.comments.commentsClosed" = "Yorumlar Kapalı";
+
+/* Empty state view title */
+"reader.comments.emptyStateTitle" = "Yorum yapan ilk kişi olun.";
+
+/* Empty state view title */
+"reader.comments.errorLoadingComments" = "Yorumlar yüklenirken beklenmeyen bir hata oluştu.";
+
+/* VoiceOver hint */
+"reader.comments.followingSettingAccessibilityIdentifier" = "Gönderi için bildirim ayarlarını açın";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"reader.comments.noPermissionToViewPrivateBlog" = "Bu özel blogu görüntülemek için izniniz yok.";
+
+/* Navigation title */
+"reader.comments.title" = "Yorumlar";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Sitedeki yazıları görüntüler";
@@ -10081,8 +9970,23 @@ but tapping on this button will remove their like from the post. */
 /* Screen header details */
 "reader.following.header.details" = "Abone olduğunuz bloglarla ilgili güncel gelişmelerden haberdar olun.";
 
+/* Empty state view */
+"reader.following.lists.emptyTitle" = "Listeler Boş";
+
+/* Screen header details */
+"reader.home.header.details" = "Abone olduğunuz bloglarla ilgili güncel gelişmelerden haberdar olun.";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.home.title" = "Ana Sayfa";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.library.title" = "Kütüphane";
+
 /* Used in multiple contexts, usually as a screen title */
 "reader.likes.title" = "Beğeniler";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.lists.title" = "Listeler";
 
 /* Reader logged-out screen details */
 "reader.loggedOut.details" = "Favori bloglarınızı takip etmek için WordPress.com hesabıyla oturum açın";
@@ -10325,7 +10229,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title of a Reader tab showing Posts matching a user's search query */
 "reader.search.tab.posts" = "Gönderiler";
 
-/* Title of the Reader's search feature */
+/* Title of the Reader's search feature
+   Used in multiple contexts, usually as a screen title */
 "reader.search.title" = "Arama";
 
 /* Screen title. Reader select interests title label text. */
@@ -10351,21 +10256,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Sevdiğiniz blogları keşfedin ve takip edin";
-
-/* Reader sidebar menu item */
-"reader.sidebar.discover" = "Keşfet";
-
-/* Reader sidebar menu item */
-"reader.sidebar.likes" = "Beğeniler";
-
-/* Reader sidebar menu item */
-"reader.sidebar.recent" = "Son";
-
-/* Reader sidebar menu item */
-"reader.sidebar.saved" = "Kaydedildi";
-
-/* Reader sidebar menu item */
-"reader.sidebar.search" = "Ara";
 
 /* Reader sidebar section title */
 "reader.sidebar.section.favorites.title" = "Favoriler";
@@ -10415,7 +10305,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Number of subscriptions on a site (singular) */
 "reader.subscriptions.subscriptionsSingular" = "%@ abone";
 
-/* Navigation bar title */
+/* Used in multiple contexts, usually as a screen title */
 "reader.subscriptions.title" = "Abonelikler";
 
 /* A suggestion of topics the user might want to subscribe to */
@@ -10457,11 +10347,26 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Takip ediliyor";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.tags.title" = "Etiketler";
+
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ takibini bırak";
 
 /* Field title */
 "reader.userProfile.site" = "Site";
+
+/* Reader Welcome screen login button */
+"reader.welcome.continueText" = "WordPress.com ile devam et";
+
+/* Reader Welcome screen */
+"reader.welcome.subtitle" = "En büyük blog topluluğuna katılın";
+
+/* Reader app primary navigation tab bar */
+"readerApp.tabBar.me" = "Ben";
+
+/* Reader app primary navigation tab bar */
+"readerApp.tabBar.notifications" = "Bildirimler";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Geri";
@@ -10739,10 +10644,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Message shown when there are no inactive plugins on the site */
 "site.plugins.empty.inactive" = "Etkin olmayan eklenti yok";
 
-/* The plugin fillter option for displaying active plugins
-   The plugin fillter option for displaying all plugins
-   The plugin fillter option for displaying inactive plugins */
+/* The plugin fillter option for displaying active plugins */
+"site.plugins.filter.option.active" = "Etkin";
+
+/* The plugin fillter option for displaying all plugins */
 "site.plugins.filter.option.all" = "Tümü";
+
+/* The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.inactive" = "Etkin değil";
 
 /* Title of the plugin filter picker */
 "site.plugins.filter.title" = "Filtrele";
@@ -11442,114 +11351,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Durum";
 
-/* Preview title of all-time posts and most views widget */
-"widget.allTimePostViews.previewTitle" = "Tüm zamanlarda görüntülemeler ve en çok beğenmeler";
-
-/* Preview title of all-time views widget */
-"widget.allTimeViews.previewTitle" = "Tüm zamanlarda görüntülemeler";
-
-/* Preview title of all-time views and visitors widget */
-"widget.allTimeViewsVisitors.previewTitle" = "Tüm zamanlarda görüntülemeler ve ziyaretçiler";
-
-/* Title of best views ever label in all time widget */
-"widget.alltime.bestviews.label" = "Şimdiye kadar en iyi görüntülemeler";
-
-/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
-"widget.alltime.bestviewsshort.label" = "En çok görüntüleme";
-
-/* Title of the no data view in all time widget */
-"widget.alltime.nodata.view.title" = "Tüm zamanların istatistikleri yüklenemiyor.";
-
-/* Title of the no site view in all time widget */
-"widget.alltime.nosite.view.title" = "Tüm zamanların istatistiklerini görmek için bir site oluşturun veya ekleyin.";
-
-/* Title of posts label in all time widget */
-"widget.alltime.posts.label" = "Yazılar";
-
-/* Description of all time widget in the preview */
-"widget.alltime.preview.description" = "WordPress sitenizdeki tüm etkinliklerden haberdar olun.";
-
-/* Title of all time widget */
-"widget.alltime.title" = "Tüm zamanlar";
-
-/* Title of the unconfigured view in all time widget */
-"widget.alltime.unconfigured.view.title" = "Tüm zamanlara ait istatistikleri görmek için WordPress oturumu açın.";
-
-/* Title of the unconfigured view in all time widget */
-"widget.jetpack.alltime.unconfigured.view.title" = "Tüm zamanların istatistiklerini görüntülemek için Jetpack oturumu açın.";
-
-/* Title of the unconfigured view in this week widget */
-"widget.jetpack.thisweek.unconfigured.view.title" = "Bu haftanın istatistiklerini görüntülemek için Jetpack oturumu açın.";
-
-/* Title of the unconfigured view in today widget */
-"widget.jetpack.today.unconfigured.view.title" = "Bugünün istatistiklerini görüntülemek için Jetpack oturumu açın.";
-
-/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
-"widget.lockscreen.alltimeview.label" = "Tüm zamanlarda görüntülemeler";
-
-/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
-"widget.lockscreen.todayview.label" = "Bugünkü görüntülemeler";
-
-/* Title of the no data view in this week widget */
-"widget.thisweek.nodata.view.title" = "Bu haftanın istatistikleri yüklenemedi.";
-
-/* Title of the no site view in this week widget */
-"widget.thisweek.nosite.view.title" = "Bu haftanın istatistiklerini görmek için bir site oluşturun veya ekleyin.";
-
-/* Description of all time widget in the preview */
-"widget.thisweek.preview.description" = "WordPress sitenizde bu haftaki etkinliklerden haberdar olun.";
-
-/* Title of this week widget */
-"widget.thisweek.title" = "Bu hafta";
-
-/* Title of the unconfigured view in this week widget */
-"widget.thisweek.unconfigured.view.title" = "Bu haftanın istatistiklerini görmek için WordPress oturumu açın.";
-
-/* Title of comments label in today widget */
-"widget.today.comments.label" = "Yorumlar";
-
-/* Title of the disabled view in today widget */
-"widget.today.disabled.view.title" = "İstatistikler Jetpack uygulamasına taşındı. Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
-
-/* Title of likes label in today widget */
-"widget.today.likes.label" = "Beğeniler";
-
-/* Fallback title of the no data view in the stats widget */
-"widget.today.nodata.view.fallbackTitle" = "Site istatistikleri yüklenemedi.";
-
-/* Title of the no data view in today widget */
-"widget.today.nodata.view.title" = "Bugünün istatistikleri yüklenemedi.";
-
-/* Title of the no site view in today widget */
-"widget.today.nosite.view.title" = "Bugünün istatistiklerini görmek için bir site oluşturun veya ekleyin.";
-
-/* Description of today widget in the preview */
-"widget.today.preview.description" = "WordPress sitenizde bugünkü etkinliklerden haberdar olun.";
-
-/* Title of today widget */
-"widget.today.title" = "Bugün";
-
-/* Title of the unconfigured view in today widget */
-"widget.today.unconfigured.view.title" = "Bugünün istatistiklerini görmek için WordPress oturumu açın.";
-
-/* Error message to show if a widget view is unavailable */
-"widget.today.view.unavailable.title" = "Görünüm kullanılamıyor";
-
-/* Title of views label in today widget */
-"widget.today.views.label" = "Görüntülemeler";
-
-/* Title of visitors label in today widget */
-"widget.today.visitors.label" = "Ziyaretçiler";
-
-/* Preview title of today's likes and commnets widget */
-"widget.todayLikesComments.previewTitle" = "Bugünkü beğeniler ve yorumlar";
-
-/* Preview title of today's views widget */
-"widget.todayViews.previewTitle" = "Bugünkü görüntülemeler";
-
-/* Preview title of today's views and visitors widget */
-"widget.todayViewsVisitors.previewTitle" = "Bugünkü görüntülemeler ve ziyaretçiler";
-
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "gelecekte kullanılamayacak.";
 
@@ -11579,9 +11380,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Bir sorun çıktı. Lütfen bir süre sonra yeniden deneyin.";
-
-/* Error message when failing to find selected media file on the user's device. */
-"wordpress.api.upload.media.fileNotFound" = "Cihazdaki ortam dosyası bulunamıyor";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack uygulamasına geç";
@@ -11627,6 +11425,21 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message when user signs in with an unexpected email address. The first argument is the expected email address */
 "wpComLogin.error.mismatchedEmail" = "Lütfen %@ e-posta adresiyle oturum açın";
+
+/* Message shown when user denies WordPress.com login, offering option to try with different account */
+"wpComLogin.loginDenied.message" = "Farklı bir hesaba ihtiyacınız varsa farklı bir hesapla oturum açabilirsiniz. Başlamak için \"%@\" öğesine dokunun.";
+
+/* Title of alert shown when user cancels WordPress.com login */
+"wpComLogin.loginDenied.title" = "Giriş İptal Edildi";
+
+/* Button title for signing in with a different WordPress.com account */
+"wpComLogin.loginDenied.useDifferentAccount" = "Farklı Hesap Kullan";
+
+/* Button title to log out the current WordPress.com account */
+"wpcom.token.alert.button.logout" = "Oturumu kapat";
+
+/* Button title to Sign In to WordPress.com */
+"wpcom.token.alert.button.signin" = "Oturum Aç";
 
 /* Message title to be displayed when the user needs to re-authenticate their WordPress.com account. */
 "wpcom.token.fix.signin" = "WordPress.com'da oturum aç";

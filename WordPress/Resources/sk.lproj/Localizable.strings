@@ -92,9 +92,6 @@
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Bez názvu)";
 
-/* Lets a user know that a local draft does not have a title. */
-"(no title)" = "(bez názvu)";
-
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Pridať nové menu";
 
@@ -276,9 +273,6 @@
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "Vyžaduje sa aktívne internetové pripojenie k náhľadu aktivít";
 
-/* An error message shown when there is no internet connection. */
-"An active internet connection is required to view plans" = "Na zobrazenie paušálov je potrebné pripojenie k internetu";
-
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Vyžaduje sa aktívne internetové pripojenie, aby ste videli pluginy.";
@@ -312,9 +306,6 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Vyskytla sa neznáma chyba. Prosím skúste to znova.";
-
-/* the comment has an anonymous author. */
-"Anonymous" = "Anonymný";
 
 /* App Settings Title
    Link to App Settings section
@@ -423,9 +414,6 @@
    Previous web page */
 "Back" = "Späť";
 
-/* Message shown encouraging the user to leave a comment on a post in the reader. */
-"Be the first to leave a comment." = "Buďte prvý, kto napíše komentár.";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blok citácie";
@@ -487,7 +475,6 @@
    Cancel action title
    Cancel button
    Cancel button label
-   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
@@ -535,15 +522,13 @@
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "Titulok";
 
-/* Alert title.
-   Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+/* Alert title. */
 "Careful!" = "Pozor!";
 
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategórie";
 
-/* Category menu item in share extension.
-   Menu item label for linking a specific category. */
+/* Category menu item in share extension. */
 "Category" = "Kategória";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -602,7 +587,6 @@
 
 /* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
-   Dismiss the current view
    Dismisses the current screen */
 "Close" = "Zavrieť";
 
@@ -623,9 +607,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Zbierať informácie";
-
-/* Menu item label for linking a comic page. */
-"Comics" = "Komiks";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -649,7 +630,6 @@
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
-   Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Komentáre";
 
@@ -834,9 +814,6 @@
 /* No comment provided by engineer. */
 "Current" = "Súčasné";
 
-/* Label title. Refers to the current WordPress.com plan for a user's site. */
-"Current Plan" = "Súčasný paušál";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Aktuálna téma";
 
@@ -875,9 +852,6 @@
    Title for selecting a default category for a post */
 "Default Category" = "Predvolená kategória";
 
-/* Menu name for the defaut menu that is automatically generated. */
-"Default Menu" = "Základné menu";
-
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Predvolený formát článku";
@@ -886,7 +860,6 @@
 "Defaults for New Posts" = "Základné pre nové príspevky";
 
 /* Delete
-   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title of the trash confirmation alert. */
 "Delete" = "Odstrániť";
@@ -967,8 +940,7 @@
 "Discussion" = "Diskusia";
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Zrušiť";
 
 /* Display Name label text.
@@ -997,9 +969,6 @@
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Dvojklikom odmietnete";
-
-/* Name for the status of a draft post. */
-"Draft" = "Koncept";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Koncepty";
@@ -1188,9 +1157,6 @@
 /* Section title for the external table section in the blog details screen */
 "External" = "Externý";
 
-/* Status for Media object that is failed upload or export. */
-"Failed" = "Neúspešné";
-
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Chyba pri nahrávaní súboru.\nKliknutím otvoríte nastavenia.";
 
@@ -1232,9 +1198,6 @@
    User's First Name */
 "First Name" = "Krstné meno";
 
-/* Button title. Follow the comments on a post. */
-"Follow" = "Odoberať";
-
 /* User role badge */
 "Follower" = "Odberateľ";
 
@@ -1273,9 +1236,6 @@
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Získať informácie o účte";
-
-/* Cancel */
-"Give Up" = "Vzdať sa";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Prejsť na čítačku";
@@ -1596,8 +1556,7 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Komentár sa páči.";
 
-/* Label for link title in Clicks stat.
-   Menu item label for linking a custom source URL. */
+/* Label for link title in Clicks stat. */
 "Link" = "Odkaz";
 
 /* Menus title label when editing a menu item as a link. */
@@ -1635,12 +1594,6 @@
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Načítanie menu...";
 
-/* Text displayed while loading plans details */
-"Loading Plan..." = "Načítava sa paušál...";
-
-/* Text displayed while loading plans details */
-"Loading Plans..." = "Nahrávajú sa plány...";
-
 /* Text displayed while loading an specific plugin */
 "Loading Plugin..." = "Načítava sa plugin ...";
 
@@ -1663,20 +1616,8 @@
    Text displayed while loading time zones */
 "Loading..." = "Nahráva sa...";
 
-/* Status for Media object that is only exists locally. */
-"Local" = "Miestne";
-
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Miestne zmeny";
-
-/* Title for alert when a generic error happened when trying to find the location of the device */
-"Location" = "Poloha";
-
-/* Explaining to the user that location services need to be enable in order to geotag a post. */
-"Location Services must be enabled before WordPress can add your current location. Please enable Location Services from the Settings app." = "Lokalizačné služby musia byť povolené predtým, ako WordPress môže pridať svoju aktuálnu polohu. Povoľte Lokalizačné služby v nastaveniach aplikácie.";
-
-/* Used when geo-tagging posts, if the geo-tagging failed. */
-"Location unknown" = "Neznáma poloha";
 
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Súbory denníka podľa dátumu vytvorenia";
@@ -1847,9 +1788,6 @@
    Title of My Site tab */
 "My Site" = "Moja webová stránka";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Moja webová stránka je vo WordPress";
-
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
@@ -1888,9 +1826,6 @@
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nový článok";
-
-/* Menu item title text used as default when creating a new menu item. */
-"New item" = "Nová položka";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Nové príspevky";
@@ -1934,9 +1869,6 @@
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
 
-/* Label used for posts without a title in spotlight search. */
-"No Title" = "Bez názvu";
-
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Zatiaľ žiadna aktivita";
 
@@ -1951,8 +1883,7 @@
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Žiadne komentáre";
 
-/* An error message title shown when there is no internet connection.
-   Displayed during Site Creation, when searching for Verticals and the network is unavailable.
+/* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Žiadne spojenie";
 
@@ -2062,7 +1993,6 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -2098,8 +2028,7 @@
    Title for the view when there's an error loading time zones */
 "Oops" = "Oops";
 
-/* An informal exclaimation meaning `something went wrong`.
-   Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
+/* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "Ojoj!";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -2109,8 +2038,7 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Otvoriť Mail";
 
-/* Go to the settings app
-   Title of a button that opens the apps settings in the system Settings.app */
+/* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
 
 /* No comment provided by engineer. */
@@ -2157,8 +2085,7 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Ďalšie webové stránky";
 
-/* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page
+/* Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
@@ -2184,12 +2111,8 @@
 "Password" = "Heslo";
 
 /* Button title for Pending comment state.
-   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Čakajúce";
-
-/* Name for the status of a post pending review. */
-"Pending review" = "Čakajúce na kontrolu";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature.
@@ -2210,10 +2133,6 @@
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Vyberte užívateľské meno";
-
-/* Action title. Noun. Links to a blog's Plans screen.
-   Title for the plan selector */
-"Plans" = "Paušály";
 
 /* User action to play a video on the editor. */
 "Play video" = "Prehrať video";
@@ -2283,8 +2202,7 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Populárne jazyky";
 
-/* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
+/* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Článok";
 
@@ -2363,28 +2281,15 @@
    Privacy Settings Title */
 "Privacy Settings" = "Nastavenia súkromia";
 
-/* Name for the status of a post that is marked private. */
-"Private" = "Súkromné";
-
-/* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
-"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Proces odstráni všetky údaje WordPress.com z tohto zariadenia a zmaže všetky uložené koncepty. Neprídete o nič, čo ste už uložili na blogu WordPress.com.";
-
-/* Menu item label for linking a project page. */
-"Projects" = "Projekty";
-
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Zverejniť";
 
-/* A short phrase indicating a post is due to be immedately published. */
-"Publish Immediately" = "Zverejniť okamžite";
-
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Zverejniť člábok na:";
 
-/* Name for the status of a published post.
-   Period Stats 'Published' header
+/* Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Zverejnené";
 
@@ -2496,9 +2401,6 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odpovedať";
 
-/* Notifications Reply Accessibility Identifier */
-"Reply Text" = "Text odpovede";
-
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovať schválenie pre komentáre, ktoré obsahujú viacej než tento počet odkazov.";
 
@@ -2551,9 +2453,6 @@
 /* User action to retry all failed media uploads. */
 "Retry all" = "Zopakovať všetko";
 
-/* No comment provided by engineer. */
-"Retry?" = "Obnoviť?";
-
 /* Share extension error dialog cancel button text */
 "Return to post" = "Návrat na príspevok";
 
@@ -2576,7 +2475,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
    Title for the button that will save the site icon
@@ -2607,8 +2505,7 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Ukladá sa...";
 
-/* Name for the status of a scheduled post
-   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Naplánované";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -2701,9 +2598,6 @@
 
 /* Message to show when setting save failed */
 "Settings update failed" = "Aktualizácia nastavení zlyhala";
-
-/* Spoken accessibility label */
-"Share" = "Zdieľať";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Zdieľajte informácie o vašom používaní služieb s našim analytickýcm nástrojom, pokým sa prihlasujete do svojho účtu na WordPress.com. ";
@@ -2919,9 +2813,6 @@
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "Preškrtnutie ";
 
-/* Status for Media object that is only has the mediaID locally. */
-"Stub" = "Zástup";
-
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Odoslať ku kontrole";
 
@@ -2972,8 +2863,7 @@
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Podľa systému";
 
-/* Menu item label for linking a specific tag.
-   Section header for tag name in Tag Details View. */
+/* Section header for tag name in Tag Details View. */
 "Tag" = "Značka";
 
 /* Title of the alert indicating that a tag with that name already exists. */
@@ -3010,9 +2900,6 @@
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Zmluvné podmienky";
-
-/* Menu item label for linking a testimonial post. */
-"Testimonials" = "Recenzie";
 
 /* Title of a button style */
 "Text Only" = "Len text";
@@ -3061,9 +2948,6 @@
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Obrázok sa nepodarilo pridať do knižnice.";
-
-/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
-"The internet connection appears to be offline." = "Internetové pripojenie vyzerá nedostupné.";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Jazyk v ktorom je tento web primárne napísaný.";
@@ -3121,17 +3005,11 @@
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Vyskytla sa neočakávaná chyba počas úpravy vášho komentáru";
 
-/* Message shown when comments for a post can not be loaded. */
-"There has been an unexpected error while loading the comments." = "Došlo k neočakávanej chybe pri načítavaní komentárov.";
-
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Došlo k neočakávanej chybe pri odosielaní pozvánky";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Vyskytla sa neočakávaná chyba počas aktualizácie nastavení upozornení";
-
-/* Displayed whenever a Comment Update Fails */
-"There has been an unexpected error while updating your comment" = "Nastala neočakávaná chyba pri aktualizovaní vášho komentáru";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Existuje čakajúca zmena e-mailu na %@. Skontrolujte vašu schránku a vyhľadajte potvrdzovací odkaz.";
@@ -3147,32 +3025,17 @@
 /* Error message informing the user that there was a problem blocking posts from a site from their reader. */
 "There was a problem blocking posts from the specified site." = "Vyskytol sa problém s blokovaním príspevkov na tejto webovej stránke. ";
 
-/* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
-"There was a problem connecting to WordPress.com. Please log in again." = "Pri pripájaní na Wordpress.com nastala chyba. Prihláste sa znova.";
-
-/* A short error message letting the user know about a problem displaying a post. */
-"There was a problem displaying this post." = "Došlo k chybe pri zobrazení tohto príspevku.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Nastal problém pri odstraňovaní bloku z určenej webovej stránky,";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Došlo k chybe pri ukladaní zmien v nastaveniach zdieľania.";
 
-/* Explaining to the user there was an error trying to obtain the current location of the user. */
-"There was a problem when trying to access your location. Please try again later." = "Došlo k chybe pri pokuse načítať vašu polohu. Skúste to znovu pozdejšie.";
-
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Došlo k chybe pri načítavaní aktivít";
 
-/* Text displayed when there is a failure loading the plan list */
-"There was an error loading plans" = "Došlo k chybe pri načítaní paušálov";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Došlo k chybe pri načítavaní pluginov";
-
-/* Text displayed when there is a failure loading the plan details */
-"There was an error loading the plan" = "Pri načítavaní stránky sa vyskytla chyba.";
 
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Pri načítavaní tohto pluginu sa vyskytla chyba";
@@ -3286,8 +3149,7 @@
    Trashes the comment */
 "Trash" = "Kôš";
 
-/* Name for the status of a trashed post
-   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Odstránené ";
 
@@ -3298,7 +3160,6 @@
 "Try & Customize" = "Vyskúšať a prispôsobiť";
 
 /* Retries an Action
-   Retry
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Skúsiť znova";
@@ -3459,8 +3320,7 @@
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nahrávanie zlyhalo";
 
-/* Label for the date a media asset (image / video) was uploaded
-   Status for Media object that is uploaded and sync with server. */
+/* Label for the date a media asset (image / video) was uploaded */
 "Uploaded" = "Nahraté";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
@@ -3478,8 +3338,7 @@
 /* Title for the user uploaded themes section, should be the same as in Calypso */
 "Uploaded themes" = "Nahrané témy";
 
-/* \"Uploading\" Status text
-   Status for Media object that is being uploaded. */
+/* \"Uploading\" Status text */
 "Uploading" = "Nahráva sa";
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
@@ -3679,38 +3538,14 @@
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Nastavenia aplikácie WordPress";
-
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
-
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Pomoc WordPress";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Knižnica médií WordPress";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Nastavenia upozornení WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Upozornenie WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Profil WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Čítačka WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Detaily webovej stránky WordPress";
-
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Podpora pre WordPress pre iOS";
-
-/* Explaining to the user why the app needs access to the device location. */
-"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress potrebuje oprávnenie pre prístup aktuálnej polohy Vášho zariadenia pre jej pridanie do Vášho článku. Prosím aktualizujte Vaše nastavenia súkromia.";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Verzia WordPress je príliš stará";
@@ -3723,9 +3558,6 @@
 
 /* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Účet WordPress.com";
-
-/* Title for the Plans list header */
-"WordPress.com Plans" = "WordPress.com paušály";
 
 /* Title for the WordPress.com themes section, should be the same as in Calypso */
 "WordPress.com Themes" = "Témy WordPress.com";
@@ -3808,8 +3640,7 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Máte zmeny v %d príspevkoch, ktoré neboli nahrané na vašu webovú stránku. Ak sa teraz odhlásite, budú tieto zmeny zmazané. Chcete sa napriek tomu odhlásiť?";
 
-/* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
+/* Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Máte neuložené zmeny.";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
@@ -3906,24 +3737,6 @@
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "neznáma url adresa";
-
-/* Title of posts label in all time widget */
-"widget.alltime.posts.label" = "Články";
-
-/* Title of comments label in today widget */
-"widget.today.comments.label" = "Komentáre";
-
-/* Title of likes label in today widget */
-"widget.today.likes.label" = "Likes";
-
-/* Title of today widget */
-"widget.today.title" = "Dnes";
-
-/* Title of views label in today widget */
-"widget.today.views.label" = "Zobrazenia";
-
-/* Title of visitors label in today widget */
-"widget.today.visitors.label" = "Návštevníci";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "v budúcnosti nebude k dispozícii.";
