@@ -16,7 +16,16 @@ struct SelfHostedSiteAuthenticator {
         // Sign in to a self-hosted site. Using this context results in automatically reloading the app to display the site dashboard.
         case `default`
         // Sign in to a site that's alredy added to the app. This is typically used when the app needs to get a new application password.
-        case reauthentication(username: String?)
+        case reauthentication(TaggedManagedObjectID<Blog>, username: String?)
+
+        var blogID: TaggedManagedObjectID<Blog>? {
+            switch self {
+            case .default:
+                return nil
+            case let .reauthentication(blogID, _):
+                return blogID
+            }
+        }
     }
 
     private static let callbackURL = URL(string: "x-wordpress-app://login-callback")!
@@ -78,30 +87,32 @@ struct SelfHostedSiteAuthenticator {
 
     @MainActor
     func signIn(site: String, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        let details: AutoDiscoveryAttemptSuccess
         do {
-            let result = try await _signIn(site: site, from: viewController, context: context)
-            trackSuccess(url: site)
-            return result
+            details = try await internalClient.details(ofSite: site)
         } catch {
-            trackTypedError(error, url: site)
-            throw error
-        }
-    }
-
-    @MainActor
-    private func _signIn(site: String, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
-        do {
-            let (apiRootURL, credentials) = try await authenticate(site: site, from: viewController)
-            return try await handle(credentials: credentials, apiRootURL: apiRootURL, context: context)
-        } catch let error as SignInError {
-            throw error
-        } catch {
+            trackTypedError(.authentication(error), url: site)
             throw .authentication(error)
         }
+
+        return try await signIn(details: details, from: viewController, context: context)
     }
 
     @MainActor
-    private func authenticate(site: String, from viewController: UIViewController) async throws -> (apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) {
+    func signIn(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        do {
+            let (apiRootURL, credentials) = try await authenticate(details: details, from: viewController)
+            let result = try await handle(credentials: credentials, apiRootURL: apiRootURL, context: context)
+            trackSuccess(url: details.parsedSiteUrl.url())
+            return result
+        } catch {
+            trackTypedError(error, url: details.parsedSiteUrl.url())
+            throw error
+        }
+    }
+
+    @MainActor
+    private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> (apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) {
         let appId: WpUuid
         let appName: String
 
@@ -117,10 +128,13 @@ struct SelfHostedSiteAuthenticator {
         let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
         let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
 
-        let details = try await internalClient.details(ofSite: site)
-        let loginURL = try details.loginURL(for: .init(id: appId, name: appNameValue, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
-        let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
-        return (details.apiRootUrl.asURL(), try internalClient.credentials(from: callback))
+        do {
+            let loginURL = details.loginURL(for: .init(id: appId, name: appNameValue, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
+            let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
+            return (details.apiRootUrl.asURL(), try internalClient.credentials(from: callback))
+        } catch {
+            throw .authentication(error)
+        }
     }
 
     @MainActor
@@ -150,7 +164,7 @@ struct SelfHostedSiteAuthenticator {
             SVProgressHUD.dismiss()
         }
 
-        if case let .reauthentication(username) = context, let username, username != credentials.userLogin {
+        if case let .reauthentication(_, username) = context, let username, username != credentials.userLogin {
             throw .mismatchedUser(expectedUsername: username)
         }
 
@@ -165,7 +179,13 @@ struct SelfHostedSiteAuthenticator {
         // Only store the new site after credentials are validated.
         let blog: TaggedManagedObjectID<Blog>
         do {
-            blog = try await Blog.createRestApiBlog(with: credentials, restApiRootURL: apiRootURL, xmlrpcEndpointURL: xmlrpc, in: ContextManager.shared)
+            blog = try await Blog.createRestApiBlog(
+                with: credentials,
+                restApiRootURL: apiRootURL,
+                xmlrpcEndpointURL: xmlrpc,
+                blogID: context.blogID,
+                in: ContextManager.shared
+            )
         } catch {
             throw .savingSiteFailure
         }

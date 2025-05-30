@@ -20,12 +20,18 @@ public extension Blog {
         with details: WpApiApplicationPasswordDetails,
         restApiRootURL: URL,
         xmlrpcEndpointURL: URL,
+        blogID: TaggedManagedObjectID<Blog>?,
         in contextManager: ContextManager,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
-            let blog = Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
-                ?? Blog.createBlankBlog(in: context)
+            let blog = if let blogID {
+                try context.existingObject(with: blogID)
+            } else {
+                Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
+                    ?? Blog.createBlankBlog(in: context)
+            }
+
             blog.url = details.siteUrl
             blog.username = details.userLogin
             blog.restApiRootURL = restApiRootURL.absoluteString
@@ -183,13 +189,41 @@ public enum WordPressSite {
     case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
 
     public init(blog: Blog) throws {
-        if let _ = blog.account {
-            // WP.com support is not ready yet.
-            throw NSError(domain: "WordPressAPI", code: 0)
+        // Directly access the site content when available.
+        if let restApiRootURL = blog.restApiRootURL,
+           let restApiRootURL = try? ParsedUrl.parse(input: restApiRootURL),
+           let username = blog.username,
+           let authToken = try? blog.getApplicationToken() {
+            self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: restApiRootURL, username: username, authToken: authToken)
+        } else if let account = blog.account, let siteId = blog.dotComID?.intValue {
+            // When the site is added via a WP.com account, access the site via WP.com
+            let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
+            self = .dotCom(siteId: siteId, authToken: authToken)
         } else {
+            // In theory, this branch should never run, because the two if statements above should have covered all paths.
+            // But we'll keep it here as the fallback.
             let url = try blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
             let apiRootURL = try ParsedUrl.parse(input: url)
             self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
+        }
+    }
+
+    public static func throughDotCom(blog: Blog) -> Self? {
+        guard
+            let account = blog.account,
+            let siteId = blog.dotComID?.intValue,
+            let authToken = try? account.authToken ?? WPAccount.token(forUsername: account.username)
+        else { return nil }
+
+        return .dotCom(siteId: siteId, authToken: authToken)
+    }
+
+    public func blog(in context: NSManagedObjectContext) throws -> Blog? {
+        switch self {
+        case let .dotCom(siteId, _):
+            return try Blog.lookup(withID: siteId, in: context)
+        case let .selfHosted(blogId, _, _, _):
+            return try context.existingObject(with: blogId)
         }
     }
 }
