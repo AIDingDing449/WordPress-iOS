@@ -2,20 +2,30 @@ import Foundation
 import SVProgressHUD
 import WordPressFlux
 import WordPressUI
+import SwiftUI
 
 extension PostEditor {
 
+    @MainActor
     func displayPostSettings() {
-        let viewController = PostSettingsViewController.make(for: post)
-        viewController.featuredImageDelegate = self as? FeaturedImageDelegate
-        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
+        // Use the new SwiftUI-based Post Settings
+        let originalFeaturedImageID = post.featuredImage?.mediaID
+        let viewModel = PostSettingsViewModel(post: post)
+        viewModel.onEditorPostSaved = { [weak self] in
             self?.editorContentWasUpdated()
-            self?.navigationController?.dismiss(animated: true)
-        }))
-        doneButton.accessibilityIdentifier = "close"
-        viewController.navigationItem.rightBarButtonItem = doneButton
 
-        let navigation = UINavigationController(rootViewController: viewController)
+            // Check if featured image changed and notify Gutenberg
+            if let self,
+               let gutenbergVC = self as? GutenbergViewController,
+               originalFeaturedImageID != self.post.featuredImage?.mediaID {
+                let newMediaID = self.post.featuredImage?.mediaID ?? GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber
+                gutenbergVC.gutenbergDidRequestFeaturedImageId(newMediaID)
+            }
+
+            self?.navigationController?.dismiss(animated: true)
+        }
+        let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
+        let navigation = UINavigationController(rootViewController: postSettingsVC)
         self.navigationController?.present(navigation, animated: true)
     }
 

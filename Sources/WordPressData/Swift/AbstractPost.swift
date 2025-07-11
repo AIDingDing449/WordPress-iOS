@@ -28,6 +28,15 @@ public extension AbstractPost {
 
     private static let deprecatedStatuses: Set<AbstractPostRemoteStatus> = [.pushing, .failed, .local, .sync, .pushingMedia, .autoSaved]
 
+    /// Creates an array of tags by parsing a comma-separate list of tags.
+    static func makeTags(from tags: String) -> [String] {
+        tags
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
+
     // MARK: - Status
 
     /// Returns `true` is the post has one of the given statuses.
@@ -90,13 +99,6 @@ public extension AbstractPost {
         default:
             return NSLocalizedString("postType.post", value: "post", comment: "Localized post type: `Post`")
         }
-    }
-
-    // MARK: - Misc
-
-    /// A title describing the status. Ie.: "Public" or "Private" or "Password protected"
-    @objc var titleForVisibility: String {
-        PostVisibility(post: self).localizedTitle
     }
 
     /// Represent the supported properties used to sort posts.

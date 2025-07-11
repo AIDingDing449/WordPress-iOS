@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class PageTemplateCategory;
 @class PublicizeInfo;
 @class BlobEntity;
+@class PostCategory;
+@class PublicizeConnection;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -132,10 +134,10 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
 @property (nonatomic, strong, readwrite, nullable) NSSet<AbstractPost *> *posts;
-@property (nonatomic, strong, readwrite, nullable) NSSet *categories;
+@property (nonatomic, strong, readwrite, nullable) NSSet<PostCategory *> *categories;
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
-@property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet<PublicizeConnection *> *connections;
 @property (nonatomic, strong, readwrite, nullable) NSSet *inviteLinks;
 @property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
@@ -202,10 +204,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 
 // Readonly Properties
-@property (nonatomic, weak, readonly, nullable) NSArray *sortedPostFormatNames;
-@property (nonatomic, weak, readonly, nullable) NSArray *sortedPostFormats;
-@property (nonatomic, weak, readonly, nullable) NSArray *sortedConnections;
-@property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
 @property (nonatomic, strong, readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readonly, nullable) WordPressOrgRestApi *selfHostedSiteRestApi;
 @property (nonatomic, weak, readonly, nullable) NSString *version;

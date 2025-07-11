@@ -39,17 +39,6 @@ final class PublishDatePickerViewController: UIHostingController<PublishDatePick
     }
 }
 
-extension PublishDatePickerViewController {
-    static func make(viewModel: PublishSettingsViewModel, onDateUpdated: @escaping (Date?) -> Void) -> PublishDatePickerViewController {
-        PublishDatePickerViewController(configuration: .init(
-            date: viewModel.date,
-            isRequired: viewModel.isRequired,
-            timeZone: viewModel.timeZone,
-            updated: onDateUpdated
-        ))
-    }
-}
-
 struct PublishDatePickerView: View {
     @State var configuration: PublishDatePickerConfiguration
 
@@ -63,10 +52,9 @@ struct PublishDatePickerView: View {
                 }
             } header: {
                 Color.clear.frame(height: 0) // Reducing the top inset
-            }
-            if !configuration.isCurrentTimeZone {
-                Section {
-                    timeZoneRow
+            } footer: {
+                if !configuration.isCurrentTimeZone {
+                    timeZoneFooter
                 }
             }
         }
@@ -102,14 +90,18 @@ struct PublishDatePickerView: View {
         }
     }
 
-    private var timeZoneRow: some View {
-        HStack {
-            Text(Strings.timeZone)
-            Spacer()
+    private var timeZoneFooter: some View {
+        HStack(spacing: 4) {
+            Text(Strings.timeZone + ":")
+                .font(.footnote.weight(.medium))
             Text(getLocalizedTimeZoneDescription(for: configuration.timeZone))
+                .font(.footnote)
                 .truncationMode(.middle)
-                .foregroundStyle(.secondary)
-        }.lineLimit(1)
+        }
+        .frame(maxWidth: .infinity)
+        .multilineTextAlignment(.center)
+        .padding(.vertical, 8)
+        .padding(.top, 4)
     }
 
     private var datePickerRow: some View {
