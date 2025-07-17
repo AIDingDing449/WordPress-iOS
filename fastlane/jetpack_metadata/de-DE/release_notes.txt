@@ -1,10 +1,13 @@
-Wir haben auf dem Bildschirm „Kommentardetails“ einige kleine visuelle Änderungen vorgenommen. Dieser Bildschirm wird jetzt angezeigt, wenn du dir einen Kommentar aus deinen Benachrichtigungen ansiehst.
-Wir haben dem Tab „Ich“ ein Banner hinzugefügt, in dem neue Benutzer aufgefordert werden, ihre E-Mail-Adresse zu bestätigen. Anschließend hast du vollen Zugriff auf alle Funktionen der App. Die Möglichkeiten sind grenzenlos.
-Du wirst feststellen, dass die aktuell ausgewählte Website immer in der Seitenleiste sichtbar ist und nicht mehr ausgeblendet wird.
-Außerdem haben wir mehrere Fehler behoben.
-- YouTube-Video-Einbettungen werden in den Kommentaren jetzt richtig angezeigt.
-- Du kannst jetzt eine Vorschau von unbearbeiteten Entwurfsseiten anzeigen, die aus Templates erstellt wurden.
-- Gelöschte Websites werden in deiner App nicht mehr angezeigt. Ade, leb' wohl.
-- Blogs werden nach der Veröffentlichung richtig in der App synchronisiert.
-- Der Statistikbildschirm zeigt genaue Zahlen für Besucher und Aufrufe.
-- Wenn du ein iPad verwendest, stürzt die App nicht ab, nachdem du die letzte mit deinem Konto verbundene Website löschst. (Es sieht dann aber ziemlich leer aus. Möchtest du vielleicht eine neue Website erstellen?)
+Es gibt nun eine neue Abonnenten-Ansicht, die alle deine E-Mail- und Reader-Abonnenten anzeigt. Jetzt weißt du ganz genau, wer deine Inhalte liest (und liebt).
+
+Wir haben den TimeZone Picker verbessert, damit du bessere Vorschläge für deine lokale Zeitzone erhältst.
+
+Wir haben eine Suchfunktion für die Jetpack-Aktivitätsliste hinzugefügt. Außerdem erhältst du zu jeder Aktivität genaue Daten und Angaben zum Benutzer. In diesem Bereich kannst du auch sehen, wann dein herunterladbares Backup abläuft. Wissen ist Macht.
+
+Wir haben der Beitragsliste ein kleines Facelifting verpasst: Beschriftungen sehen jetzt noch besser aus, weil wir Bilder verkleinert und unnötigen Leerraum entfernt haben. Darüber hinaus haben wir die Ladeanzeigen verschoben, damit sie besser sichtbar sind.
+
+Zu guter Letzt haben wir noch ein paar andere Fehler behoben.
+- Es gab auf verschiedenen Bildschirmen ein Problem mit der Anzeige von HTML-kodierten Zeichen. Nun sehen alle kaufmännischen Und-Zeichen genau so aus, wie sie sollen. Ist das nicht großartig?
+- Die Flows „Wiederherstellen“ und „Backup herunterladen“ verdecken nicht mehr die Navigationsleiste.
+- Domains in der Domain-Suche sind jetzt richtig sortiert. Das zu finden, was du suchst, war noch nie einfacher.
+- Wir haben ein Problem mit einem Schlagwort behoben, bei dem „WordPress“ im Reader falsch geschrieben wurde. (Und dieses Problem hat uns wirklich den Schlaf geraubt.)
