@@ -34,6 +34,7 @@ class JetpackConnectionViewModel: ObservableObject {
     func connect() {
         guard !isConnecting else { return }
 
+        WPAnalytics.track(.jetpackConnectStarted)
         isConnecting = true
         Task {
             await processCurrentStep()
@@ -42,6 +43,10 @@ class JetpackConnectionViewModel: ObservableObject {
 
     private func processCurrentStep() async {
         stepStages[currentStep] = .processing
+
+        WPAnalytics.track(currentStep.event, properties: [
+            "state": "started"
+        ])
 
         do {
             switch currentStep {
@@ -59,14 +64,25 @@ class JetpackConnectionViewModel: ObservableObject {
 
             stepStages[currentStep] = .success
 
+            WPAnalytics.track(currentStep.event, properties: [
+                "state": "completed"
+            ])
+
             if let nextStep = self.nextStep() {
                 currentStep = nextStep
                 await processCurrentStep()
             } else {
                 isCompleted = true
+                WPAnalytics.track(.jetpackConnectCompleted)
             }
         } catch {
             stepStages[currentStep] = .error(error.localizedDescription)
+
+            WPAnalytics.track(currentStep.event, properties: [
+                "state": "failed",
+                "error_domain": (error as NSError).domain,
+                "error_code": (error as NSError).code
+            ])
         }
     }
 
@@ -129,6 +145,9 @@ class JetpackConnectionViewModel: ObservableObject {
     }
 
     func retryCurrentStep() {
+        WPAnalytics.track(.jetpackConnectStepRetried, properties: [
+            "step": currentStep.event.value
+        ])
         stepStages[currentStep] = .pending
         Task {
             await processCurrentStep()
@@ -151,6 +170,7 @@ private enum JetpackConnectionError: LocalizedError {
 }
 
 class JetpackConnectionService {
+    private let blogId: TaggedManagedObjectID<Blog>
     private let client: WordPressClient
     private let jetpackConnectionClient: JetpackConnectionClient
 
@@ -160,11 +180,7 @@ class JetpackConnectionService {
         // - The site is authenticated with application password, and
         // - Jetpack is not installed, or the installed jetpack version is 14.2 or above.
 
-        guard FeatureFlag.nativeJetpackConnection.enabled else { return nil }
-
         guard blog.account == nil else { return nil }
-
-        guard (try? blog.getApplicationToken()) != nil else { return nil }
 
         if let jetpack = blog.jetpack, jetpack.isInstalled, let version = jetpack.version,
            // The `version` value is not a strict semantic version number.
@@ -178,6 +194,7 @@ class JetpackConnectionService {
             return nil
         }
 
+        self.blogId = TaggedManagedObjectID(blog)
         self.client = .init(site: site)
         self.jetpackConnectionClient = .init(
             apiRootUrl: apiRootURL,
@@ -253,6 +270,26 @@ class JetpackConnectionService {
                 )
             }
         }
+
+        // Refresh the blog options, so that we can get the latest Jetpack related status.
+        try await withCheckedThrowingContinuation { [blogId] (continuation: CheckedContinuation<Void, Error>) in
+            DispatchQueue.main.async {
+                let blog: Blog
+                do {
+                    blog = try ContextManager.shared.mainContext.existingObject(with: blogId)
+                } catch {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                let service = BlogService(coreDataStack: ContextManager.shared)
+                service.syncBlog(
+                    blog,
+                    success: { continuation.resume(returning: ()) },
+                    failure: { continuation.resume(throwing: $0) }
+                )
+            }
+        }
     }
 }
 
@@ -283,6 +320,21 @@ enum JetpackConnectionStep: Int, CaseIterable {
             Strings.stepUserConnectionTitle
         case .finalize:
             Strings.stepFinalizeTitle
+        }
+    }
+
+    var event: WPAnalyticsEvent {
+        switch self {
+        case .login:
+            return .jetpackConnectLogin
+        case .install:
+            return .jetpackConnectInstall
+        case .siteConnection:
+            return .jetpackConnectSiteConnection
+        case .userConnection:
+            return .jetpackConnectUserConnection
+        case .finalize:
+            return .jetpackConnectFinalize
         }
     }
 }

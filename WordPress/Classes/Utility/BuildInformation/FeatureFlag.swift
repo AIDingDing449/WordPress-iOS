@@ -24,7 +24,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
-    case nativeJetpackConnection
     case newsletterSubscribers
     case newStats
 
@@ -79,8 +78,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .pluginManagementOverhaul:
             return false
-        case .nativeJetpackConnection:
-            return BuildConfiguration.current == .debug
         case .newsletterSubscribers:
             return true
         case .newStats:
@@ -126,7 +123,6 @@ extension FeatureFlag {
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
-        case .nativeJetpackConnection: "Native Jetpack Connection"
         case .newsletterSubscribers: "Newsletter Subscribers"
         case .newStats: "New Stats"
         }
