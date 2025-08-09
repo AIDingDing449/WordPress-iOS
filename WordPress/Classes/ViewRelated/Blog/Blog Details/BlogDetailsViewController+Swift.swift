@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SwiftUI
 import WordPressData
 import WordPressShared
 import WordPressAPI
@@ -343,6 +344,14 @@ extension BlogDetailsViewController {
         let selectedTab = selectedTab.flatMap { SiteMonitoringTab(rawValue: $0.intValue) }
         let controller = SiteMonitoringViewController(blog: blog, selectedTab: selectedTab)
         presentationDelegate?.presentBlogDetailsViewController(controller)
+    }
+
+    @objc public func showApplicationPasswords() {
+        let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
+        let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) {
+            ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
+        }
+        presentationDelegate?.presentBlogDetailsViewController(UIHostingController(rootView: view))
     }
 }
 
