@@ -496,8 +496,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
 
         mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
-            guard let self, let media = assets as? [Media] else {
-                self?.editorViewController.setMediaUploadAttachment("[]")
+            guard let self, let media = assets as? [Media], !media.isEmpty else {
                 return
             }
             let mediaInfos = media.map { item in
@@ -1057,18 +1056,6 @@ extension EditorConfiguration {
             }
         }
         self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
-
-        if !blog.isSelfHosted {
-            let siteType: String = blog.isHostedAtWPcom ? "simple" : "atomic"
-            do {
-                self.webViewGlobals = [
-                    try WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
-                ]
-            } catch {
-                wpAssertionFailure("Failed to create WebViewGlobal", userInfo: ["error": "\(error)"])
-                self.webViewGlobals = []
-            }
-        }
     }
 
     /// Returns true if the plugins should be enabled for the given blog.
