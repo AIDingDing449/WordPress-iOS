@@ -43,14 +43,7 @@ extension Calendar {
     /// Calculates the number of units of the given component in the interval
     private func calculateOffset(for interval: DateInterval, component: Calendar.Component) -> Int {
         let components = dateComponents([component], from: interval.start, to: interval.end)
-        return switch component {
-        case .day: components.day ?? 1
-        case .weekOfYear: components.weekOfYear ?? 1
-        case .month: components.month ?? 1
-        case .quarter: components.quarter ?? 1
-        case .year: components.year ?? 1
-        default: 1
-        }
+        return components.value(for: component) ?? 1
     }
 
     /// Determines if navigation is allowed in the specified direction
@@ -69,7 +62,7 @@ extension Calendar {
     /// Determines the appropriate navigation component for a given date interval.
     ///
     /// This method analyzes the interval to determine if it represents a standard calendar period
-    /// (day, week, month, or year) and returns the corresponding component for navigation.
+    /// (day, week, month, quarter, or year) and returns the corresponding component for navigation.
     ///
     /// - Parameter interval: The date interval to analyze
     /// - Returns: The calendar component that best represents the interval, or nil if it's a custom period
@@ -88,6 +81,14 @@ extension Calendar {
            abs(monthInterval.start.timeIntervalSince(start)) < 1,
            abs(monthInterval.end.timeIntervalSince(interval.end)) < 1 {
             return .month
+        }
+
+        // Check if it's a complete quarter
+        let startOfQuarter = dateInterval(of: .quarter, for: start)
+        if let quarterInterval = startOfQuarter,
+           abs(quarterInterval.start.timeIntervalSince(start)) < 1,
+           abs(quarterInterval.end.timeIntervalSince(interval.end)) < 1 {
+            return .quarter
         }
 
         // Check if it's a complete year
