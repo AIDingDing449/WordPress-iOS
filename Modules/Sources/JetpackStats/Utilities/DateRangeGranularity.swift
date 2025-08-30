@@ -28,8 +28,8 @@ extension DateInterval {
         else if totalDays <= 90 {
             return .week
         }
-        // For ranges under about 4 years, show months
-        else if totalDays <= 365 * 4 {
+        // For ranges under about 2 years, show months
+        else if totalDays <= 365 * 2 {
             return .month
         }
         // For ranges > 2 years: show yearly data
