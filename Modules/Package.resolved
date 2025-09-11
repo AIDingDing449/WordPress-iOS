@@ -1,5 +1,5 @@
 {
-  "originHash" : "14c576a9c14b361f88a70c70a57c96d88dc6416cf1e2b0def542d10f2e4b6213",
+  "originHash" : "8fb483b11259c3360d75309d51910816b579acbef2447af7db2577f7f3e153ea",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Automattic-Tracks-iOS",
       "state" : {
-        "revision" : "437f586a62c07c6ceec9baf043237b2afe7ea1ac",
-        "version" : "3.5.2"
+        "revision" : "048f3c469f4c82d636da380a5766a8b1c5982238",
+        "version" : "3.5.4"
       }
     },
     {
@@ -298,10 +298,10 @@
     {
       "identity" : "svprogresshud",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SVProgressHUD/SVProgressHUD",
+      "location" : "https://github.com/automattic/SVProgressHUD",
       "state" : {
-        "revision" : "c33f7c775ba7feea6047a1fc3257f2e5863b44f7",
-        "version" : "2.3.1"
+        "branch" : "master",
+        "revision" : "047316ef34e8b107742f8d181d8dfa41c5b2e1e6"
       }
     },
     {
