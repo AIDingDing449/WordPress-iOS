@@ -1,3 +1,7 @@
-- Ces magnifiques tableaux de statistiques ont encore été améliorés : appuyez sur n’importe quelle barre pour obtenir des informations instantanées, explorez les tendances hebdomadaires et profitez d’un mode sombre parfait. Vos données méritent ce niveau d’élégance.
-- Nous avons ajouté des mentions à l’éditeur expérimental : taguez vos collaborateurs et observez la magie se produire.
-- La vue fractionnée (Split View) sur iPad se comporte désormais parfaitement en mode portrait. Fini les mises en page gênantes.
+Nous avons apporté des améliorations réfléchies pour rendre votre expérience Jetpack encore plus fluide.
+
+Nous avons ajouté la prise en charge d’iOS 26, afin que vous puissiez profiter de toutes les dernières fonctionnalités que votre appareil a à offrir. Tout semble parfait.
+
+Le Lecteur a bénéficié de mises à jour visuelles apportées à l’écran Article, le rendant plus agréable à lire lorsque vous consultez votre contenu favori.
+
+Nous avons également apporté quelques améliorations en arrière-plan aux boutons et à la navigation dans l’application. Vous remarquerez que les choses semblent plus soignées et cohérentes, en particulier dans les écrans Éditeur, Réglages et Statistiques.

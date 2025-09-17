@@ -1,9 +1,5 @@
-Nous avons amélioré la façon dont vous gérez votre contenu et travaillez avec les médias. L’écran des réglages des articles a été entièrement repensé. Il rend la configuration des articles plus fluide et plus intuitive.
+Nous avons apporté des améliorations réfléchies pour rendre votre expérience WordPress encore plus fluide.
 
-Nous avons également amélioré notre éditeur expérimental avec une meilleure intégration de VideoPress et une authentification améliorée pour les sites privés. Vos médias s’afficheront désormais correctement, quels que soient les réglages de confidentialité de votre site.
+Nous avons ajouté la prise en charge d’iOS 26, afin que vous puissiez profiter de toutes les dernières fonctionnalités que votre appareil a à offrir. Tout semble parfait.
 
-Enfin, nous avons éliminé plusieurs bugs et amélioré la fiabilité.
-- L’application ne sera plus ralentie lorsque vous ouvrirez vos articles ou pages. (Nous savons à quel point cela pouvait être frustrant.)
-- Nous avons résolu un incident qui se produisait lors de l’enregistrement de certains réglages de l’éditeur.
-- Les fenêtres contextuelles d’erreur agaçantes sur votre tableau de bord ? Disparues.
-- Les mots de passe d’application fonctionnent désormais de manière plus fluide en arrière-plan.
+Nous avons également apporté quelques améliorations en arrière-plan aux boutons et à la navigation dans l’application. Vous remarquerez que les choses semblent plus soignées et cohérentes, en particulier dans les écrans Éditeur, Réglages et Statistiques.
