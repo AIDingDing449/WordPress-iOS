@@ -44,15 +44,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Set content
 
-    // TODO: reimplement
-    func setTitle(_ title: String) {
-//        guard gutenberg.isLoaded else {
-//            return
-//        }
-//
-//        gutenberg.setTitle(title)
-    }
-
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
@@ -137,13 +128,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
-        var conf = EditorConfiguration(blog: post.blog)
-        conf.title = post.postTitle ?? ""
-        conf.content = post.content ?? ""
-        conf.postID = post.postID?.intValue != -1 ? post.postID?.intValue : nil
-        conf.postType = post is Page ? "page" : "post"
-
-        self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
+        let editorConfiguration = EditorConfiguration(blog: post.blog)
+        self.editorViewController = GutenbergKit.EditorViewController(configuration: editorConfiguration)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -173,6 +159,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         refreshInterface()
 
         setupEditor()
+
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
+            // Do nothing
+        }
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -220,20 +210,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
     }
 
-    // TODO: this should not be called on viewDidLoad
-    private func reloadEditorContents() {
-        let content = post.content ?? String()
-
-        setTitle(post.postTitle ?? "")
-        editorViewController.setContent(content)
-
-        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
-            // Do nothing
-        }
-    }
-
     private func refreshInterface() {
-        reloadEditorContents()
         reloadPublishButton()
         navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
     }
@@ -378,12 +355,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    private func fetchBlockEditorSettings() async -> [String: Any]? {
+    private func fetchBlockEditorSettings() async -> String? {
         let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
         service.refreshSettings()
 
         do {
-            let settings = try await service.getSettings()
+            let settings = try await service.getSettingsString()
             return settings
         } catch {
             return nil
@@ -412,15 +389,19 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    private func startEditor(with settings: [String: Any]? = nil) {
+    private func startEditor(with settings: String? = nil) {
         guard !hasEditorStarted else { return }
         hasEditorStarted = true
 
-        if let settings {
-            var updatedConfig = self.editorViewController.configuration
-            updatedConfig.updateEditorSettings(settings)
-            self.editorViewController.updateConfiguration(updatedConfig)
-        }
+        let updatedConfiguration = self.editorViewController.configuration.toBuilder()
+            .apply(settings) { $0.setEditorSettings($1) }
+            .apply(post.postID?.intValue) { $0.setPostID($1) }
+            .setTitle(post.postTitle ?? "")
+            .setContent(post.content ?? "")
+            .setPostType(post.wpPostType)
+            .build()
+
+        self.editorViewController.updateConfiguration(updatedConfiguration)
         self.editorViewController.startEditorSetup()
     }
 }
@@ -990,78 +971,6 @@ private extension NewGutenbergViewController {
         )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
-    }
-}
-
-extension EditorConfiguration {
-    init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) {
-        let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
-        let applicationPassword = try? blog.getApplicationToken(using: keychain)
-        let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom()
-
-        let siteApiRoot: String?
-        if applicationPassword != nil {
-            siteApiRoot = selfHostedApiUrl
-        } else {
-            siteApiRoot = shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
-        }
-
-        let siteId = blog.dotComID?.stringValue
-        let siteDomain = blog.primaryDomainAddress
-        let authToken = blog.authToken ?? ""
-        var authHeader = "Bearer \(authToken)"
-
-        if let appPassword = applicationPassword, let username = blog.username {
-            let credentials = "\(username):\(appPassword)"
-            if let credentialsData = credentials.data(using: .utf8) {
-                let base64Credentials = credentialsData.base64EncodedString()
-                authHeader = "Basic \(base64Credentials)"
-            }
-        }
-
-        // Must provide both namespace forms to detect usages of both forms in third-party code
-        var siteApiNamespace: [String] = []
-        if shouldUseWPComRestApi {
-            if let siteId {
-                siteApiNamespace.append("sites/\(siteId)/")
-            }
-            siteApiNamespace.append("sites/\(siteDomain)/")
-        }
-
-        self = EditorConfiguration()
-
-        self.siteURL = blog.url ?? ""
-        self.siteApiRoot = siteApiRoot ?? ""
-        self.siteApiNamespace = siteApiNamespace
-        self.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
-        self.authHeader = authHeader
-
-        self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
-        // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
-        if EditorConfiguration.shouldEnablePlugins(for: blog, appPassword: applicationPassword) {
-            self.plugins = true
-            if var editorAssetsEndpoint = URL(string: self.siteApiRoot) {
-                editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
-                if let namespace = siteApiNamespace.first {
-                    editorAssetsEndpoint.appendPathComponent(namespace)
-                }
-                editorAssetsEndpoint.appendPathComponent("editor-assets")
-                self.editorAssetsEndpoint = editorAssetsEndpoint
-            }
-        }
-        self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
-    }
-
-    /// Returns true if the plugins should be enabled for the given blog.
-    /// This is used to determine if the editor should load third-party
-    /// plugins providing blocks.
-    static func shouldEnablePlugins(for blog: Blog, appPassword: String? = nil) -> Bool {
-        // Requires a Jetpack until editor assets endpoint is available in WordPress core.
-        // Requires a WP.com Simple site or an application password to authenticate all REST
-        // API requests, including those originating from non-core blocks.
-        return RemoteFeatureFlag.newGutenbergPlugins.enabled() &&
-        blog.isAccessibleThroughWPCom() &&
-        (blog.isHostedAtWPcom || appPassword != nil)
     }
 }
 
