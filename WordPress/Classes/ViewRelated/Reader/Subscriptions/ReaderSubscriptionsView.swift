@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressData
 import WordPressUI
 import WordPressShared
+import CoreData
 
 struct ReaderSubscriptionsView: View {
     @FetchRequest(
@@ -10,16 +11,16 @@ struct ReaderSubscriptionsView: View {
     )
     private var subscriptions: FetchedResults<ReaderSiteTopic>
 
-    @State private var searchText = ""
     @State private var isShowingMainAddSubscriptonPopover = false
 
-    @State private var searchResults: [ReaderSiteTopic] = []
+    @State private var searchText = ""
+    @State private var pendingSearchText: String?
+    @State private var searchResults: [ReaderSiteTopic]?
+    @State private var searchTask: Task<Void, Never>?
 
     @StateObject private var viewModel = ReaderSubscriptionsViewModel()
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
-    var isShowingSearchResuts: Bool { !searchText.isEmpty }
 
     var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
 
@@ -72,7 +73,7 @@ struct ReaderSubscriptionsView: View {
 
     private var main: some View {
         List {
-            if isShowingSearchResuts {
+            if let searchResults {
                 ForEach(searchResults, id: \.objectID, content: makeSubscriptionCell)
                     .onDelete(perform: delete)
             } else {
@@ -84,11 +85,11 @@ struct ReaderSubscriptionsView: View {
         .searchable(text: $searchText)
         .onReceive(subscriptions.publisher) { _ in
             if !searchText.isEmpty {
-                reloadSearchResults(searchText: searchText)
+                performBackgroundSearch(searchText: searchText)
             }
         }
         .onChange(of: searchText) {
-            reloadSearchResults(searchText: $0)
+            performBackgroundSearch(searchText: $0)
         }
     }
 
@@ -117,7 +118,7 @@ struct ReaderSubscriptionsView: View {
     }
 
     private func getSubscription(at index: Int) -> ReaderSiteTopic {
-        if isShowingSearchResuts {
+        if let searchResults {
             searchResults[index]
         } else {
             subscriptions[index]
@@ -128,9 +129,57 @@ struct ReaderSubscriptionsView: View {
         ReaderSubscriptionHelper().unfollow(site)
     }
 
-    private func reloadSearchResults(searchText: String) {
-        let ranking = StringRankedSearch(searchTerm: searchText)
-        searchResults = ranking.search(in: subscriptions) { "\($0.title) \($0.siteURL)" }
+    private func performBackgroundSearch(searchText: String) {
+        guard !searchText.isEmpty else {
+            searchResults = nil
+            pendingSearchText = nil
+            searchTask?.cancel()
+            return
+        }
+
+        guard searchTask == nil else {
+            pendingSearchText = searchText
+            return
+        }
+
+        searchTask = Task { [searchText] in
+            await performSearch(for: searchText)
+        }
+    }
+
+    private func performSearch(for searchText: String) async {
+        let searchableData = subscriptions.map(SearchableSubscription.init)
+
+        let resultObjectIDs = Set(await StringRankedSearch(searchTerm: searchText)
+            .parallelSearch(in: searchableData) { $0.searchableText }
+            .map(\.objectID))
+
+        searchResults = subscriptions.filter { resultObjectIDs.contains($0.objectID) }
+
+        guard !Task.isCancelled else { return }
+
+        searchTask = nil
+
+        if let pendingSearchText {
+            self.pendingSearchText = nil
+            performBackgroundSearch(searchText: pendingSearchText)
+        }
+    }
+}
+
+private struct SearchableSubscription: Sendable {
+    let objectID: NSManagedObjectID
+    let title: String
+    let siteURL: String
+
+    var searchableText: String {
+        "\(title) \(siteURL)"
+    }
+
+    init(_ subscription: ReaderSiteTopic) {
+        self.objectID = subscription.objectID
+        self.title = subscription.title
+        self.siteURL = subscription.siteURL
     }
 }
 
