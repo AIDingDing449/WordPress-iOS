@@ -27,6 +27,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case newsletterSubscribers
     case newStats
     case newPublishingSheet
+    case mediaQuotaView
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -85,6 +86,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .newPublishingSheet:
             return false
+        case .mediaQuotaView:
+            return false
         }
     }
 
@@ -129,6 +132,7 @@ extension FeatureFlag {
         case .newsletterSubscribers: "Newsletter Subscribers"
         case .newStats: "New Stats"
         case .newPublishingSheet: "New Publishing Sheet"
+        case .mediaQuotaView: "Media Quota"
         }
     }
 }

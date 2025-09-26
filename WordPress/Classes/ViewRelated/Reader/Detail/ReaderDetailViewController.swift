@@ -179,7 +179,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             scrollView.pinEdges(.top)
 
             headerContainerView.clipsToBounds = true
-            headerContainerView.backgroundColor = .systemBackground
         }
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
@@ -483,6 +482,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         webView.displaySetting = displaySetting
 
         view.backgroundColor = displaySetting.color.background
+
+        headerContainerView.backgroundColor = displaySetting.color.background
     }
 
     private func applyDisplaySetting() {
@@ -493,6 +494,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Main background view
             view.backgroundColor = displaySetting.color.background
+
+            headerContainerView.backgroundColor = displaySetting.color.background
 
             // Header view
             header.displaySetting = displaySetting
