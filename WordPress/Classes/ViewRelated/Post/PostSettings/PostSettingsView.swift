@@ -193,7 +193,11 @@ struct PostSettingsFormContentView: View {
     }
 
     private var tagsRow: some View {
-        LegacyNavigationLinkRow(action: viewModel.showTagsPicker) {
+        NavigationLink {
+            PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
+                viewModel.didSelectTags(tags)
+            }
+        } label: {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
         .accessibilityIdentifier("post_settings_tags")

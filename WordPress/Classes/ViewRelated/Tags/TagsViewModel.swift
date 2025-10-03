@@ -2,6 +2,7 @@ import Foundation
 import WordPressKit
 import WordPressData
 import WordPressUI
+import WordPressShared
 
 typealias TagsPaginatedResponse = DataViewPaginatedResponse<RemotePostTag, Int>
 
@@ -16,7 +17,7 @@ class TagsViewModel: ObservableObject {
     @Published private(set) var response: TagsPaginatedResponse?
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
-    @Published private(set) var selectedTags: [String] = [] {
+    @Published private(set) var selectedTags: [String] {
         didSet {
             if case .selection(let onSelectedTagsChanged) = mode {
                 onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
@@ -38,9 +39,7 @@ class TagsViewModel: ObservableObject {
     init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
         self.tagsService = TagsService(blog: blog)
         self.mode = mode
-        self.selectedTags = selectedTags?.split(separator: ",").map {
-            $0.trimmingCharacters(in: .whitespacesAndNewlines)
-        } ?? []
+        self.selectedTags = AbstractPost.makeTags(from: selectedTags ?? "")
         self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
     }
 
@@ -94,11 +93,24 @@ class TagsViewModel: ObservableObject {
         }
     }
 
-    func search() async throws -> DataViewPaginatedResponse<RemotePostTag, Int> {
+    var isLocalSearchEnabled: Bool {
+        guard let response else { return false }
+        return !response.hasMore
+    }
+
+    func search() async throws -> TagsPaginatedResponse {
+        if let response, !response.hasMore {
+            let results = await StringRankedSearch(searchTerm: searchText)
+                .parallelSearch(in: response.items, input: \.name)
+            return try await TagsPaginatedResponse { _ in
+                TagsPaginatedResponse.Page(items: results, total: results.count, hasMore: false, nextPage: nil)
+            }
+        }
+
         let remoteTags = try await tagsService.searchTags(with: searchText)
 
-        return try await DataViewPaginatedResponse { _ in
-            return DataViewPaginatedResponse.Page(
+        return try await TagsPaginatedResponse { _ in
+            return TagsPaginatedResponse.Page(
                 items: remoteTags,
                 total: remoteTags.count,
                 hasMore: false,
@@ -117,6 +129,7 @@ class TagsViewModel: ObservableObject {
             selectedTagsSet.insert(lowercasedTagName)
             selectedTags.append(tagName)
         }
+        searchText = ""
     }
 
     func addNewTag(named name: String) {
@@ -139,6 +152,10 @@ class TagsViewModel: ObservableObject {
     func isSelected(_ tag: RemotePostTag) -> Bool {
         guard let tagName = tag.name else { return false }
         return selectedTagsSet.contains(tagName.lowercased())
+    }
+
+    func isNotSelected(_ tag: RemotePostTag) -> Bool {
+        !isSelected(tag)
     }
 
     func removeSelectedTag(_ tagName: String) {

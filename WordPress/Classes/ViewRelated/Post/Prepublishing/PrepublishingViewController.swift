@@ -8,8 +8,11 @@ import WordPressUI
 enum PrepublishingSheetResult {
     /// The sheet published the post (new behavior)
     case published
-    /// The user cancelled.
-    case cancelled
+    /// The user cancelled publishing.
+    ///
+    /// - parameter isSaved: If `true`, the changes to the settings made in
+    /// the publishing sheet were saved.
+    case cancelled(isSaved: Bool = false)
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate {
@@ -160,7 +163,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func didCancel() {
-        getCompletion()?(.cancelled)
+        getCompletion()?(.cancelled())
         deleteRevisionIfNeeded()
     }
 
@@ -319,14 +322,16 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func didTapTagCell() {
         let post = post as! Post
-        let tagPickerViewController = TagsViewController(blog: post.blog, selectedTags: post.tags) { [weak self] tags in
+        let view = PostTagsView(blog: post.blog, selectedTags: post.tags) {
+            [weak self] tags in
             guard let self else { return }
             WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 
-            (self.post as! Post).tags = tags
+            post.tags = tags
             self.reloadData()
         }
-        navigationController?.pushViewController(tagPickerViewController, animated: true)
+        let hostVC = UIHostingController(rootView: view)
+        navigationController?.pushViewController(hostVC, animated: true)
     }
 
     // MARK: - Categories (Post)

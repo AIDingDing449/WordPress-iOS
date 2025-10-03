@@ -33,6 +33,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private var currentSection: Section = .dashboard
+    private static var lastWarmedUpBlogID: NSManagedObjectID?
 
     @objc
     private(set) lazy var scrollView: UIScrollView = {
@@ -169,12 +170,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToModelChanges()
         subscribeToPostPublished()
         subscribeToWillEnterForeground()
-
-        if RemoteFeatureFlag.newGutenberg.enabled() {
-            GutenbergKit.EditorViewController.warmup(
-                configuration: blog.flatMap { EditorConfiguration(blog: $0) } ?? .default
-            )
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -346,6 +341,24 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         configureNavBarAppearance(animated: true)
     }
 
+    // MARK: - Editor Warmup
+
+    /// Warms up the editor for the given blog if it hasn't been warmed up already.
+    /// This avoids duplicative warmups when the site hasn't changed.
+    private func warmUpEditorIfNeeded(for blog: Blog) {
+        guard blog.objectID != Self.lastWarmedUpBlogID else {
+            // Editor already warmed up for this blog
+            return
+        }
+
+        Self.lastWarmedUpBlogID = blog.objectID
+
+        let configuration = EditorConfiguration(blog: blog)
+        GutenbergKit.EditorViewController.warmup(configuration: configuration)
+
+        RawBlockEditorSettingsService(blog: blog).prefetchSettings()
+    }
+
     // MARK: - Main Blog
 
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
@@ -386,7 +399,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            RawBlockEditorSettingsService(blog: blog).prefetchSettings()
+            warmUpEditorIfNeeded(for: blog)
         }
     }
 

@@ -115,6 +115,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     private let originalSettings: PostSettings
     private let preferences: UserPersistentRepository
+    private var isSuggestedTagsRefreshNeeded = true
     private var cancellables = Set<AnyCancellable>()
 
     var onDismiss: (() -> Void)?
@@ -166,6 +167,15 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func onAppear() {
+        refreshSuggestedTags()
+    }
+
+    private func refreshSuggestedTags() {
+        guard isSuggestedTagsRefreshNeeded else {
+            return
+        }
+        isSuggestedTagsRefreshNeeded = false
+
         let task = Task { @MainActor [weak self, post] in
             do {
                 let tags = try await TagSuggestionsService().getSuggestedTags(for: post)
@@ -240,6 +250,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
+            onDismiss?()
             return
         }
 
@@ -330,6 +341,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.tags.append(",\(tag)")
 
         track(.intelligenceSuggestedTagSelected)
+    }
+
+    func didSelectTags(_ tags: String) {
+        settings.tags = tags
+        isSuggestedTagsRefreshNeeded = true
     }
 
     // MARK: - Social Sharing
@@ -434,13 +450,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             self?.settings.categoryIDs = newSelectedIDs
         }
         viewController?.navigationController?.pushViewController(categoriesVC, animated: true)
-    }
-
-    func showTagsPicker() {
-        let tagsVC = TagsViewController(blog: post.blog, selectedTags: settings.tags) { [weak self] newTagsString in
-            self?.settings.tags = newTagsString
-        }
-        viewController?.navigationController?.pushViewController(tagsVC, animated: true)
     }
 
     // MARK: - Analytics
