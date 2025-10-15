@@ -26,6 +26,7 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
+    var accessLevel: JetpackPostAccessLevel?
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -50,6 +51,8 @@ struct PostSettings: Hashable {
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
 
+        let metadata = PostMetadata(post)
+
         switch post {
         case let post as Post:
             postFormat = post.postFormat
@@ -59,6 +62,7 @@ struct PostSettings: Hashable {
                 $0.categoryID?.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
+            accessLevel = metadata.accessLevel ?? .everybody
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -145,6 +149,17 @@ struct PostSettings: Hashable {
                 }
                 if post.publicizeMessage != sharing.message {
                     post.publicizeMessage = sharing.message
+                }
+            }
+
+            /// Update metadata
+            var metadata = PostMetadata(post)
+            if metadata.accessLevel != accessLevel {
+                metadata.accessLevel = accessLevel
+                do {
+                    post.rawMetadata = try metadata.encode()
+                } catch {
+                    wpAssertionFailure("failed to encode metadata")
                 }
             }
         case let page as Page:
