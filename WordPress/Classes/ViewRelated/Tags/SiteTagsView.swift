@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 import WordPressData
+import WordPressAPI
 
 struct SiteTagsView: View {
     @ObservedObject var viewModel: TagsViewModel
@@ -16,7 +17,7 @@ struct SiteTagsView: View {
                 TagsListView(viewModel: viewModel)
             }
         }
-        .navigationTitle(Strings.title)
+        .navigationTitle(viewModel.labels.name)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -26,10 +27,10 @@ struct SiteTagsView: View {
                 }
             }
         }
-        .searchable(text: $viewModel.searchText, prompt: Strings.searchPlaceholder)
+        .searchable(text: $viewModel.searchText, prompt: viewModel.labels.searchPlaceholder)
         .sheet(isPresented: $isShowingAddTagView) {
             NavigationView {
-                EditTagView(tag: nil, tagsService: viewModel.tagsService)
+                EditTagView(term: nil, taxonomy: viewModel.taxonomy, tagsService: viewModel.tagsService)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button(SharedStrings.Button.cancel) {
@@ -56,9 +57,9 @@ private struct TagsListView: View {
             if let response = viewModel.response {
                 if response.isEmpty {
                     EmptyStateView(
-                        Strings.empty,
+                        viewModel.labels.empty,
                         systemImage: "tag",
-                        description: Strings.emptyDescription
+                        description: viewModel.labels.emptyDescription
                     )
                 }
             } else if viewModel.isLoading {
@@ -106,25 +107,25 @@ struct TagsPaginatedForEach: View {
 
     private func tagDeleted(userInfo: [AnyHashable: Any]?) {
         if let tagID = userInfo?[TagNotificationUserInfoKeys.tagID] as? NSNumber {
-            response.deleteItem(withID: tagID.intValue)
+            response.deleteItem(withID: tagID.int64Value)
         }
     }
 
     private func tagCreated(userInfo: [AnyHashable: Any]?) {
-        if let tag = userInfo?[TagNotificationUserInfoKeys.tag] as? RemotePostTag {
-            response.prepend([tag])
+        if let term = userInfo?[TagNotificationUserInfoKeys.tag] as? AnyTermWithViewContext {
+            response.prepend([term])
         }
     }
 
     private func tagUpdated(userInfo: [AnyHashable: Any]?) {
-        if let tag = userInfo?[TagNotificationUserInfoKeys.tag] as? RemotePostTag {
-            response.replace(tag)
+        if let term = userInfo?[TagNotificationUserInfoKeys.tag] as? AnyTermWithViewContext {
+            response.replace(term)
         }
     }
 }
 
 private struct TagRowView: View {
-    let tag: RemotePostTag
+    let tag: AnyTermWithViewContext
     @ObservedObject var viewModel: TagsViewModel
 
     var body: some View {
@@ -139,7 +140,7 @@ private struct TagRowView: View {
                 }
                 .listRowBackground(Color.clear)
         case .browse:
-            NavigationLink(destination: EditTagView(tag: tag, tagsService: viewModel.tagsService)) {
+            NavigationLink(destination: EditTagView(term: tag, taxonomy: viewModel.taxonomy, tagsService: viewModel.tagsService)) {
                 TagRowContent(tag: tag, showPostCount: true, isSelected: false)
             }
         }
@@ -147,19 +148,19 @@ private struct TagRowView: View {
 }
 
 private struct TagRowContent: View {
-    let tag: RemotePostTag
+    let tag: AnyTermWithViewContext
     let showPostCount: Bool
     let isSelected: Bool
 
     var body: some View {
         HStack {
-            Text(tag.name ?? "")
+            Text(tag.name)
                 .font(.body)
 
             Spacer()
 
-            if showPostCount, let postCount = tag.postCount?.intValue, postCount > 0 {
-                Text("\(postCount)")
+            if showPostCount, tag.count > 0 {
+                Text("\(tag.count)")
                     .font(.callout)
                     .foregroundColor(.secondary)
             }
@@ -168,30 +169,6 @@ private struct TagRowContent: View {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString(
-        "tags.title",
-        value: "Tags",
-        comment: "Title for the tags screen"
-    )
-
-    static let empty = NSLocalizedString(
-        "tags.empty.title",
-        value: "No Tags",
-        comment: "Title for empty state when there are no tags"
-    )
-
-    static let emptyDescription = NSLocalizedString(
-        "tags.empty.description",
-        value: "Tags help organize your content and make it easier for readers to find related posts.",
-        comment: "Description for empty state when there are no tags"
-    )
-
-    static let searchPlaceholder = NSLocalizedString(
-        "tags.search.placeholder",
-        value: "Search tags",
-        comment: "Placeholder text for the tag search field"
-    )
-
     static func removeTag(_ tagName: String) -> String {
         let template = NSLocalizedString(
             "tags.remove.button",
@@ -205,17 +182,9 @@ private enum Strings {
 class SiteTagsViewController: UIHostingController<SiteTagsView> {
     let viewModel: TagsViewModel
 
-    init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
-        viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, mode: mode)
+    init(blog: Blog) {
+        viewModel = TagsViewModel(blog: blog, mode: .browse)
         super.init(rootView: .init(viewModel: viewModel))
-    }
-
-    convenience init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
-        self.init(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: onSelectedTagsChanged))
-    }
-
-    convenience init(blog: Blog) {
-        self.init(blog: blog, mode: .browse)
     }
 
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
