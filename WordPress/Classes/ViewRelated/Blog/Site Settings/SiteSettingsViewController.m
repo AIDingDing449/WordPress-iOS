@@ -25,11 +25,6 @@ NS_ENUM(NSInteger, SiteSettingsHomepage) {
     SiteSettingsHomepageCount,
 };
 
-NS_ENUM(NSInteger, SiteSettingsEditor) {
-    SiteSettingsEditorSelector = 0,
-    SiteSettingsEditorCount,
-};
-
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
     SiteSettingsWritingTags,
@@ -61,6 +56,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
+@property (nonatomic, strong) SwitchTableViewCell  *themeStylesSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *customTaxonomiesCell;
@@ -170,9 +166,14 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
 
-    // Only add the editor section if the site is not a Simple WP.com site
+    // Only show "Use block editor" toggle for non-Simple WP.com sites
     if (![GutenbergSettings isSimpleWPComSite:self.blog]) {
-        [sections addObject:@(SiteSettingsSectionEditor)];
+        [sections addObject:@(SiteSettingsSectionBlockEditor)];
+    }
+
+    // Only show theme styles toggle when GutenbergKit is enabled
+    if ([RemoteFeature enabled:RemoteFeatureFlagNewGutenberg]) {
+        [sections addObject:@(SiteSettingsSectionThemeStyles)];
     }
 
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
@@ -251,9 +252,13 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         {
             return SiteSettingsAccountCount;
         }
-        case SiteSettingsSectionEditor:
+        case SiteSettingsSectionBlockEditor:
         {
-            return SiteSettingsEditorCount;
+            return 1;
+        }
+        case SiteSettingsSectionThemeStyles:
+        {
+            return 1;
         }
         case SiteSettingsSectionWriting:
         {
@@ -345,6 +350,20 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         };
     }
     return _editorSelectorCell;
+}
+
+- (SwitchTableViewCell *)themeStylesSelectorCell
+{
+    if (!_themeStylesSelectorCell) {
+        _themeStylesSelectorCell = [SwitchTableViewCell new];
+        _themeStylesSelectorCell.name = NSLocalizedString(@"Use theme styles", @"Option to enable theme styles in the block editor");
+        _themeStylesSelectorCell.flipSwitch.accessibilityIdentifier = @"useThemeStylesSwitch";
+        __weak Blog *blog = self.blog;
+        _themeStylesSelectorCell.onChange = ^(BOOL value){
+            [GutenbergSettings setThemeStylesEnabled:value forBlog:blog];
+        };
+    }
+    return _themeStylesSelectorCell;
 }
 
 - (SettingTableViewCell *)defaultCategoryCell
@@ -508,6 +527,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self.editorSelectorCell setOn:self.blog.isGutenbergEnabled];
 }
 
+- (void)configureThemeStylesSelectorCell
+{
+    [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+}
+
 - (void)configureDefaultCategoryCell
 {
     PostCategory *postCategory = [PostCategory lookupWithBlogObjectID:self.blog.objectID
@@ -524,16 +548,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (void)configurePostsPerPageCell
 {
     [self.postsPerPageCell setTextValue:self.blog.settings.postsPerPage.stringValue];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForEditorSettingsAtRow:(NSInteger)row
-{
-    switch (row) {
-        case (SiteSettingsEditorSelector):
-            [self configureEditorSelectorCell];
-            return self.editorSelectorCell;
-    }
-    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
@@ -665,8 +679,13 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case SiteSettingsSectionAccount:
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
 
-        case SiteSettingsSectionEditor:
-            return [self tableView:tableView cellForEditorSettingsAtRow:indexPath.row];
+        case SiteSettingsSectionBlockEditor:
+            [self configureEditorSelectorCell];
+            return self.editorSelectorCell;
+
+        case SiteSettingsSectionThemeStyles:
+            [self configureThemeStylesSelectorCell];
+            return self.themeStylesSelectorCell;
 
         case SiteSettingsSectionWriting:
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
@@ -729,8 +748,16 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
             break;
 
-        case SiteSettingsSectionEditor:
-            headingTitle = NSLocalizedString(@"Editor", @"Title for the editor settings section");
+        case SiteSettingsSectionBlockEditor:
+            headingTitle = NSLocalizedString(@"Editor", @"Title for the editor section in site settings screen");
+            break;
+
+        case SiteSettingsSectionThemeStyles:
+            // Only show "Editor" header if this is the first editor section
+            // (i.e., if block editor section is not present)
+            if (![self.tableSections containsObject:@(SiteSettingsSectionBlockEditor)]) {
+                headingTitle = NSLocalizedString(@"Editor", @"Title for the editor section in site settings screen");
+            }
             break;
 
         case SiteSettingsSectionWriting:
@@ -761,8 +788,12 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     NSInteger settingsSection = [self.tableSections[section] integerValue];
     UIView *footerView = nil;
     switch (settingsSection) {
-        case SiteSettingsSectionEditor:
-            footerView = [self getEditorSettingsSectionFooterView];
+        case SiteSettingsSectionBlockEditor:
+            footerView = [self getBlockEditorSectionFooterView];
+            break;
+
+        case SiteSettingsSectionThemeStyles:
+            footerView = [self getThemeStylesSectionFooterView];
             break;
 
         case SiteSettingsSectionTraffic:
