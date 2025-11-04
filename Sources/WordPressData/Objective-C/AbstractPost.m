@@ -24,6 +24,7 @@
 @dynamic foreignID;
 @dynamic order;
 @dynamic rawMetadata;
+@dynamic rawOtherTerms;
 @synthesize voiceContent;
 
 #pragma mark - Life Cycle Methods
@@ -344,6 +345,24 @@
         }
     }
     self.pathForDisplayImage = result;    
+}
+
+- (void)setParsedOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)data
+{
+    if (data == nil) {
+        self.rawOtherTerms = nil;
+    } else {
+        self.rawOtherTerms = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
+    }
+}
+
+- (NSDictionary<NSString *, NSArray<NSString *> *> *)parseOtherTerms
+{
+    if (self.rawOtherTerms == nil) {
+        return [NSDictionary dictionary];
+    }
+
+    return [NSJSONSerialization JSONObjectWithData:self.rawOtherTerms options:0 error:nil] ?: [NSDictionary dictionary];
 }
 
 @end
