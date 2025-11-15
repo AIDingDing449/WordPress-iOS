@@ -61,7 +61,7 @@ extension Blog {
         post.foreignID = UUID()
 
         if let categoryID = settings?.defaultCategoryID,
-           categoryID.intValue != PostCategoryUncategorized,
+           categoryID != PostCategory.uncategorized,
            let category = try? PostCategory.lookup(withBlogID: objectID, categoryID: categoryID, in: context) {
             post.addCategoriesObject(category)
         }
