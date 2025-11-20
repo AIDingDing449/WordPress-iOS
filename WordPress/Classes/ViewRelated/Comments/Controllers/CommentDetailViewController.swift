@@ -422,11 +422,11 @@ private extension CommentDetailViewController {
         // if the comment is a reply, show the author of the parent comment.
         if let parentComment = self.parentComment ?? notificationParentComment {
             return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
-                                        subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
+                                        subtitle: (parentComment.contentPreviewForDisplay() ?? "").trimmingCharacters(in: .whitespacesAndNewlines))
         }
 
         // otherwise, if this is a comment to a post, show the post title instead.
-        headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
+        headerCell.configure(for: .post, subtitle: (comment.titleForDisplay()))
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {

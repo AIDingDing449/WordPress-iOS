@@ -254,14 +254,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return self.author;
 }
 
-- (NSURL *)featuredImageURL
-{
-    if ([self.featuredImage length]) {
-        return [NSURL URLWithString:self.featuredImage];
-    }
-    return nil;
-}
-
 - (BOOL)contentIncludesFeaturedImage
 {
     NSURL *featuredImageURL = [self featuredImageURL];
@@ -285,56 +277,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     NSString *content = [self contentForDisplay];
     return ([content rangeOfString:featuredImage].location != NSNotFound);
-}
-
-#pragma mark - PostContentProvider protocol
-
-- (NSString *)blogNameForDisplay
-{
-    if (self.blogName.length > 0) {
-        return self.blogName;
-    }
-    return [[NSURL URLWithString:self.blogURL] host];
-}
-
-- (NSString *)titleForDisplay
-{
-    NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];
-    if (!title) {
-        title = @"";
-    }
-    return title;
-}
-
-- (NSArray <NSString *> *)tagsForDisplay
-{
-    if (self.tags.length <= 0) {
-        return @[];
-    }
-
-    NSArray *tags = [self.tags componentsSeparatedByString:@", "];
-
-    return [tags sortedArrayUsingSelector:@selector(localizedCompare:)];
-}
-
-- (NSString *)authorForDisplay
-{
-    return [self authorString];
-}
-
-- (NSDate *)dateForDisplay
-{
-    return [self dateCreated];
-}
-
-- (NSString *)contentPreviewForDisplay
-{
-    return self.summary;
-}
-
-- (NSURL *)featuredImageURLForDisplay
-{
-    return [self featuredImageURL];
 }
 
 - (NSString *)likeCountForDisplay
@@ -387,11 +329,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (BOOL)isSourceAttributionWPCom
 {
     return (self.sourceAttribution.blogID) ? YES : NO;
-}
-
-- (NSURL *)avatarURLForDisplay
-{
-    return [NSURL URLWithString:self.authorAvatarURL];
 }
 
 - (NSDictionary *)railcarDictionary

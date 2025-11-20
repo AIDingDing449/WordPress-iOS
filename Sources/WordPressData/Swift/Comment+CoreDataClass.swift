@@ -139,7 +139,7 @@ private extension Comment {
 
 }
 
-extension Comment: PostContentProvider {
+extension Comment {
 
     public func titleForDisplay() -> String {
         let title = post?.postTitle ?? postTitle
@@ -152,12 +152,12 @@ extension Comment: PostContentProvider {
     }
 
     // Used in Comment details (non-threaded)
-    public func contentForDisplay() -> String {
+    public func contentForDisplay() -> String? {
         return decodedContent()
     }
 
     // Used in Comments list (non-threaded)
-    public func contentPreviewForDisplay() -> String {
+    public func contentPreviewForDisplay() -> String? {
         return decodedContent()
     }
 
@@ -167,7 +167,7 @@ extension Comment: PostContentProvider {
 
     public func gravatarEmailForDisplay() -> String {
         let displayEmail = author_email.trim()
-        return !displayEmail.isEmpty ? displayEmail : String()
+        return !displayEmail.isEmpty ? displayEmail : ""
     }
 
     public func dateForDisplay() -> Date? {
