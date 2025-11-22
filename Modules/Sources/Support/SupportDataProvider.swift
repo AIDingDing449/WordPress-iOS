@@ -1,5 +1,6 @@
 import Foundation
-import WordPressCore
+import AsyncImageKit
+import WordPressCoreProtocols
 
 public enum SupportFormAction {
     case viewApplicationLogList
@@ -32,6 +33,8 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     private let botConversationDataProvider: BotConversationDataProvider
     private let userDataProvider: CurrentUserDataProvider
     private let supportConversationDataProvider: SupportConversationDataProvider
+    private let diagnosticsDataProvider: DiagnosticsDataProvider
+    let mediaHost: MediaHostProtocol
 
     private weak var supportDelegate: SupportDelegate?
 
@@ -40,12 +43,16 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         botConversationDataProvider: BotConversationDataProvider,
         userDataProvider: CurrentUserDataProvider,
         supportConversationDataProvider: SupportConversationDataProvider,
+        diagnosticsDataProvider: DiagnosticsDataProvider,
+        mediaHost: MediaHostProtocol,
         delegate: SupportDelegate? = nil
     ) {
         self.applicationLogProvider = applicationLogProvider
         self.botConversationDataProvider = botConversationDataProvider
         self.userDataProvider = userDataProvider
         self.supportConversationDataProvider = supportConversationDataProvider
+        self.diagnosticsDataProvider = diagnosticsDataProvider
+        self.mediaHost = mediaHost
         self.supportDelegate = delegate
     }
 
@@ -143,6 +150,10 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         }
     }
 
+    var maximumUploadSize: CGFloat {
+        CGFloat(self.supportConversationDataProvider.maximumUploadSize)
+    }
+
     // Application Logs
     public func fetchApplicationLogs() async throws -> [ApplicationLog] {
         try await self.applicationLogProvider.fetchApplicationLogs()
@@ -160,6 +171,17 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     public func deleteAllApplicationLogs() async throws {
         self.userDid(.deleteAllApplicationLogs)
         try await self.applicationLogProvider.deleteAllApplicationLogs()
+    }
+
+    // Diagnostics
+    public func fetchDiskCacheUsage() async throws -> DiskCacheUsage {
+        try await self.diagnosticsDataProvider.fetchDiskCacheUsage()
+    }
+
+    public func clearDiskCache(
+        progress: (@escaping @Sendable (CacheDeletionProgress) async throws -> Void)
+    ) async throws {
+        try await self.diagnosticsDataProvider.clearDiskCache(progress: progress)
     }
 }
 
@@ -211,6 +233,11 @@ public protocol CurrentUserDataProvider: Actor {
     nonisolated func fetchCurrentSupportUser() throws -> any CachedAndFetchedResult<SupportUser>
 }
 
+public protocol DiagnosticsDataProvider: Actor {
+    func fetchDiskCacheUsage() async throws -> DiskCacheUsage
+    func clearDiskCache(progress: (@escaping @Sendable (CacheDeletionProgress) async throws -> Void)) async throws
+}
+
 public protocol ApplicationLogDataProvider: Actor {
     func readApplicationLog(_ log: ApplicationLog) async throws -> String
     func fetchApplicationLogs() async throws -> [ApplicationLog]
@@ -239,6 +266,8 @@ public protocol BotConversationDataProvider: Actor {
 }
 
 public protocol SupportConversationDataProvider: Actor {
+    nonisolated var maximumUploadSize: UInt64 { get }
+
     nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]>
     nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation>
 

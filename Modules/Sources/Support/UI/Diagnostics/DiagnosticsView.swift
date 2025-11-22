@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressCore
+import WordPressCoreProtocols
 
 public struct DiagnosticsView: View {
 
@@ -11,14 +11,14 @@ public struct DiagnosticsView: View {
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                Text("Run common maintenance and troubleshooting tasks.")
+                Text(Localization.diagnosticsDescription)
                     .foregroundStyle(.secondary)
 
                 EmptyDiskCacheView()
             }
             .padding()
         }
-        .navigationTitle("Diagnostics")
+        .navigationTitle(Localization.diagnosticsTitle)
         .background(.background)
         .onAppear {
             dataProvider.userDid(.viewDiagnostics)

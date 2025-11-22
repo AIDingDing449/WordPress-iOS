@@ -5,6 +5,28 @@ extension Date {
         let calendar = Calendar.autoupdatingCurrent
         return calendar.isDateInToday(self)
     }
+
+    var hasPast: Bool {
+        Date.now > self
+    }
+}
+
+extension String {
+    func applyingNumericMorphology(for number: Int) -> String {
+        var attr = AttributedString(self)
+        var morphology = Morphology()
+        morphology.number = switch number {
+        case 0: .zero
+        case 1: .singular
+        case 2: .pluralTwo
+        case 3...7: .pluralFew
+        case 7...: .pluralMany
+        default: .plural
+        }
+        attr.inflect = InflectionRule(morphology: morphology)
+
+        return attr.inflected().characters.reduce(into: "") { $0.append($1) }
+    }
 }
 
 extension AttributedString {
@@ -92,5 +114,16 @@ extension Task where Failure == Error {
             try await clock.sleep(for: duration)
             return try await MainActor.run(body: operation)
         }
+    }
+
+    static func runForAtLeast<C>(
+        _ duration: C.Instant.Duration,
+        operation: @escaping @Sendable () async throws -> Success,
+        clock: C = .continuous
+    ) async throws -> Success where C: Clock {
+        async let waitResult: () = try await clock.sleep(for: duration)
+        async let performTask = try await operation()
+
+        return try await (waitResult, performTask).1
     }
 }

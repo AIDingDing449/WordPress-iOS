@@ -1,10 +1,12 @@
 import Foundation
+import FoundationModels
 import AsyncImageKit
 import Support
 import SwiftUI
 import WordPressAPI
 import WordPressAPIInternal // Needed for `SupportUserIdentity`
 import WordPressCore
+import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import CocoaLumberjack
@@ -20,7 +22,10 @@ extension SupportDataProvider {
             wpcomClient: WordPressDotComClient()
         ),
         supportConversationDataProvider: WpSupportConversationDataProvider(
-            wpcomClient: WordPressDotComClient()),
+            wpcomClient: WordPressDotComClient()
+        ),
+        diagnosticsDataProvider: WpDiagnosticsDataProvider(),
+        mediaHost: WordPressDotComClient(),
         delegate: WpSupportDelegate()
     )
 }
@@ -155,9 +160,12 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
             try await self.wpcomClient
                 .api
                 .supportBots
-                .getBotConversationList(botId: self.botId, params: ListBotConversationsParams())
+                .getBotConversationList(
+                    botId: self.botId,
+                    params: ListBotConversationsParams(summaryMethod: .firstMessage)
+                )
                 .data
-                .map { $0.asSupportConversation() }
+                .asyncMap { try await $0.asSupportConversation() }
         }, cacheKey: "bot-conversation-list")
     }
 
@@ -175,7 +183,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
                 .getBotConversation(botId: self.botId, chatId: ChatId(id), params: params)
                 .data
 
-            return conversation.asSupportConversation()
+            return try await conversation.asSupportConversation()
         }, cacheKey: "bot-conversation-\(id)")
     }
 
@@ -210,7 +218,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
             .createBotConversation(botId: self.botId, params: params)
             .data
 
-        return response.asSupportConversation()
+        return try await response.asSupportConversation()
     }
 
     private func add(message: String, to conversation: Support.BotConversation) async throws -> Support.BotConversation {
@@ -228,7 +236,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
                 params: params
             ).data
 
-        return response.asSupportConversation()
+        return try await response.asSupportConversation()
     }
 }
 
@@ -252,6 +260,8 @@ actor WpCurrentUserDataProvider: CurrentUserDataProvider {
 }
 
 actor WpSupportConversationDataProvider: SupportConversationDataProvider {
+
+    let maximumUploadSize: UInt64 = 30_000_000 // 30MB
 
     private let wpcomClient: WordPressDotComClient
 
@@ -288,7 +298,8 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
         let params = CreateSupportTicketParams(
             subject: subject,
             message: message,
-            application: "jetpack"
+            application: "jetpack",
+            attachments: attachments.map { $0.path() }
         )
 
         return try await self.wpcomClient.api
@@ -316,6 +327,16 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
             .asConversation()
 
         return conversation
+    }
+}
+
+actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
+    func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
+        try await DiskCache.shared.diskUsage()
+    }
+
+    func clearDiskCache(progress: @escaping @Sendable (WordPressCoreProtocols.CacheDeletionProgress) async throws -> Void) async throws {
+        try await DiskCache.shared.removeAll(progress: progress)
     }
 }
 
@@ -359,26 +380,41 @@ extension SupportUser {
 }
 
 extension WordPressAPIInternal.BotConversationSummary {
-    func asSupportConversation() -> Support.BotConversation {
-        var summary = self.summaryMessage.content
+    func asSupportConversation() async throws -> Support.BotConversation {
 
-        if let preview = summary.components(separatedBy: .newlines).first?.prefix(64) {
-            summary = String(preview)
-        }
+        let summary = try await cacheOnDisk(key: "conversation-title-\(self.chatId)", computation: {
+            await summarize(self.summaryMessage.content)
+        })
 
         return BotConversation(
             id: self.chatId,
             title: summary,
+            createdAt: self.createdAt,
             messages: []
         )
     }
 }
 
 extension WordPressAPIInternal.BotConversation {
-    func asSupportConversation() -> Support.BotConversation {
-        BotConversation(
+    func asSupportConversation() async throws -> Support.BotConversation {
+        let title: String
+
+        if let firstMessageText = self.messages.first?.content {
+            title = try await cacheOnDisk(key: "conversation-title-\(self.chatId)") {
+                await summarize(firstMessageText)
+            }
+        } else {
+            title = NSLocalizedString(
+                "com.jetpack.support.new-bot-chat",
+                value: "New Bot Chat",
+                comment: "The title of a new bot chat in the support area of the app"
+            )
+        }
+
+        return BotConversation(
             id: self.chatId,
-            title: self.messages.first?.content ?? "New Bot Chat",
+            title: title,
+            createdAt: self.createdAt,
             messages: self.messages.map { $0.asSupportMessage() }
         )
     }
@@ -406,12 +442,13 @@ extension WordPressAPIInternal.BotMessage {
     }
 }
 
-extension WordPressAPIInternal.SupportConversationSummary {
+extension SupportConversationSummary {
     func asConversationSummary() -> Support.ConversationSummary {
         Support.ConversationSummary(
             id: self.id,
             title: self.title,
             description: self.description,
+            status: conversationStatus(from: self.status),
             lastMessageSentAt: self.updatedAt
         )
     }
@@ -424,6 +461,7 @@ extension SupportConversation {
             title: self.title,
             description: self.description,
             lastMessageSentAt: self.updatedAt,
+            status: conversationStatus(from: self.status),
             messages: self.messages.map { $0.asMessage() }
         )
     }
@@ -438,7 +476,7 @@ extension SupportMessage {
             createdAt: self.createdAt,
             authorName: user.displayName,
             authorIsUser: true,
-            attachments: self.attachments.map { $0.asAttachment() }
+            attachments: self.attachments.compactMap { $0.asAttachment() }
         )
         case .supportAgent(let agent): Message(
             id: self.id,
@@ -446,16 +484,53 @@ extension SupportMessage {
             createdAt: self.createdAt,
             authorName: agent.name,
             authorIsUser: false,
-            attachments: self.attachments.map { $0.asAttachment() }
+            attachments: self.attachments.compactMap { $0.asAttachment() }
         )
         }
     }
 }
 
 extension SupportAttachment {
-    func asAttachment() -> Attachment {
-        Attachment(
-            id: self.id
+    func asAttachment() -> Attachment? {
+        guard let url = URL(string: self.url) else {
+            return nil
+        }
+
+        return Attachment(
+            id: self.id,
+            filename: self.filename,
+            contentType: self.contentType,
+            fileSize: self.size,
+            url: url,
+            dimensions: nil
         )
+    }
+}
+
+fileprivate func summarize(_ text: String) async -> String {
+    if #available(iOS 26.0, *) {
+        do {
+            return try await IntelligenceService().summarizeSupportTicket(content: text)
+        } catch {
+            return text
+        }
+    } else {
+        if let preview = text.components(separatedBy: .newlines).first?.prefix(64) {
+            return String(preview)
+        } else {
+            return text
+        }
+    }
+}
+
+fileprivate func conversationStatus(from string: String) -> Support.ConversationStatus {
+    switch string {
+    case "open": .waitingForSupport
+    case "closed": .closed
+    case "pending": .waitingForUser
+    case "solved": .resolved
+    case "new": .waitingForSupport
+    case "hold": .waitingForSupport
+    default: .unknown
     }
 }

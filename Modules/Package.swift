@@ -21,6 +21,8 @@ let package = Package(
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
+        .library(name: "WordPressCore", targets: ["WordPressCore"]),
+        .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -52,8 +54,8 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.10.1"),
+        // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251101"),
         .package(
             url: "https://github.com/Automattic/color-studio",
@@ -137,7 +139,7 @@ let package = Package(
             name: "Support",
             dependencies: [
                 "AsyncImageKit",
-                "WordPressCore",
+                "WordPressCoreProtocols",
             ]
         ),
         .target(name: "TextBundle"),
@@ -152,10 +154,15 @@ let package = Package(
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressCore", dependencies: [
+                "WordPressCoreProtocols",
                 "WordPressShared",
-                .product(name: "WordPressAPI", package: "wordpress-rs")
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
             ]
         ),
+        .target(name: "WordPressCoreProtocols", dependencies: [
+            // This package should never have dependencies – it exists to expose protocols implemented in WordPressCore
+            // to UI code, because `wordpress-rs` doesn't work nicely with previews.
+        ]),
         .target(name: "WordPressLegacy", dependencies: ["DesignSystem", "WordPressShared"]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
@@ -177,6 +184,7 @@ let package = Package(
                 "DesignSystem",
                 "WordPressShared",
                 "WordPressLegacy",
+                .product(name: "ColorStudio", package: "color-studio"),
                 .product(name: "Reachability", package: "Reachability"),
             ],
             resources: [.process("Resources")],

@@ -1,5 +1,7 @@
 import Foundation
-import WordPressCore
+import AVFoundation
+import AsyncImageKit
+import WordPressCoreProtocols
 
 // This file is all module-internal and provides sample data for UI development
 
@@ -8,7 +10,9 @@ extension SupportDataProvider {
         applicationLogProvider: InternalLogDataProvider(),
         botConversationDataProvider: InternalBotConversationDataProvider(),
         userDataProvider: InternalUserDataProvider(),
-        supportConversationDataProvider: InternalSupportConversationDataProvider()
+        supportConversationDataProvider: InternalSupportConversationDataProvider(),
+        diagnosticsDataProvider: InternalDiagnosticsDataProvider(),
+        mediaHost: InternalMediaHost()
     )
 
     static let applicationLog = ApplicationLog(path: URL(filePath: #filePath), createdAt: Date(), modifiedAt: Date())
@@ -21,6 +25,7 @@ extension SupportDataProvider {
     static let botConversation = BotConversation(
         id: 1234,
         title: "App Crashing on Launch",
+        createdAt: Date().addingTimeInterval(-3600), // 1 hour ago
         messages: [
             BotMessage(
                 id: 1001,
@@ -84,6 +89,7 @@ extension SupportDataProvider {
         BotConversation(
             id: 5678,
             title: "App Crashing on Launch",
+            createdAt: Date().addingTimeInterval(-60), // 1 minute ago
             messages: botConversation.messages + [
                 BotMessage(
                     id: 1009,
@@ -107,48 +113,56 @@ extension SupportDataProvider {
             id: 1,
             title: "Login Issues with Two-Factor Authentication",
             description: "I'm having trouble logging into my account. The two-factor authentication code isn't working properly and I keep getting locked out.",
+            status: .waitingForSupport,
             lastMessageSentAt: Date().addingTimeInterval(-300) // 5 minutes ago
         ),
         ConversationSummary(
             id: 2,
             title: "Billing Question - Duplicate Charges",
             description: "I noticed duplicate charges on my credit card statement for this month's subscription. Can you help me understand what happened?",
+            status: .waitingForUser,
             lastMessageSentAt: Date().addingTimeInterval(-3600) // 1 hour ago
         ),
         ConversationSummary(
             id: 3,
             title: "Feature Request: Dark Mode Support",
             description: "Would it be possible to add dark mode support to the mobile app? Many users in our team have been requesting this feature.",
+            status: .resolved,
             lastMessageSentAt: Date().addingTimeInterval(-86400) // 1 day ago
         ),
         ConversationSummary(
             id: 4,
             title: "Data Export Not Working",
             description: "I'm trying to export my data but the process keeps failing at 50%. Is there a known issue with large datasets?",
+            status: .resolved,
             lastMessageSentAt: Date().addingTimeInterval(-172800) // 2 days ago
         ),
         ConversationSummary(
             id: 5,
             title: "Account Migration Assistance",
             description: "I need help migrating my old account to the new system. I have several years of data that I don't want to lose.",
+            status: .resolved,
             lastMessageSentAt: Date().addingTimeInterval(-259200) // 3 days ago
         ),
         ConversationSummary(
             id: 6,
             title: "API Rate Limiting Questions",
             description: "Our application is hitting rate limits frequently. Can we discuss increasing our API quota or optimizing our usage patterns?",
+            status: .closed,
             lastMessageSentAt: Date().addingTimeInterval(-604800) // 1 week ago
         ),
         ConversationSummary(
             id: 7,
             title: "Security Concern - Suspicious Activity",
             description: "I received an email about suspicious activity on my account. I want to make sure my account is secure and review recent access logs.",
+            status: .closed,
             lastMessageSentAt: Date().addingTimeInterval(-1209600) // 2 weeks ago
         ),
         ConversationSummary(
             id: 8,
             title: "Integration Help with Webhook Setup",
             description: "I'm having trouble setting up webhooks for our CRM integration. The endpoints aren't receiving the expected payload format.",
+            status: .closed,
             lastMessageSentAt: Date().addingTimeInterval(-1814400) // 3 weeks ago
         )
     ]
@@ -158,6 +172,7 @@ extension SupportDataProvider {
         title: "Issue with app crashes",
         description: "The app keeps crashing when I try to upload photos. This has been happening for the past week and is very frustrating.",
         lastMessageSentAt: Date().addingTimeInterval(-2400),
+        status: .closed,
         messages: [
             Message(
                 id: 1,
@@ -198,7 +213,15 @@ extension SupportDataProvider {
                 createdAt: Date().addingTimeInterval(-1800),
                 authorName: "Test User",
                 authorIsUser: true,
-                attachments: []
+                attachments: [
+                    Attachment(
+                        id: 1234,
+                        filename: "sample-1234.jpg",
+                        contentType: "application/jpeg",
+                        fileSize: 1234,
+                        url: URL(string: "https://picsum.photos/seed/1/800/600")!
+                    )
+                ]
             ),
             Message(
                 id: 6,
@@ -321,6 +344,8 @@ actor InternalUserDataProvider: CurrentUserDataProvider {
 }
 
 actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
+    let maximumUploadSize: UInt64 = 5_000_000 // 5MB
+
     private var conversations: [UInt64: Conversation] = [:]
 
     nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]> {
@@ -374,6 +399,7 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
             title: subject,
             description: message,
             lastMessageSentAt: Date(),
+            status: .waitingForSupport,
             messages: [Message(
                 id: 1234,
                 content: message,
@@ -387,5 +413,53 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
 
     private func cache(_ value: Conversation) {
         self.conversations[value.id] = value
+    }
+}
+
+actor InternalDiagnosticsDataProvider: DiagnosticsDataProvider {
+
+    private var didClear: Bool = false
+
+    func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
+        if didClear {
+            DiskCacheUsage(fileCount: 0, byteCount: 0)
+        } else {
+            DiskCacheUsage(fileCount: 64, byteCount: 623_423_562)
+        }
+    }
+
+    func clearDiskCache(progress: @Sendable (CacheDeletionProgress) async throws -> Void) async throws {
+        let totalFiles = 12
+
+        // Initial progress (0%)
+        try await progress(CacheDeletionProgress(filesDeleted: 0, totalFileCount: totalFiles))
+
+        for i in 1...totalFiles {
+            // Pretend each file takes a short time to delete
+            try await Task.sleep(for: .milliseconds(150))
+
+            // Report incremental progress
+            try await progress(CacheDeletionProgress(filesDeleted: i, totalFileCount: totalFiles))
+        }
+
+        self.didClear = true
+    }
+}
+
+actor InternalMediaHost: MediaHostProtocol {
+    func authenticatedRequest(for url: URL) async throws -> URLRequest {
+        if Bool.random() {
+            throw CocoaError(.coderInvalidValue)
+        }
+
+        return URLRequest(url: url)
+    }
+
+    func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
+        if Bool.random() {
+            throw CocoaError(.coderInvalidValue)
+        }
+
+        return AVURLAsset(url: url)
     }
 }

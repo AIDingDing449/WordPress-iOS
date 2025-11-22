@@ -4,8 +4,13 @@ import PhotosUI
 
 public struct SupportForm: View {
 
+    private let enableRichTextForm: Bool = false
+
     @EnvironmentObject
     private var dataProvider: SupportDataProvider
+
+    @Environment(\.dismiss)
+    private var dismiss
 
     /// Focus state for managing field focus
     @FocusState private var focusedField: Field?
@@ -41,15 +46,21 @@ public struct SupportForm: View {
     @State private var applicationLogs: [ApplicationLog]
 
     @State private var selectedPhotos: [URL] = []
+    @State private var uploadLimitExceeded = false
 
     /// UI State
     @State private var showLoadingIndicator = false
     @State private var shouldShowErrorAlert = false
     @State private var shouldShowSuccessAlert = false
     @State private var errorMessage = ""
+    @State private var isDisplayingCancellationConfirmation: Bool = false
 
     /// Callback for when form is dismissed
     public var onDismiss: (() -> Void)?
+
+    private var subjectIsEmpty: Bool {
+        subject.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
 
     private var problemDescriptionIsEmpty: Bool {
         plainTextProblemDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -61,14 +72,21 @@ public struct SupportForm: View {
     /// Determines if the submit button should be enabled or not.
     private var submitButtonDisabled: Bool {
         selectedArea == nil
-        || subject.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        || subjectIsEmpty
         || problemDescriptionIsEmpty
+        || uploadLimitExceeded
+    }
+
+    /// Determines if the user has unsaved changes – if they do, we won't allow dismissing the form
+    /// without prompting the user first.
+    private var userHasUnsavedChanges: Bool {
+        !subjectIsEmpty || !problemDescriptionIsEmpty
     }
 
     public init(
-        onDismiss: (() -> Void)? = nil,
         supportIdentity: SupportUser,
-        applicationLogs: [ApplicationLog] = []
+        applicationLogs: [ApplicationLog] = [],
+        onDismiss: (() -> Void)? = nil
     ) {
         self.onDismiss = onDismiss
         self.supportIdentity = supportIdentity
@@ -85,7 +103,9 @@ public struct SupportForm: View {
 
             // Screenshots Section
             ScreenshotPicker(
-                attachedImageUrls: $selectedPhotos
+                attachedImageUrls: $selectedPhotos,
+                maximumUploadSize: self.dataProvider.maximumUploadSize,
+                uploadLimitExceeded: self.$uploadLimitExceeded
             )
 
             // Application Logs Section
@@ -99,8 +119,37 @@ public struct SupportForm: View {
             // Submit Button Section
             submitButtonSection
         }
+        .scrollDismissesKeyboard(.interactively)
+        .interactiveDismissDisabled(self.userHasUnsavedChanges)
         .navigationTitle(Localization.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(Localization.cancel, role: .cancel) {
+                    if self.userHasUnsavedChanges {
+                        self.isDisplayingCancellationConfirmation = true
+                    } else {
+                        self.onDismiss?()
+                        self.dismiss()
+                    }
+                }
+            }
+        }
+        .alert(
+            Localization.confirmCancellation,
+            isPresented: $isDisplayingCancellationConfirmation,
+            actions: {
+                Button(Localization.discardChanges, role: .destructive) {
+                    self.dismiss()
+                }
+
+                Button(Localization.continueWriting, role: .cancel) {
+                    self.isDisplayingCancellationConfirmation = false
+                }
+            }, message: {
+                Text(Localization.confirmCancelMessage)
+            }
+        )
         .alert(Localization.errorTitle, isPresented: $shouldShowErrorAlert) {
             Button(Localization.gotIt) {
                 shouldShowErrorAlert = false
@@ -112,6 +161,7 @@ public struct SupportForm: View {
             Button(Localization.gotIt) {
                 shouldShowSuccessAlert = false
                 onDismiss?()
+                self.dismiss()
             }
         } message: {
             Text(Localization.supportRequestSentMessage)
@@ -150,7 +200,7 @@ private extension SupportForm {
     var contactInformationSection: some View {
         Section {
             VStack(alignment: .leading) {
-                Text("We'll email you at this address.")
+                Text(Localization.emailNotice)
                     .font(.caption)
                     .foregroundColor(.secondary)
 
@@ -199,7 +249,7 @@ private extension SupportForm {
 
     @ViewBuilder
     var textEditor: some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), self.enableRichTextForm {
             TextEditor(text: $attributedProblemDescription)
                 .focused($focusedField, equals: .problemDescription)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -254,7 +304,7 @@ private extension SupportForm {
     }
 
     private func getText() throws -> String {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), self.enableRichTextForm {
             return self.attributedProblemDescription.toHtml()
         } else {
             return self.plainTextProblemDescription.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -262,6 +312,7 @@ private extension SupportForm {
     }
 
     /// Submits the support request
+    @MainActor
     func submitSupportRequest() {
         guard !submitButtonDisabled else { return }
 
@@ -273,19 +324,15 @@ private extension SupportForm {
                     subject: self.subject,
                     message: self.getText(),
                     user: self.supportIdentity,
-                    attachments: []
+                    attachments: self.selectedPhotos
                 )
 
-                await MainActor.run {
-                    showLoadingIndicator = false
-                    shouldShowSuccessAlert = true
-                }
+                showLoadingIndicator = false
+                shouldShowSuccessAlert = true
             } catch {
-                await MainActor.run {
-                    showLoadingIndicator = false
-                    errorMessage = error.localizedDescription
-                    shouldShowErrorAlert = true
-                }
+                showLoadingIndicator = false
+                errorMessage = error.localizedDescription
+                shouldShowErrorAlert = true
             }
         }
     }
@@ -376,10 +423,15 @@ private extension SupportFormArea {
 // MARK: - Previews
 #Preview {
     NavigationStack {
-        SupportForm(
-            supportIdentity: SupportDataProvider.supportUser,
-            applicationLogs: [SupportDataProvider.applicationLog]
-        )
+        Text("Support Form")
+    }
+    .sheet(isPresented: .constant(true)) {
+        NavigationStack {
+            SupportForm(
+                supportIdentity: SupportDataProvider.supportUser,
+                applicationLogs: [SupportDataProvider.applicationLog]
+            )
+        }
     }
     .toolbar {
         ToolbarItem(placement: .topBarTrailing) {

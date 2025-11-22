@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressCore
+import WordPressCoreProtocols
 
 struct EmptyDiskCacheView: View {
 
@@ -8,9 +8,9 @@ struct EmptyDiskCacheView: View {
 
     enum ViewState: Equatable {
         case loading
-        case loaded(usage: DiskCache.DiskCacheUsage)
-        case clearing(progress: Double, result: String)
-        case error(Error)
+        case loaded(usage: DiskCacheUsage)
+        case clearing(progress: Double, result: String, task: Task<Void, Never>)
+        case error(String)
 
         var isClearingCache: Bool {
             if case .clearing = self {
@@ -32,78 +32,110 @@ struct EmptyDiskCacheView: View {
             return usage.isEmpty
         }
 
-        static func == (lhs: EmptyDiskCacheView.ViewState, rhs: EmptyDiskCacheView.ViewState) -> Bool {
-            switch(lhs, rhs) {
-                case (.loading, .loading):
-                return true
-            case (.loaded(let lhsUsage), .loaded(let rhsUsage)):
-                return lhsUsage == rhsUsage
-            case (.clearing(let lhsProgress, let lhsResult), .clearing(let rhsProgress, let rhsResult)):
-                return lhsProgress == rhsProgress && lhsResult == rhsResult
-            case (.error, .error):
-                return true
-            default:
-                return false
+        var task: Task<Void, Never>? {
+            guard case .clearing(_, _, let task) = self else {
+                return nil
             }
+
+            return task
+        }
+
+        var buttonText: String {
+            isClearingCache ? Localization.clearing : Localization.clearDiskCache
+        }
+
+        var buttonImage: String {
+            isClearingCache ? "hourglass" : "trash"
+        }
+
+        var primaryStatusText: String {
+            if case .loaded(let usage) = self {
+                if usage.isEmpty {
+                    return Localization.cacheIsEmpty
+                } else {
+                    return String
+                        .localizedStringWithFormat(Localization.cacheFiles, usage.fileCount, usage.formattedDiskUsage)
+                        .applyingNumericMorphology(for: usage.fileCount)
+                }
+            }
+
+            return ""
+        }
+
+        var secondaryStatusText: String {
+            if case .clearing(let progress, _, _) = self {
+                return formatter.string(from: progress as NSNumber) ?? ""
+            }
+
+            return ""
+        }
+
+        var progressBarProgress: CGFloat {
+            guard case .clearing(let progress, _, _) = self else {
+                return 0
+            }
+
+            return progress
+        }
+
+        var progressBarOpacity: CGFloat {
+            if case .clearing = self {
+                return 1.0
+            }
+
+            return 0
+        }
+
+        private var formatter: NumberFormatter {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .percent
+            formatter.maximumFractionDigits = 0
+            return formatter
         }
     }
 
     @State
     var state: ViewState = .loading
 
-    private let cache = DiskCache()
-
     var body: some View {
         // Clear Disk Cache card
         DiagnosticCard(
-            title: "Clear Disk Cache",
-            subtitle: "Remove temporary files to free up space or resolve problems.",
+            title: Localization.clearDiskCache,
+            subtitle: Localization.clearDiskCacheDescription,
             systemImage: "externaldrive.badge.xmark"
         ) {
             VStack(alignment: .leading, spacing: 12) {
                 Button {
-                    Task { await clearDiskCache() }
+                    clearDiskCache()
                 } label: {
-                    Label(self.state.isClearingCache ? "Clearing…" : "Clear Disk Cache", systemImage: self.state.isClearingCache ? "hourglass" : "trash")
+                    Label(self.state.buttonText, systemImage: self.state.buttonImage)
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(self.state.buttonIsDisabled)
 
                 // Progress bar under the button
                 VStack(alignment: .leading, spacing: 6) {
-                    switch self.state {
-                    case .loading:
-                        ProgressView("Loading Disk Usage")
-                    case .loaded(let usage):
-                        if usage.isEmpty {
-                            Text("Cache is empty")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        } else {
-                            Text("^[\(usage.fileCount) cache files](inflect: true) (\(usage.formattedDiskUsage))")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
-                    case .clearing(let progress, let status):
-                        ProgressView(value: progress)
+                    if case .loading = state {
+                        ProgressView(Localization.loadingDiskUsage)
+                    } else {
+                        ProgressView(value: self.state.progressBarProgress)
                             .progressViewStyle(.linear)
                             .tint(.accentColor)
-                            .opacity(progress > 0 ? 1 : 0)
-
-                        Text(status)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .opacity(self.state.progressBarOpacity)
 
                         HStack {
+                            Text("^[\(self.state.primaryStatusText)](inflect: true)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
                             Spacer()
-                                Text("\(Int(progress * 100))%")
+
+                            Text(self.state.secondaryStatusText)
                                     .font(.caption.monospacedDigit())
                                     .foregroundStyle(.secondary)
+                                    .opacity(self.state.progressBarOpacity)
                         }
-                    case .error(let error):
-                        Text(error.localizedDescription)
                     }
-
                 }
             }
             .task(self.fetchDiskCacheUsage)
@@ -112,53 +144,60 @@ struct EmptyDiskCacheView: View {
 
     private func fetchDiskCacheUsage() async {
         do {
-            let usage = try await cache.diskUsage()
-            await MainActor.run {
-                self.state = .loaded(usage: usage)
-            }
+            let usage = try await dataProvider.fetchDiskCacheUsage()
+            self.state = .loaded(usage: usage)
         } catch {
-            await MainActor.run {
-                self.state = .error(error)
-            }
+            self.state = .error(error.localizedDescription)
         }
     }
 
     // Simulated async cache clearing with progress updates.
-    private func clearDiskCache() async {
+    private func clearDiskCache() {
         guard case .loaded(let usage) = state else {
             return
         }
 
         self.dataProvider.userDid(.emptyDiskCache(bytesSaved: usage.byteCount))
+        self.state = .clearing(progress: 0, result: "", task: self.clearDiskCacheTask)
+    }
 
-        self.state = .clearing(progress: 0, result: "")
+    private var clearDiskCacheTask: Task<Void, Never> {
+        Task {
+            guard case .clearing(_, _, let task) = state else {
+                return
+            }
+            do {
+                try await Task.runForAtLeast(.seconds(1.0)) {
+                    // If the process takes less than a second, show the progress bar and percent for at least that long
+                    try await dataProvider.clearDiskCache { @MainActor progress in
+                        withAnimation {
+                            self.state = .clearing(
+                                progress: progress.progress,
+                                result: Localization.working,
+                                task: task
+                            )
+                        }
+                    }
 
-        do {
-            try await cache.removeAll { count, total in
-                let progress: Double
-
-                if count > 0 && total > 0 {
-                    progress = Double(count) / Double(total)
-                } else {
-                    progress = 0
-                }
-
-                await MainActor.run {
-                    withAnimation {
-                        self.state = .clearing(progress: progress, result: "Working")
+                    await MainActor.run {
+                        withAnimation {
+                            self.state = .clearing(
+                                progress: 1.0,
+                                result: Localization.complete,
+                                task: task
+                            )
+                        }
                     }
                 }
-            }
 
-            await MainActor.run {
+                let usage = try await dataProvider.fetchDiskCacheUsage()
+
                 withAnimation {
-                    self.state = .clearing(progress: 1.0, result: "Complete")
+                    self.state = .loaded(usage: usage)
                 }
-            }
-        } catch {
-            await MainActor.run {
+            } catch {
                 withAnimation {
-                    self.state = .error(error)
+                    self.state = .error(error.localizedDescription)
                 }
             }
         }
@@ -166,5 +205,5 @@ struct EmptyDiskCacheView: View {
 }
 
 #Preview {
-    EmptyDiskCacheView()
+    EmptyDiskCacheView().environmentObject(SupportDataProvider.testing)
 }

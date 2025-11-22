@@ -42,7 +42,7 @@ public struct ErrorView: View {
 
             // Retry button (if action provided)
             if let retryAction {
-                Button("Try Again") {
+                Button(Localization.tryAgain) {
                     retryAction()
                 }
                 .buttonStyle(.borderedProminent)
@@ -59,6 +59,31 @@ public struct ErrorView: View {
     }
 }
 
+public struct FullScreenErrorView: View {
+
+    let title: String
+    let message: String
+    let systemImage: String
+
+    public init(
+        title: String = "Something went wrong",
+        message: String = "Please try again later",
+        systemImage: String = "exclamationmark.triangle.fill"
+    ) {
+        self.title = title
+        self.message = message
+        self.systemImage = systemImage
+    }
+
+    public var body: some View {
+        ContentUnavailableView(
+            self.title,
+            systemImage: self.systemImage,
+            description: Text(self.message)
+        )
+    }
+}
+
 #Preview {
     VStack(spacing: 20) {
         // Basic error view
@@ -70,7 +95,7 @@ public struct ErrorView: View {
             message: "Unable to connect to the server. Check your internet connection and try again.",
             systemImage: "wifi.exclamationmark",
             retryAction: {
-                print("Retry tapped")
+                // You'd do something here if this wasn't a preview
             }
         )
 
@@ -82,4 +107,12 @@ public struct ErrorView: View {
         )
     }
     .background(.gray.opacity(0.1))
+}
+
+#Preview("Full Screen Error View") {
+    FullScreenErrorView(
+        title: "Network Error",
+        message: "Unable to connect to the server. Check your internet connection and try again.",
+        systemImage: "wifi.exclamationmark"
+    )
 }
