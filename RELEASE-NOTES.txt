@@ -1,3 +1,7 @@
+26.6
+-----
+
+
 26.5
 -----
 * [*] Add "Status" field to the "Post Settings" screen to make it easier to move posts from one state to another [#24939]

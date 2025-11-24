@@ -1,6 +1,10 @@
-You can now create an excerpt for your posts and get auto-suggested tags using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
-We made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen.
-While we were at it, we also squashed a few bugs.
-- Reader articles render properly on devices with Display Zoom enabled.
-- The “Add Media” button stays visible in the media library. No more disappearing act.
-- You can search in Reader Subscriptions without freezing the app.
+* [*] Add "Status" field to the "Post Settings" screen to make it easier to move posts from one state to another [#24939]
+* [*] Add "Publish Date" back to "Post Settings" for draft and pending posts [#24939]
+* [*] Use "Menlo" font for the password field to make it easier to distinguish between characters like `0` and `0`  [#24939]
+* [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "Discussion" to "Post Settings" [#24948]
+* [*] Add "File Size" to Site Media Details [#24947]
+* [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
+* [*] Add permalink preview in the slug editor and make other improvements [#24949]
+* [*] Add "Taxonomies" to Site Settings [#24955]
+* [*] Update "Categories" picker to indicate multiple selection [#24952]

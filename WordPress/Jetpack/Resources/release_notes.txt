@@ -1,16 +1,10 @@
-You can now create an excerpt, a post summary, and auto-generated tags for your posts using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
-Speaking of Stats, there are several new improvements in this area of the app.
-- We added a Today card to the New Stats screen.
-- Your homepage now appears in the list of top pages.
-- Your top 10 and 50 items now have their own special section. A place for everything, and everything in its place.
-- Your top pages show up properly when you have a large number of items.
-- The New Stats layout changes to fit different screen sizes. Even really, really big ones.
-- The screen will remember your preferred settings when you pick a custom date range.
-- The Traffic tab lets you pull down to refresh the screen.
-We also made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen. And while we were at it, we squashed several bugs, too.
-- We fixed a rare crash that sometimes appears in Stats and Subscribers. (But not anymore.)
-- Article views look as they should in the Reader when certain themes are enabled.
-- Reader articles render properly on devices with Display Zoom enabled.
-- The “Add Media” button stays visible in the media library. No more disappearing act.
-- You can search in Reader Subscriptions without freezing the app.
-- The toolbar in Reader articles no longer disappears and reappears from time to time. Now you see it, now you… still see it, we guess.
+* [*] Add "Status" field to the "Post Settings" screen to make it easier to move posts from one state to another [#24939]
+* [*] Add "Publish Date" back to "Post Settings" for draft and pending posts [#24939]
+* [*] Use "Menlo" font for the password field to make it easier to distinguish between characters like `0` and `0`  [#24939]
+* [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "Discussion" to "Post Settings" [#24948]
+* [*] Add "File Size" to Site Media Details [#24947]
+* [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
+* [*] Add permalink preview in the slug editor and make other improvements [#24949]
+* [*] Add "Taxonomies" to Site Settings [#24955]
+* [*] Update "Categories" picker to indicate multiple selection [#24952]

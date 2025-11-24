@@ -234,26 +234,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return nil;
 }
 
-- (BOOL)isCrossPost
-{
-    return self.crossPostMeta != nil;
-}
-
-- (BOOL)isP2Type
-{
-    NSInteger orgID = [self.organizationID intValue];
-    return orgID == SiteOrganizationTypeP2 || orgID == SiteOrganizationTypeAutomattic;
-}
-
-- (NSString *)authorString
-{
-    if ([self.authorDisplayName length] > 0) {
-        return self.authorDisplayName;
-    }
-
-    return self.author;
-}
-
 - (BOOL)contentIncludesFeaturedImage
 {
     NSURL *featuredImageURL = [self featuredImageURL];
@@ -277,35 +257,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     NSString *content = [self contentForDisplay];
     return ([content rangeOfString:featuredImage].location != NSNotFound);
-}
-
-- (SourceAttributionStyle)sourceAttributionStyle
-{
-    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttribution.post]) {
-        return SourceAttributionStylePost;
-    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttribution.site]) {
-        return SourceAttributionStyleSite;
-    } else {
-        return SourceAttributionStyleNone;
-    }
-}
-
-- (NSString *)sourceAuthorNameForDisplay
-{
-    return self.sourceAttribution.authorName;
-}
-
-- (NSURL *)sourceAvatarURLForDisplay
-{
-    if (!self.sourceAttribution) {
-        return nil;
-    }
-    return [NSURL URLWithString:self.sourceAttribution.avatarURL];
-}
-
-- (NSString *)sourceBlogNameForDisplay
-{
-    return self.sourceAttribution.blogName;
 }
 
 - (NSDictionary *)railcarDictionary

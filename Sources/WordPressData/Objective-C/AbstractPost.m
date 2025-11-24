@@ -256,31 +256,9 @@
     return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
-- (NSString *)authorNameForDisplay
-{
-    return [self.author makePlainText];
-}
-
 - (NSURL *)blogURL
 {
     return [NSURL URLWithString:self.blog.url];
-}
-
-- (NSString *)contentPreviewForDisplay
-{
-    return self.mt_excerpt;
-}
-
-- (NSString *)dateStringForDisplay
-{
-    if ([self originalIsDraft] || [self.status isEqualToString:PostStatusPending]) {
-        return [[self dateModified] mediumString];
-    } else if ([self isScheduled]) {
-        return [[self dateCreated] mediumStringWithTime];
-    } else if ([self shouldPublishImmediately]) {
-        return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
-    }
-    return [[self dateCreated] mediumString];
 }
 
 - (BOOL)isPrivateAtWPCom

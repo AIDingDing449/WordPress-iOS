@@ -685,8 +685,7 @@
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Almost there! Please enter the verification code from your authenticator app.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alt Text";
 
 /* No comment provided by engineer. */
@@ -862,14 +861,19 @@
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Application passwords are a more secure way to connect to your self-hosted site, and enable support for features like %@.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "Application Passwords Management";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Block Editor";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "Taxonomies Management";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Plugin Management";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "User Management";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -962,9 +966,6 @@
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Are you sure you want to disconnect Jetpack from the site?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Are you sure you want to permanently delete this item?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Are you sure you want to remove %1$@ from %2$@?";
@@ -1527,7 +1528,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancel";
@@ -1555,8 +1555,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Can’t decide? You can change the theme at any time.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Caption";
 
 /* Alert title. */
@@ -1788,6 +1787,288 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Columns Settings";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "Add More Screenshots";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "Add Screenshots";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "Application Logs";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "Including logs can help our team investigate issues. Logs may contain recent app activity.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "Application Logs";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "Attachment %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "Attachment Limit: %1$@ / %2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "Howdy %1$@!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "I'm your personal AI assistant. I can help with any questions about your site or account.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d cached files (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "Cache is empty";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "Cancel";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "You won't be able to get them back.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "Clear All Activity Logs";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "Clear Disk Cache";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "Remove temporary files to free up space or resolve problems.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "Clearing…";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "Complete";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "Confirm Cancellation";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "Are you sure you want to cancel this message? You'll lose any data you've entered";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "Are you sure you want to delete all logs?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "Contact Information";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "Continue Writing";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "End of conversation. No further replies are possible.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "Conversations";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "Delete all Logs";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "Run common maintenance and troubleshooting tasks.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "Diagnostics";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "Discard Changes";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "We'll email you at this address.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "Error loading logs";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "Error loading support conversations";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "Error";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "Export as File";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "Got It";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "Include application logs";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "I need help with";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "Issue Details";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "Last updated %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "Loading Messages";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "Loading Bot Conversations";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "Loading Conversations";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "Loading Disk Usage";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "Loading Image";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "Loading latest content";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "Loading log content...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "Loading logs...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "Loading Messages";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "Loading Video";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "Log files by created date";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "The following log files will be uploaded:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "Up to seven days worth of logs are saved.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "Message";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d Messages";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "Message Sent";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "New Bot Chat";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "New Support Ticket";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "No Conversations";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "There are no activity logs available";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "No Logs Found";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "Open a Support Ticket";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(Optional)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "Reply";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "Save as a file to share or store";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "Screenshots";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "Adding screenshots can help us understand and resolve your issue faster.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "Send";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "Sending";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "Sending Message";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "Send logs directly to support team";
+
+/* Button to share content */
+"com.jetpack.support.share" = "Share";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "Share Activity Log";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "Sharing with support!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "Site Address";
+
+/* Placeholder for site address field */
+"com.jetpack.support.siteAddressPlaceholder" = "https://yoursite.com";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "Start a new conversation using the button above";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "Subject";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "Brief summary of your issue";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "Submit Support Request";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "Support Conversations";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "Request Sent!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "Your support request has been sent successfully. We will reply via email as quickly as we can.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "Thinking...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "Contact Support";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "Try Again";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "Unable to delete logs";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "Unable to display conversation";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "Unable to display video";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "Unable to load application logs";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "Unable to load conversations";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "Unable to Load Messages";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "Unable to send Message";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "View";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "Working";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -2494,19 +2775,18 @@ Example: Reply to Pamela Nguyen */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Default";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Default Category";
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Default Post Format";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "Default Category";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Defaults for New Posts";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Delete";
 
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Delete menu";
@@ -2525,14 +2805,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Delete Site Error";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Deleted!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Deleting site…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Deleting...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Deny";
@@ -2540,8 +2814,7 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Describe the purpose of the image. Leave empty if decorative.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Description";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -2559,9 +2832,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Didn't mean to create a new account? Go back to re-enter your email address.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Dimensions";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Disable";
@@ -2971,10 +3241,10 @@ Example: Reply to Pamela Nguyen */
 "Edit video" = "Edit video";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "Are you sure you want to delete this tag?";
+"edit.tag.delete.confirmation.message" = "Are you sure you want to delete this?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "Delete Tag";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Delete";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "Add a description...";
@@ -2989,7 +3259,7 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "Description";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "Tag";
+"edit.tag.section.tag" = "Name";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
 "Editing synced patterns is not yet supported on %s for Android" = "Editing synced patterns is not yet supported on %s for Android";
@@ -3000,8 +3270,38 @@ Example: Reply to Pamela Nguyen */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Editor";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "Insert Block";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "Search";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "Show Less";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "Show More";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "Failed to insert media";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "All";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "Insert Pattern";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "No Patterns Found";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "Patterns";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "Uncategorized";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Edits the comment.";
@@ -3397,11 +3697,8 @@ Example: Reply to Pamela Nguyen */
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "File Downloads";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "File name";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "File type";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "File type not supported as a media file.";
@@ -3832,6 +4129,9 @@ Example: Reply to Pamela Nguyen */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "I need help with";
+
 /* Title of a button style */
 "Icon & Text" = "Icon & Text";
 
@@ -3877,9 +4177,6 @@ Example: Reply to Pamela Nguyen */
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Image caption. %s";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Image Description";
-
 /* No comment provided by engineer. */
 "Image file not found." = "Image file not found.";
 
@@ -3888,9 +4185,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Image Size";
-
-/* Hint for image title on image settings. */
-"Image title" = "Image title";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "In a few words, explain what this site is about.";
@@ -4528,6 +4822,24 @@ Please install the %3$@ to use the app with this site.";
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "This site is using individual Jetpack plugins, which don’t support all features of the app yet. Please install the full Jetpack plugin.";
+
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "Anyone can view this post";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "Everyone";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "Only paid subscribers can view this post";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "Paid Subscribers";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "The post is visible to all subscribers, including free ones";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "All Subscribers";
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "You need to sign in with %@ to use Stats and Notifications.";
@@ -5188,6 +5500,12 @@ Please install the %3$@ to use the app with this site.";
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Let Us Help";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "Let’s get this sorted";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "Lifestyle";
 
@@ -5332,6 +5650,12 @@ Please install the %3$@ to use the app with this site.";
 /* Local Services site intent topic */
 "Local Services" = "Local Services";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "No %1$@";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "Search %1$@";
+
 /* No comment provided by engineer. */
 "Lock icon" = "Lock icon";
 
@@ -5409,6 +5733,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Main Navigation";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "Make the block editor look like your theme.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
@@ -5636,17 +5963,23 @@ Please install the %3$@ to use the app with this site.";
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Buy storage add-on";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "All items in the Media Library are attached.";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "Audio";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Finding out if there are any unattached media items...";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "Documents";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d item unattached. Remove them to free up some space.";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "Images";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "Remove unused items";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "Other";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "Presentations";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "Videos";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "Your site plan has been upgraded!";
@@ -6149,9 +6482,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "No blocks found" = "No blocks found";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "No Category";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "No comments";
@@ -6704,8 +7034,11 @@ Please install the %3$@ to use the app with this site.";
    Settings: Comments Paging preferences */
 "Paging" = "Paging";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "No Category";
+
 /* Title for selecting parent category of a category */
-"Parent Category" = "Parent Category";
+"parentCategory.title" = "Parent Category";
 
 /* Parenting site intent topic */
 "Parenting" = "Parenting";
@@ -7087,9 +7420,6 @@ Please install the %3$@ to use the app with this site.";
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Post";
 
-/* Title for selecting categories for a post */
-"Post Categories" = "Post Categories";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Post created on %@";
 
@@ -7116,6 +7446,27 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Author";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "Categories";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "Allow Comments";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "Allow Pingbacks";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "Visitors cannot add new comments or replies. Existing comments remain visible.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "Visitors can add new comments and replies.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "Learn more about pingbacks & trackbacks";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "Discussion";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Discard Changes";
@@ -7422,6 +7773,9 @@ Please install the %3$@ to use the app with this site.";
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Untitled";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "Access";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "Author";
 
@@ -7440,6 +7794,18 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "Discard Changes?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "Closed";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "Discussion";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "Open";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "Email to Subscribers";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d characters";
@@ -7543,6 +7909,21 @@ Please install the %3$@ to use the app with this site.";
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "Top level";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "Hide password";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "Enter a password to protect this post. Only users with the password will be able to view it.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "Enter Password";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "Enter password";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "Show password";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "Pending Review";
 
@@ -7570,11 +7951,29 @@ Please install the %3$@ to use the app with this site.";
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "General";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "Customize the last part of the Permalink.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "The slug is the URL-friendly version of the post title.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "Slug";
+
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "Learn more";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "Slug";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "The suggested permalink will appear when the draft is saved on the server";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Permalink";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Permalink";
 
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Enter slug";
@@ -7590,6 +7989,30 @@ Please install the %3$@ to use the app with this site.";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Social Sharing";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "Status";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "Status & Visibility";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "Password";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "Password Protected";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Only visible to those who know the password";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "Date";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "Sticky";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "Pin this post to the top of the blog";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Sticky";
@@ -7615,17 +8038,56 @@ Please install the %3$@ to use the app with this site.";
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Post Stats";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "Add tag";
+/* Post status title */
+"postStatus.deleted.details" = "Permanently deleted";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "Search or add tags";
+/* Post status title */
+"postStatus.deleted.title" = "Deleted";
 
-/* Message shown when no tags are selected */
-"postTags.selectionEmpty" = "No tags are selected";
+/* Post status details */
+"postStatus.draft.details" = "Not ready to publish";
 
-/* Title for the tags screen */
-"postTags.title" = "Tags";
+/* Post status title */
+"postStatus.draft.title" = "Draft";
+
+/* Post status details */
+"postStatus.pending.details" = "Waiting for review before publishing";
+
+/* Post status title */
+"postStatus.pending.title" = "Pending";
+
+/* Post status details */
+"postStatus.private.details" = "Only visible to site admins and editors";
+
+/* Post status title */
+"postStatus.private.title" = "Private";
+
+/* Post status details */
+"postStatus.published.details" = "Visible to everyone";
+
+/* Post status title */
+"postStatus.published.title" = "Published";
+
+/* Post status details */
+"postStatus.scheduled.details" = "Publish automatically on a chosen date";
+
+/* Post status title */
+"postStatus.scheduled.title" = "Scheduled";
+
+/* Post status title */
+"postStatus.trash.details" = "Trashed but not deleted yet";
+
+/* Post status title */
+"postStatus.trash.title" = "Trashed";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "Add %1$@";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "Search or add %1$@";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "No %1$@ are selected";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Cancel";
@@ -7650,9 +8112,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categories";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Close";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "Discard Changes";
@@ -7745,12 +8204,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Warning";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "Message";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "Write a brief message to share on social media alognside the post";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Social";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "Services";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tags";
@@ -8685,9 +9149,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Removes location metadata from photos before uploading them to your site.";
 
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
-
 /* No comment provided by engineer. */
 "Replace audio" = "Replace audio";
 
@@ -9513,6 +9974,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Select domain";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "Add";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "Taxonomies help you organize content beyond standard categories and tags.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "No custom taxonomies";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "Taxonomies";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "Audio, %@";
 
@@ -9531,8 +10004,77 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Select media.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "Alt Text";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "Cancel";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "Caption";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Delete";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "Are you sure you want to permanently delete this item?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Deleted!";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "Deleting...";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "Description";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "Dimensions";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "File Name";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "File Size";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "File Type";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "This media item has been deleted.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Title";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Trash";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "Unable to delete media item.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "Unable to load video.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "Unable to save media item.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "Uploaded";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "Image Alt";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Image Caption";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "Image Description";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "Image title";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Tap to view media in full screen";
@@ -9633,6 +10175,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "Add %1$@";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "Your site is hidden from visitors behind a \"Coming Soon\" notice until it is ready for viewing.";
@@ -10465,13 +11010,15 @@ Feel free to replace it with other bracket types that you think looks better for
 "Tagline" = "Tagline";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Tags";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Tags and Categories";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "Tags help organize your content and make it easier for readers to find related posts.";
 
 /* Title for empty state when there are no tags */
@@ -10582,6 +11129,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Tap to visit the Gravatar website in an external browser";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "Taxonomies";
 
 /* Technology site intent topic */
 "Technology" = "Technology";
@@ -10874,9 +11424,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "This log in code has expired. Please tap the Scan Again button to rescan the code.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "This media item has been deleted.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
 
@@ -10981,7 +11528,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Title";
@@ -11078,8 +11624,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* No comment provided by engineer. */
 "Transform block…" = "Transform block…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Trash";
 
@@ -11164,9 +11709,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Unable to create new invite links.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Unable to delete media item.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Unable to disable invite links.";
 
@@ -11200,9 +11742,6 @@ Feel free to replace it with other bracket types that you think looks better for
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Unable to load this content right now.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Unable to load video.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Unable to play video";
 
@@ -11211,9 +11750,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Unable to restore your site";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Unable to save media item.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Unable to share link";
@@ -11388,9 +11924,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Upload Media";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Uploaded";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Uploaded 1 draft post, %ld files";
 
@@ -11436,8 +11969,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Use password to sign in";
 
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Site's Subscriber";
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "Use theme styles";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Site's User";
@@ -11547,9 +12080,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "Users";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Subscribers";
 
 /* Screen title */
 "users.title" = "Users";
@@ -12052,7 +12582,7 @@ from anywhere.";
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Would you still like to remove this person?";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
