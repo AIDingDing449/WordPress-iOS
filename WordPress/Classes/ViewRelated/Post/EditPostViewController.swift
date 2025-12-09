@@ -241,7 +241,7 @@ class EditPostViewController: UIViewController {
             }
             self.afterDismiss?()
             guard let post = self.post?.getOriginal(),
-                  post.isPublished(),
+                  post.status == .publish,
                   !self.editingExistingPost,
                   let controller = presentingController else {
                 return

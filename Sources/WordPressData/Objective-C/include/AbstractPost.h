@@ -62,53 +62,8 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
-- (BOOL)hasPhoto;
-- (BOOL)hasVideo;
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
-
-
-#pragma mark - Conveniece Methods
-- (BOOL)shouldPublishImmediately;
-- (BOOL)isPrivateAtWPCom;
-
-
-#pragma mark - Unsaved Changes
-
-/**
- Returns YES if the post is has a `future` post status
- */
-- (BOOL)isScheduled;
-
-/**
- Returns YES if the post is a draft
- */
-- (BOOL)isDraft;
-
-/**
- Returns YES if the post is a published.
- */
-- (BOOL)isPublished;
-
-/**
- Returns YES if the original post is a draft
- */
-- (BOOL)originalIsDraft;
-
-// Does the post exist on the blog?
-- (BOOL)hasRemote;
-
-// Save changes to disk
-- (void)save;
-
-/**
- * Updates the path for the display image by looking at the post content and trying to find an good image to use.
- * If no appropiated image is found the path is set to nil.
- */
-- (void)updatePathForDisplayImageBasedOnContent;
-
-- (void)setParsedOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)data;
-- (NSDictionary<NSString *, NSArray<NSString *> *> *)parseOtherTerms;
 
 @end
 

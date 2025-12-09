@@ -44,7 +44,6 @@ public extension AbstractPost {
         statuses.contains(status ?? .draft)
     }
 
-    @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
             guard let remoteStatusNumber = remoteStatusNumber?.uintValue,
@@ -72,7 +71,6 @@ public extension AbstractPost {
     ///
     /// - returns: The localized title for the specified status, or the status if a title was not found.
     ///
-    @objc
     static func title(forStatus status: String) -> String {
         switch status {
         case PostStatusDraft:
@@ -243,7 +241,7 @@ public extension AbstractPost {
     func dateStringForDisplay() -> String? {
         if self.originalIsDraft() || self.status == .pending {
             return dateModified?.toMediumString()
-        } else if self.isScheduled() {
+        } else if self.status == .scheduled {
             return self.dateCreated?.mediumStringWithTime()
         } else if self.shouldPublishImmediately() {
             return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
@@ -274,7 +272,6 @@ public extension AbstractPost {
         }
     }
 
-    @objc
     func createRevision() -> AbstractPost {
         precondition(managedObjectContext != nil)
         precondition(revision == nil, "This post must not already have a revision")
@@ -287,7 +284,6 @@ public extension AbstractPost {
         return post
     }
 
-    @objc
     func deleteRevision() {
         guard let revision, let context = managedObjectContext else {
             return
@@ -301,7 +297,6 @@ public extension AbstractPost {
         }
     }
 
-    @objc
     func applyRevision() {
         guard isOriginal(), let revision else {
             return
@@ -309,23 +304,86 @@ public extension AbstractPost {
         clone(from: revision)
     }
 
-    @objc
     func isRevision() -> Bool {
         !isOriginal()
     }
 
-    @objc
     func isOriginal() -> Bool {
         original == nil
     }
 
-    @objc
     func latest() -> AbstractPost {
         revision?.latest() ?? self
     }
 
-    @objc
     func hasRevision() -> Bool {
         revision != nil
+    }
+
+    /// Returns YES if the original post is a draft
+    func originalIsDraft() -> Bool {
+        if status == .draft {
+            return true
+        } else if isRevision(), original?.status == .draft {
+            return true
+        }
+        return false
+    }
+
+    func shouldPublishImmediately() -> Bool {
+        // - warning: Yes, this is WordPress logic and it matches the behavior on
+        // the web. If `dateCreated` is the same as `dateModified`, the system
+        // uses it to represent a "no publish date selected" scenario.
+        originalIsDraft() && (date_created_gmt == nil || date_created_gmt == dateModified)
+    }
+
+    /// Does the post exist on the blog?
+    func hasRemote() -> Bool {
+        (postID?.int64Value ?? 0) > 0
+    }
+
+    @objc
+    var parsedOtherTerms: [String: [String]] {
+        get {
+            guard let rawOtherTerms else {
+                return [:]
+            }
+
+            return (try? JSONSerialization.jsonObject(with: rawOtherTerms) as? [String: [String]]) ?? [:]
+        }
+        set {
+            rawOtherTerms = try? JSONSerialization.data(withJSONObject: newValue)
+        }
+    }
+
+    /// Updates the path for the display image by looking at the post content and trying to find an good image to use.
+    /// If no appropiated image is found the path is set to nil.
+    @objc
+    func updatePathForDisplayImageBasedOnContent() {
+        guard let content else {
+            return
+        }
+
+        if let result = DisplayableImageHelper.searchPostContentForImage(toDisplay: content), !result.isEmpty {
+            pathForDisplayImage = result
+            return
+        }
+
+        guard let allMedia = blog.media, !allMedia.isEmpty else { return }
+
+        let mediaIDs = DisplayableImageHelper.searchPostContentForAttachmentIds(inGalleries: content) as? Set<NSNumber> ?? []
+        for media in allMedia {
+            guard let media = media as? Media else { continue }
+
+            guard let mediaID = media.mediaID,
+                  mediaIDs.contains(mediaID) else {
+                continue
+            }
+
+            if let remoteURL = media.remoteURL {
+                pathForDisplayImage = remoteURL
+                break
+            }
+        }
     }
 }
