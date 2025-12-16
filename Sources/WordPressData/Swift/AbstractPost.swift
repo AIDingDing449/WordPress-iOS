@@ -2,6 +2,49 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
+public enum AbstractPostRemoteStatus: UInt {
+    case pushing
+    case failed
+    case local
+    case sync
+    case pushingMedia
+    case autoSaved
+    case localRevision
+    case syncNeeded
+}
+
+@objc(AbstractPost)
+public class AbstractPost: BasePost {
+
+    public var voiceContent: String?
+
+    @objc public var revision: AbstractPost? {
+        willAccessValue(forKey: "revision")
+        let revision = primitiveValue(forKey: "revision") as? AbstractPost
+        didAccessValue(forKey: "revision")
+        return revision
+    }
+
+    public var original: AbstractPost? {
+        willAccessValue(forKey: "original")
+        let original = primitiveValue(forKey: "original") as? AbstractPost
+        didAccessValue(forKey: "original")
+        return original
+    }
+
+    public func hasCategories() -> Bool {
+        return false
+    }
+
+    public func hasTags() -> Bool {
+        return false
+    }
+
+    public func contentPreviewForDisplay() -> String? {
+        mt_excerpt
+    }
+}
+
 public extension AbstractPost {
     /// Returns the original post by navigating the entire list of revisions
     /// until it reaches the head.
@@ -117,7 +160,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc func containsGutenbergBlocks() -> Bool {
+    func containsGutenbergBlocks() -> Bool {
         return content?.contains("<!-- wp:") ?? false
     }
 
@@ -151,7 +194,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc func featuredImageURLForDisplay() -> URL? {
+    func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
 
@@ -249,11 +292,6 @@ public extension AbstractPost {
         return self.dateCreated?.toMediumString()
     }
 
-    override func contentPreviewForDisplay() -> String? {
-        mt_excerpt
-    }
-
-    @objc(cloneFrom:)
     func clone(from source: AbstractPost) {
         for key in source.entity.attributesByName.keys {
             if key != "permalink" {

@@ -1,6 +1,7 @@
 import CoreData
 
-extension BasePost {
+@objc(BasePost)
+public class BasePost: NSManagedObject {
     /// The default value of `BasePost.postID` as defined in the Core Data model.
     static let defaultPostIDValue: Int = -1
 
@@ -43,7 +44,7 @@ extension BasePost {
         case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
     }
 
-    @objc public var featuredImageURL: URL? {
+    public var featuredImageURL: URL? {
         guard let pathForDisplayImage,
             let url = URL(string: pathForDisplayImage) else {
             return nil
@@ -75,7 +76,7 @@ extension BasePost {
         return nil
     }
 
-    @objc public var dateCreated: Date? {
+    public var dateCreated: Date? {
         get {
             date_created_gmt
         }
