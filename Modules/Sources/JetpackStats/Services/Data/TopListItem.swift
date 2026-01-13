@@ -50,13 +50,13 @@ extension TopListItem {
     }
 
     struct Location: Codable, TopListItemProtocol {
-        let country: String
+        let name: String
         let flag: String?
         let countryCode: String?
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .locations, id: countryCode ?? country)
+            TopListItemID(type: .locations, id: name)
         }
     }
 
@@ -80,7 +80,7 @@ extension TopListItem {
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .externalLinks, id: url)
+            TopListItemID(type: .externalLinks, id: url + (title ?? ""))
         }
     }
 
