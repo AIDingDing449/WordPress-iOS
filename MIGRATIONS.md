@@ -8,6 +8,9 @@ data model as well as any custom migrations.
 @kean 2026-01-06
 
 - Add `useExcerpt` field to `ReaderPost`
+- Remove deprecated `ReaderSearchSuggestion`
+- Remove deprecated `QuickStartTourState`
+- Remove `quickStartTours` reference from `Blog` entity
 
 ## WordPress 156
 
