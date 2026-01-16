@@ -45,6 +45,9 @@ import WordPressShared
     case editorPostSlugChanged
     case editorPostExcerptChanged
     case editorPostSiteChanged
+    case editorPostParentPageChanged
+    case editorPostCustomTaxonomyChanged
+    case editorPostNewsletterEmailToggled
 
     // Resolve post version conflict
     case resolveConflictScreenShown
@@ -646,24 +649,29 @@ import WordPressShared
     // Date Range Events
     case jetpackStatsDateRangePresetSelected
     case jetpackStatsCustomDateRangeSelected
+    case jetpackStatsDateNavigationButtonTapped
+    case jetpackStatsComparisonPeriodChanged
 
     // Card Events
     case jetpackStatsCardShown
     case jetpackStatsCardAdded
     case jetpackStatsCardRemoved
     case jetpackStatsCardEditMenuOpened
+    case jetpackStatsCardMoved
 
     // Chart Events
     case jetpackStatsChartTypeChanged
     case jetpackStatsChartMetricSelected
     case jetpackStatsChartBarSelected
     case jetpackStatsChartGranularityChanged
+    case jetpackStatsRawDataViewed
 
     // Today
     case jetpackStatsTodayCardTapped
 
     // List Events
     case jetpackStatsTopListItemTapped
+    case jetpackStatsLocationLevelChanged
 
     // Navigation Events
     case jetpackStatsTabSelected
@@ -764,6 +772,12 @@ import WordPressShared
             return "editor_post_excerpt_changed"
         case .editorPostSiteChanged:
             return "editor_post_site_changed"
+        case .editorPostParentPageChanged:
+            return "editor_post_parent_page_changed"
+        case .editorPostCustomTaxonomyChanged:
+            return "editor_post_custom_taxonomy_changed"
+        case .editorPostNewsletterEmailToggled:
+            return "editor_post_newsletter_email_toggled"
         case .resolveConflictScreenShown:
             return "resolve_conflict_screen_shown"
         case .resolveConflictSaveTapped:
@@ -1788,6 +1802,10 @@ import WordPressShared
             return "jetpack_stats_date_range_preset_selected"
         case .jetpackStatsCustomDateRangeSelected:
             return "jetpack_stats_custom_date_range_selected"
+        case .jetpackStatsDateNavigationButtonTapped:
+            return "jetpack_stats_date_navigation_button_tapped"
+        case .jetpackStatsComparisonPeriodChanged:
+            return "jetpack_stats_comparison_period_changed"
 
         // Card Events
         case .jetpackStatsCardShown:
@@ -1798,6 +1816,8 @@ import WordPressShared
             return "jetpack_stats_card_removed"
         case .jetpackStatsCardEditMenuOpened:
             return "jetpack_stats_card_edit_menu_opened"
+        case .jetpackStatsCardMoved:
+            return "jetpack_stats_card_moved"
 
         // Chart Events
         case .jetpackStatsChartTypeChanged:
@@ -1808,6 +1828,8 @@ import WordPressShared
             return "jetpack_stats_chart_bar_selected"
         case .jetpackStatsChartGranularityChanged:
             return "jetpack_stats_chart_granularity_changed"
+        case .jetpackStatsRawDataViewed:
+            return "jetpack_stats_raw_data_viewed"
 
         // Today
         case .jetpackStatsTodayCardTapped:
@@ -1816,6 +1838,8 @@ import WordPressShared
         // List Events
         case .jetpackStatsTopListItemTapped:
             return "jetpack_stats_top_list_item_tapped"
+        case .jetpackStatsLocationLevelChanged:
+            return "jetpack_stats_location_level_changed"
 
         // Navigation Events
         case .jetpackStatsTabSelected:

@@ -26,8 +26,10 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
             VStack(spacing: 16) {
                 actions()
             }
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(24)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 }
 
@@ -80,14 +82,20 @@ public struct AlertHeaderView: View {
     }
 }
 
+/// A standard large "OK" button that dismissed the alert.
 public struct AlertDismissButton: View {
     @Environment(\.dismiss) var dismiss
 
-    public init() {}
+    var onDismiss: (() -> Void)?
+
+    public init(onDismiss: (() -> Void)? = nil) {
+        self.onDismiss = onDismiss
+    }
 
     public var body: some View {
         Button {
             dismiss()
+            onDismiss?()
         } label: {
             Text(AppLocalizedString("shared.button.ok", value: "OK", comment: "A shared button title used in different contexts"))
                 .font(.headline)
