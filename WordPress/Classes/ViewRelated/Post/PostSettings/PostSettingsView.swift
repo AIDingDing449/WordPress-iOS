@@ -321,17 +321,21 @@ struct PostSettingsFormContentView: View {
     private var accessSection: some View {
         if viewModel.shouldShow(.jetpackAccessLevel) {
             Section {
-                SettingsPicker(
-                    title: Strings.accessHeader,
-                    selection: $viewModel.settings.metadata.accessLevel,
-                    values: JetpackPostAccessLevel.allCases.map { level in
-                        SettingsPickerValue(
-                            title: level.localizedTitle,
-                            details: level.localizedDescription,
-                            id: level
-                        )
-                    }
-                )
+                NavigationLink {
+                    SettingsPickerListView(
+                        selection: $viewModel.accessLevel,
+                        values: JetpackPostAccessLevel.allCases.map { level in
+                            SettingsPickerValue(
+                                title: level.localizedTitle,
+                                details: level.localizedDescription,
+                                id: level
+                            )
+                        }
+                    )
+                    .navigationTitle(Strings.accessHeader)
+                } label: {
+                    SettingsRow(Strings.accessHeader, value: (viewModel.accessLevel).localizedTitle)
+                }
             } header: {
                 SectionHeader(Strings.accessHeader)
             }
@@ -340,13 +344,9 @@ struct PostSettingsFormContentView: View {
 
     private var visibilityRow: some View {
         NavigationLink {
-            PostVisibilityPicker(
-                selection: PostVisibilityPicker.Selection(post: viewModel.post),
-                dismissOnSelection: true,
-                onSubmit: { selection in
-                    viewModel.updateVisibility(selection)
-                }
-            )
+            PostVisibilityPicker(selection: PostVisibilityPicker.Selection(settings: viewModel.settings)) {
+                viewModel.updateVisibility($0)
+            }
         } label: {
             SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
         }
