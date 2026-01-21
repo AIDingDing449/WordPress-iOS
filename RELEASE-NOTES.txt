@@ -14,6 +14,7 @@
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [**] Stats: Add Country/Region/City picker to the Locations card [#25125]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
+* [*] Stats: Add an option to disable automatic comparisons and remember the selection across launches [#25143]
 * [*] Stats: Add long-press support for bars in a "Bar Chart" view [#25133]
 * [*] Stats: Fix an issue where bar chart would prevent vertical scroll [#25133]
 * [*] Stats: Fix an issue with External Links (Clicks) sometimes displayed incorrectly [#25128]
@@ -23,6 +24,7 @@
 * [*] Stats: Fix ordering of Top List items with the same metrics – sort by name [#25135]
 * [*] Techical: Remove obsolete Core Data models to slightly reduce the app size (-6.4 MB) [#25124]
 * [*] Update some illustrations, app shortcut icons, and more to better match the system [#25141], [#25115], [#25140], [#25122]
+* [*] Site Picker -> Add self-hosted sites now uses Application Password authentication [#25148]
 
 
 26.5
