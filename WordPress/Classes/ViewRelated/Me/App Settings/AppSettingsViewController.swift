@@ -7,9 +7,11 @@ import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import SVProgressHUD
+import PulseUI
 import WordPressFlux
 import DesignSystem
 import WordPressUI
+import Support
 
 class AppSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!

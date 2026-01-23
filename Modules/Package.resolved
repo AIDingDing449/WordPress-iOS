@@ -1,5 +1,5 @@
 {
-  "originHash" : "c945c87c6581f460fd2167abbc7502c7f918052e720d2529bff8fd4fa964c4ce",
+  "originHash" : "024ca0929c05dc22af0ce33abb347be2db737ddaa09348ee3a09c1181b56a628",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "45e9ed3c77c989f4970731ef2657e658bdc87d2e",
-        "version" : "0.12.1"
+        "revision" : "8addad7fd018985dd3f8b15cfcc0d028cdc189b3",
+        "version" : "0.13.0"
       }
     },
     {
@@ -230,6 +230,15 @@
       "state" : {
         "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
         "version" : "9.1.0"
+      }
+    },
+    {
+      "identity" : "pulse",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Pulse",
+      "state" : {
+        "revision" : "6125ce7fb51b114ba71b761d18cfd5557923bd4d",
+        "version" : "5.1.4"
       }
     },
     {
@@ -381,8 +390,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/wordpress-rs",
       "state" : {
-        "branch" : "alpha-20251101",
-        "revision" : "425d6f8ee9b27ce0c30bb451e173a82075773862"
+        "branch" : "alpha-20260114",
+        "revision" : "4895b1bf67136eeeca5eb792418749c23ec5726d"
       }
     },
     {

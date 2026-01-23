@@ -2,6 +2,7 @@ import Foundation
 import GutenbergKit
 import WordPressData
 import WordPressShared
+import Support
 
 extension EditorConfiguration {
     init(blog: Blog, postType: String = "post", keychain: KeychainAccessible = KeychainUtils()) {
@@ -54,6 +55,7 @@ extension EditorConfiguration {
             // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
+            .setEnableNetworkLogging(ExtensiveLogging.enabled)
 
         // Build editor assets endpoint
         var editorAssetsEndpoint = siteApiRoot
