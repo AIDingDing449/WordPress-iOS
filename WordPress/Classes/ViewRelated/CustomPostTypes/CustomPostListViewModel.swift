@@ -7,7 +7,6 @@ import WordPressShared
 
 @MainActor
 final class CustomPostListViewModel: ObservableObject {
-    private let service: WpSelfHostedService
     private let client: WordPressClient
     private let endpoint: PostEndpointType
     let filter: CustomPostListFilter
@@ -16,6 +15,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
+    @Published private var error: Error?
 
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
@@ -25,6 +25,10 @@ final class CustomPostListViewModel: ObservableObject {
         items.isEmpty && listInfo?.isSyncing == true
     }
 
+    func errorToDisplay() -> Error? {
+        items.isEmpty ? error : nil
+    }
+
     init(
         client: WordPressClient,
         service: WpSelfHostedService,
@@ -32,7 +36,6 @@ final class CustomPostListViewModel: ObservableObject {
         filter: CustomPostListFilter
     ) {
         self.client = client
-        self.service = service
         self.endpoint = endpoint
         self.filter = filter
 
@@ -49,7 +52,8 @@ final class CustomPostListViewModel: ObservableObject {
         do {
             _ = try await collection?.refresh()
         } catch {
-            DDLogError("Pull to refresh failed: \(error)")
+            DDLogError("Failed to refresh posts: \(error)")
+            self.show(error: error)
         }
     }
 
@@ -66,9 +70,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func handleDataChanges() async {
-        guard let cache = await client.cache else { return }
-
-        let updates = cache.databaseUpdatesPublisher()
+        let updates = await client.cache.databaseUpdatesPublisher()
             .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
             .values
         for await hook in updates {
@@ -93,6 +95,15 @@ final class CustomPostListViewModel: ObservableObject {
             } catch {
                 DDLogError("Failed to get collection items: \(error)")
             }
+        }
+    }
+
+    private func show(error: Error) {
+        self.error = error
+
+        if !items.isEmpty {
+            // Show an error notice, on top of the list content.
+            Notice(error: error).post()
         }
     }
 }

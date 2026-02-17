@@ -7,42 +7,50 @@ import WordPressAPIInternal
 import WordPressUI
 
 struct CustomPostTypesView: View {
-    let client: WordPressClient
-    let service: WpSelfHostedService
+    static var title: String {
+        Strings.title
+    }
+
     let blog: Blog
+    let service: CustomPostTypeService
 
-    let collection: PostTypeCollectionWithEditContext
-
-    @State private var types: [(PostEndpointType, PostTypeDetailsWithEditContext)] = []
+    @State private var types: [PostTypeDetailsWithEditContext] = []
     @State private var isLoading: Bool = true
     @State private var error: Error?
+    @State private var isEditing = false
 
-    init(client: WordPressClient, service: WpSelfHostedService, blog: Blog) {
-        self.client = client
-        self.service = service
+    @SiteStorage private var pinnedTypes: [PinnedPostType]
+
+    init(blog: Blog, service: CustomPostTypeService) {
         self.blog = blog
-        self.collection = service.postTypes().createPostTypeCollectionWithEditContext()
+        self.service = service
+        _pinnedTypes = .pinnedPostTypes(for: service.blog)
     }
 
     var body: some View {
         List {
-            ForEach(types, id: \.1.slug) { (type, details) in
-                NavigationLink {
-                    CustomPostMainView(client: client, service: service, endpoint: type, details: details, blog: blog)
-                } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(details.name)
-
-                        if !details.description.isEmpty {
-                            Text(details.description)
-                                .foregroundColor(.secondary)
-                        }
-                    }
+            ForEach(types, id: \.slug) { details in
+                if isEditing {
+                    editingRow(for: details)
+                } else {
+                    navigationRow(for: details)
                 }
             }
         }
         .listStyle(.plain)
         .navigationTitle(Strings.title)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    withAnimation {
+                        isEditing.toggle()
+                    }
+                } label: {
+                    Text(isEditing ? SharedStrings.Button.done : SharedStrings.Button.edit)
+                }
+                .disabled(types.isEmpty)
+            }
+        }
         .overlay {
             if isLoading {
                 ProgressView()
@@ -54,36 +62,70 @@ struct CustomPostTypesView: View {
             }
         }
         .task {
-            await refresh()
+            do {
+                types = try await service.customTypes()
+            } catch {
+                DDLogError("Failed to load cached post types: \(error)")
+            }
 
-            isLoading = self.types.isEmpty
+            isLoading = types.isEmpty
             defer { isLoading = false }
 
             do {
-                _ = try await self.collection.fetch()
-                await refresh()
+                try await service.refresh()
+                types = try await service.customTypes()
             } catch {
-                self.error = error
+                if types.isEmpty {
+                    self.error = error
+                } else {
+                    Notice(error: error).post()
+                }
             }
         }
     }
 
-    private func refresh() async {
-        do {
-            self.types = try await self.collection.loadData()
-                .compactMap {
-                    let details = $0.data
-                    let endpoint = details.toPostEndpointType()
-                    if case .custom = endpoint, details.slug != "attachment" {
-                        return (endpoint, details)
-                    }
-                    return nil
+    private func editingRow(for details: PostTypeDetailsWithEditContext) -> some View {
+        let isPinned = pinnedTypes.contains { $0.slug == details.slug }
+        return HStack {
+            Image(dashicon: details.icon)
+                .frame(width: 36)
+            Text(details.name)
+            Spacer()
+            Button {
+                togglePin(for: details)
+            } label: {
+                Image(systemName: isPinned ? "pin.fill" : "pin")
+            }
+            .foregroundStyle(isPinned ? Color.accentColor : .secondary)
+            .accessibilityLabel(isPinned ? Strings.unpinButton : Strings.pinButton)
+        }
+    }
+
+    private func navigationRow(for details: PostTypeDetailsWithEditContext) -> some View {
+        let isPinned = pinnedTypes.contains { $0.slug == details.slug }
+        return NavigationLink {
+            if let wpService = service.wpService {
+                CustomPostTabView(client: service.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+            }
+        } label: {
+            HStack {
+                Image(dashicon: details.icon)
+                    .frame(width: 36)
+                Text(details.name)
+                if isPinned {
+                    Spacer()
+                    Image(systemName: "pin.fill")
+                        .foregroundStyle(Color.accentColor)
                 }
-                .sorted {
-                    $0.1.slug < $1.1.slug
-                }
-        } catch {
-            self.error = error
+            }
+        }
+    }
+
+    private func togglePin(for details: PostTypeDetailsWithEditContext) {
+        if let index = pinnedTypes.firstIndex(where: { $0.slug == details.slug }) {
+            pinnedTypes.remove(at: index)
+        } else {
+            pinnedTypes.append(PinnedPostType(slug: details.slug, name: details.name, icon: details.icon))
         }
     }
 }
@@ -91,7 +133,7 @@ struct CustomPostTypesView: View {
 private enum Strings {
     static let title = NSLocalizedString(
         "customPostTypes.title",
-        value: "Custom Post Types",
+        value: "More",
         comment: "Title for the Custom Post Types screen"
     )
 
@@ -99,5 +141,17 @@ private enum Strings {
         "customPostTypes.emptyState.message",
         value: "No Custom Post Types",
         comment: "Empty state message when there are no custom post types to display"
+    )
+
+    static let pinButton = NSLocalizedString(
+        "customPostTypes.pin.accessibilityLabel",
+        value: "Pin",
+        comment: "Accessibility label for the button to pin a custom post type"
+    )
+
+    static let unpinButton = NSLocalizedString(
+        "customPostTypes.unpin.accessibilityLabel",
+        value: "Unpin",
+        comment: "Accessibility label for the button to unpin a custom post type"
     )
 }

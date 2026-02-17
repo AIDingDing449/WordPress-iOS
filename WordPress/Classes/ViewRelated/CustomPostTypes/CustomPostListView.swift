@@ -8,16 +8,41 @@ import WordPressUI
 /// Displays a paginated list of custom posts.
 ///
 /// Used to show posts filtered by status or search results.
-struct CustomPostListView: View {
+struct CustomPostListView<Header: View>: View {
     @ObservedObject var viewModel: CustomPostListViewModel
     let details: PostTypeDetailsWithEditContext
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    @ViewBuilder let header: () -> Header
+
+    init(
+        viewModel: CustomPostListViewModel,
+        details: PostTypeDetailsWithEditContext,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void
+    ) where Header == EmptyView {
+        self.viewModel = viewModel
+        self.details = details
+        self.onSelectPost = onSelectPost
+        self.header = { EmptyView() }
+    }
+
+    init(
+        viewModel: CustomPostListViewModel,
+        details: PostTypeDetailsWithEditContext,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        @ViewBuilder header: @escaping () -> Header
+    ) {
+        self.viewModel = viewModel
+        self.details = details
+        self.onSelectPost = onSelectPost
+        self.header = header
+    }
 
     var body: some View {
         PaginatedList(
             items: viewModel.items,
             onLoadNextPage: { try await viewModel.loadNextPage() },
-            onSelectPost: onSelectPost
+            onSelectPost: onSelectPost,
+            header: header
         )
         .overlay {
             if viewModel.shouldDisplayEmptyView {
@@ -27,6 +52,8 @@ struct CustomPostListView: View {
                 EmptyStateView(emptyText, systemImage: "doc.text")
             } else if viewModel.shouldDisplayInitialLoading {
                 ProgressView()
+            } else if let error = viewModel.errorToDisplay() {
+                EmptyStateView.failure(error: error)
             }
         }
         .refreshable {
@@ -41,16 +68,47 @@ struct CustomPostListView: View {
     }
 }
 
-private struct PaginatedList: View {
+private struct PaginatedList<Header: View>: View {
     let items: [CustomPostCollectionItem]
     let onLoadNextPage: () async throws -> Void
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    @ViewBuilder let header: () -> Header
 
     @State var isLoadingMore = false
     @State var loadMoreError: Error?
 
+    init(
+        items: [CustomPostCollectionItem],
+        onLoadNextPage: @escaping () async throws -> Void,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void
+    ) where Header == EmptyView {
+        self.items = items
+        self.onLoadNextPage = onLoadNextPage
+        self.onSelectPost = onSelectPost
+        self.header = { EmptyView() }
+    }
+
+    init(
+        items: [CustomPostCollectionItem],
+        onLoadNextPage: @escaping () async throws -> Void,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        @ViewBuilder header: @escaping () -> Header
+    ) {
+        self.items = items
+        self.onLoadNextPage = onLoadNextPage
+        self.onSelectPost = onSelectPost
+        self.header = header
+    }
+
     var body: some View {
         List {
+            Section {
+                header()
+                    .listRowInsets(.zero)
+            }
+            .listSectionSpacing(0)
+            .listSectionSeparator(.hidden)
+
             ForEach(items) { item in
                 ForEachContent(item: item, onSelectPost: onSelectPost)
                     .task {
@@ -58,7 +116,10 @@ private struct PaginatedList: View {
                     }
             }
 
-            makeFooterView()
+            Section {
+                makeFooterView()
+            }
+            .listSectionSeparator(.hidden)
         }
         .listStyle(.plain)
     }
@@ -80,6 +141,7 @@ private struct PaginatedList: View {
         do {
             try await onLoadNextPage()
         } catch {
+            DDLogError("Failed to load next page: \(error)")
             self.loadMoreError = error
         }
     }
@@ -91,15 +153,16 @@ private struct PaginatedList: View {
                 .progressViewStyle(.circular)
                 .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
                 .id(UUID()) // A hack to show the ProgressView after cell reusing.
-        } else if loadMoreError != nil {
-            Button {
-                Task { await loadNextPage() }
-            } label: {
-                HStack {
-                    Image(systemName: "exclamationmark.circle")
-                    Text(SharedStrings.Button.retry)
+        } else if let loadMoreError {
+            VStack {
+                Text(verbatim: loadMoreError.localizedDescription)
+                Button {
+                    Task { await loadNextPage() }
+                } label: {
+                    Text(verbatim: SharedStrings.Button.retry)
                 }
-            }
+                .buttonStyle(.borderedProminent)
+            }.frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
@@ -289,5 +352,22 @@ private enum Strings {
         ],
         onLoadNextPage: {},
         onSelectPost: { _ in }
+    )
+}
+
+#Preview("Load Next Page Error") {
+    PaginatedList(
+        items: [
+            .stale(
+                id: 1,
+                post: CustomPostCollectionDisplayPost(
+                    date: .now,
+                    title: "Published Post",
+                    excerpt: "This post has stale data and is being refreshed."
+                )
+            ),
+        ],
+        onLoadNextPage: { throw CollectionError.DatabaseError(errMessage: "SQL error") },
+        onSelectPost: { _ in },
     )
 }

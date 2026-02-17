@@ -87,28 +87,55 @@ extension BlogDetailsViewController {
     }
 
     public func showCustomPostTypes() {
-        Task {
-            guard let client = try? WordPressClientFactory.shared.instance(for: .init(blog: blog)),
-                    let service = await client.service
-            else {
-                return
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.customPosts",
+            value: "Custom Post Types",
+            comment: "Feature name for managing custom post types in the app"
+        )
+        let rootView = ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: feature,
+            presentingViewController: self) { [blog] client in
+                CustomPostTypesView(blog: blog, service: CustomPostTypeService(client: client, blog: blog))
             }
+        let controller = UIHostingController(rootView: rootView)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        presentationDelegate?.presentBlogDetailsViewController(controller)
+    }
 
-            let feature = NSLocalizedString(
-                "applicationPasswordRequired.feature.customPosts",
-                value: "Custom Post Types",
-                comment: "Feature name for managing custom post types in the app"
-            )
-            let rootView = ApplicationPasswordRequiredView(
-                blog: blog,
-                localizedFeatureName: feature,
-                presentingViewController: self) { [blog] client in
-                    CustomPostTypesView(client: client, service: service, blog: blog)
+    func syncPostTypes() {
+        guard let service = CustomPostTypeService(blog: blog) else { return }
+        Task { @MainActor [weak self] in
+            do {
+                try await service.refresh()
+
+                if let self {
+                    configureTableViewData()
+                    reloadTableViewPreservingSelection()
                 }
-            let controller = UIHostingController(rootView: rootView)
-            controller.navigationItem.largeTitleDisplayMode = .never
-            presentationDelegate?.presentBlogDetailsViewController(controller)
+            } catch {
+                DDLogError("Failed to sync post types: \(error)")
+            }
         }
+    }
+
+    func showPinnedPostType(_ postType: PinnedPostType) {
+        guard let site = try? WordPressSite(blog: blog), case .selfHosted = site else { return }
+
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.customPosts",
+            value: "Custom Post Types",
+            comment: "Feature name for managing custom post types in the app"
+        )
+        let rootView = ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: feature,
+            presentingViewController: self) { [blog] client in
+                PinnedPostTypeView(blog: blog, service: CustomPostTypeService(client: client, blog: blog), postType: postType)
+            }
+        let controller = UIHostingController(rootView: rootView)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
     public func showMediaLibrary(from source: BlogDetailsNavigationSource) {
