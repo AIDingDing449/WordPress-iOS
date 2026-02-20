@@ -62,6 +62,7 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     var terms: TermsRequestExecutor { fatalError("Not implemented") }
     var applicationPasswords: ApplicationPasswordsRequestExecutor { fatalError("Not implemented") }
     var posts: PostsRequestExecutor { fatalError("Not implemented") }
+    var postTypes: PostTypesRequestExecutor { fatalError("Not implemented") }
 
     func createSelfHostedService(cache: WordPressApiCache) throws -> WpSelfHostedService {
         fatalError("Not implemented")
@@ -160,7 +161,8 @@ final class MockThemesRequestExecutor: ThemesRequestExecutor {
             isBlockTheme: isBlockTheme,
             stylesheetUri: "",
             templateUri: "",
-            themeSupports: nil
+            themeSupports: nil,
+            defaultTemplateTypes: nil
         )
         let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
         return ThemesRequestListWithEditContextResponse(data: [mockTheme], headerMap: mockHeaderMap)

@@ -27,7 +27,7 @@ private struct Section {
 }
 
 @objc public final class BlogDetailsTableViewModel: NSObject {
-    private var blog: Blog
+    var blog: Blog
     private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
     private var sections: [Section] = []
@@ -54,6 +54,7 @@ private struct Section {
         }
     }
 
+    var hasCustomPostTypes = false
     var useSiteMenuStyle = false
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
@@ -597,7 +598,9 @@ private extension BlogDetailsTableViewModel {
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            rows.append(Row.customPostTypes(viewController: viewController))
+            if !pinned.isEmpty || hasCustomPostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
         }
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
@@ -615,7 +618,7 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.stats(viewController: viewController))
         }
 
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             rows.append(Row.activityLog(viewController: viewController))
         }
 
@@ -651,7 +654,7 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.stats(viewController: viewController))
         }
 
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             rows.append(Row.activity(viewController: viewController))
         }
 
@@ -674,7 +677,7 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
-        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI && hasCustomPostTypes {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
@@ -689,7 +692,7 @@ private extension BlogDetailsTableViewModel {
     func buildPersonalizeSection() -> Section {
         var rows: [Row] = []
 
-        if blog.supports(.themeBrowsing) && !blog.isWPForTeams() {
+        if blog.supports(.themeBrowsing) && !blog.isWPForTeams {
             rows.append(Row.themes(viewController: viewController))
         }
 
@@ -801,7 +804,7 @@ private extension BlogDetailsTableViewModel {
         var thirdSectionRows: [Row] = []
 
         // First section: Activity, Backup, Scan, Site Monitoring
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             firstSectionRows.append(Row.activityLog(viewController: viewController))
         }
 
@@ -830,7 +833,7 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.plugins(viewController: viewController))
         }
 
-        if blog.supports(.themeBrowsing) && !blog.isWPForTeams() {
+        if blog.supports(.themeBrowsing) && !blog.isWPForTeams {
             secondSectionRows.append(Row.themes(viewController: viewController))
         }
 

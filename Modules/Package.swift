@@ -36,7 +36,6 @@ let package = Package(
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.4.0"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
         .package(url: "https://github.com/Automattic/ScreenObject", from: "0.3.0"),
-        .package(url: "https://github.com/buildkite/test-collector-swift", from: "0.3.0"),
         .package(url: "https://github.com/ChartsOrg/Charts", from: "5.0.0"),
         .package(url: "https://github.com/CocoaLumberjack/CocoaLumberjack", from: "3.8.5"),
         .package(url: "https://github.com/daltoniam/Starscream", from: "4.0.8"),
@@ -58,7 +57,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "v0.14.0-alpha.0"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260210"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260216"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
@@ -405,7 +404,6 @@ enum XcodeSupport {
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "Nimble", package: "Nimble"),
-                .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
                 // Needed by WordPressData because of how linkage works...
                 //
                 "BuildSettingsKit",
@@ -486,7 +484,6 @@ enum XcodeSupport {
             ]),
             .xcodeTarget("XcodeTarget_UITests", dependencies: [
                 "UITestsFoundation",
-                .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
             ]),
             .xcodeTarget(
                 "XcodeTarget_WordPressData",
