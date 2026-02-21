@@ -165,7 +165,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, assign, readwrite) BOOL hasDomainCredit;
 @property (nonatomic, strong, readwrite, nullable) NSString *icon;
-@property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
 @property (nonatomic, strong, readwrite, nullable) NSString *planTitle;
 @property (nonatomic, strong, readwrite, nullable) NSArray<NSString *> *planActiveFeatures;
@@ -213,54 +212,23 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readonly, nullable) NSString *authToken;
 @property (nonatomic, strong, readonly, nullable) NSSet *allowedFileTypes;
 
-/**
- *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
- */
-
-// User to display the blog url to the user (IDN decoded, no http:)
-// wp.koke.me/sub
-@property (weak, readonly, nullable) NSString *displayURL;
-// alias of displayURL
-// kept for compatibilty, used as a key to store passwords
-@property (weak, readonly, nullable) NSString *hostURL;
-@property (weak, readonly, nullable) NSString *homeURL;
 // http://wp.koke.me/sub
 @property (nonatomic, strong, nullable) NSString *url;
-// Used for reachability checks (IDN encoded)
-// wp.koke.me
-@property (weak, readonly, nullable) NSString *hostname;
 
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
 
-/** Determine timezone for blog from blog options.  If no timezone information is stored on the device, then assume GMT+0 is the default. */
-@property (readonly, nullable) NSTimeZone *timeZone;
-
 #pragma mark - Blog information
 
-- (BOOL)isPrivate;
-- (BOOL)isPrivateAtWPCom;
 - (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
-- (NSString *)loginUrl;
-- (nullable NSString *)urlWithPath:(NSString *)path;
-- (NSString *)adminUrlWithPath:(NSString *)path;
-- (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
 - (BOOL)isStatsActive;
 - (BOOL)hasMappedDomain;
 
-/**
- *  Returnst the text description for a post format code
- *
- *  @param postFormatCode of the post format you want to display
- *
- *  @return a string with the post format description and if no description was found the postFormatCode sent.
- */
-- (nullable NSString *)postFormatTextFromSlug:(nullable NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  

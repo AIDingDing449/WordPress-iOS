@@ -100,7 +100,7 @@ struct BlogTests {
             .with(siteVisibility: .private)
             .build()
 
-        #expect(blog.supports(.pluginManagement))
+        #expect(!blog.supports(.pluginManagement))
     }
 
     // FIXME: Crashes because WPAccount fixture sets username and triggers BuildSettings access
@@ -274,6 +274,347 @@ struct BlogTests {
             .build()
 
         #expect(!blog.supports(.domains), "Domains should not be supported when the site is P2 site")
+    }
+
+    // MARK: - displayURL
+
+    @Test func displayURLStripsHTTP() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+
+        #expect(blog.displayURL == "example.com")
+    }
+
+    @Test func displayURLStripsHTTPS() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "https://example.com")
+            .build()
+
+        #expect(blog.displayURL == "example.com")
+    }
+
+    @Test func displayURLStripsTrailingSlash() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com/")
+            .build()
+
+        #expect(blog.displayURL == "example.com")
+    }
+
+    @Test func displayURLPreservesPath() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com/sub")
+            .build()
+
+        #expect(blog.displayURL == "example.com/sub")
+    }
+
+    @Test func displayURLReturnsNilForNilURL() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.url = nil
+
+        #expect(blog.displayURL == nil)
+    }
+
+    @Test func displayURLIsCaseInsensitiveForProtocol() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "HTTP://example.com")
+            .build()
+
+        #expect(blog.displayURL == "example.com")
+    }
+
+    @Test func displayURLDecodesIDNPunycode() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://test.xn--soymao-0wa.com")
+            .build()
+
+        #expect(blog.displayURL == "test.soymaño.com")
+    }
+
+    // MARK: - homeURL
+
+    @Test func homeURLReturnsOptionWhenSet() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .set(blogOption: "home_url", value: "http://home.example.com")
+            .build()
+
+        #expect(blog.homeURL == "http://home.example.com")
+    }
+
+    @Test func homeURLFallsBackToURL() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+
+        #expect(blog.homeURL == "http://example.com")
+    }
+
+    // MARK: - hostname
+
+    @Test func hostnameExtractsFromXmlrpc() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+        blog.xmlrpc = "http://example.com/xmlrpc.php"
+
+        #expect(blog.hostname == "example.com")
+    }
+
+    @Test func hostnameStripsPath() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com/blog")
+            .build()
+        blog.xmlrpc = nil
+
+        #expect(blog.hostname == "example.com")
+    }
+
+    // MARK: - loginURL
+
+    @Test func loginURLReturnsOptionWhenSet() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .set(blogOption: "login_url", value: "http://example.com/custom-login")
+            .build()
+
+        #expect(blog.loginURL == URL(string: "http://example.com/custom-login"))
+    }
+
+    @Test func loginURLFallsBackToWpLogin() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+        blog.xmlrpc = "http://example.com/xmlrpc.php"
+
+        #expect(blog.loginURL == URL(string: "http://example.com/wp-login.php"))
+    }
+
+    // MARK: - urlWithPath
+
+    @Test func urlWithPathReplacesXmlrpc() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+        blog.xmlrpc = "http://example.com/xmlrpc.php"
+
+        #expect(blog.url(withPath: "wp-admin/") == "http://example.com/wp-admin/")
+    }
+
+    @Test func urlWithPathReturnsNilForNilXmlrpc() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+        blog.xmlrpc = nil
+
+        #expect(blog.url(withPath: "wp-login.php") == nil)
+    }
+
+    @Test func urlWithPathWorksWithSubdirectory() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com/blog")
+            .build()
+        blog.xmlrpc = "http://example.com/blog/xmlrpc.php"
+
+        #expect(blog.url(withPath: "wp-login.php") == "http://example.com/blog/wp-login.php")
+    }
+
+    // MARK: - makeAdminURL
+
+    @Test func makeAdminURLUsesOptionWhenSet() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .set(blogOption: "admin_url", value: "http://example.com/wp-admin/")
+            .build()
+
+        #expect(blog.makeAdminURL(path: "options.php") == URL(string: "http://example.com/wp-admin/options.php"))
+    }
+
+    @Test func makeAdminURLFallsBackToXmlrpcBased() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .build()
+        blog.xmlrpc = "http://example.com/xmlrpc.php"
+
+        #expect(blog.makeAdminURL(path: "options.php") == URL(string: "http://example.com/wp-admin/options.php"))
+    }
+
+    @Test func makeAdminURLAddsTrailingSlash() {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .set(blogOption: "admin_url", value: "http://example.com/wp-admin")
+            .build()
+
+        #expect(blog.makeAdminURL(path: "options.php") == URL(string: "http://example.com/wp-admin/options.php"))
+    }
+
+    // MARK: - timeZone
+
+    @Test func timeZoneDefaultsToGMTWhenNoOptions() {
+        let blog = BlogBuilder(mainContext).build()
+
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: 0))
+    }
+
+    @Test func timeZoneDefaultsToGMTForNilOptions() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.options = nil
+
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: 0))
+    }
+
+    @Test func timeZoneDefaultsToGMTForEmptyOptions() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.options = [:]
+
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: 0))
+    }
+
+    @Test func timeZoneUsesTimeZoneNameOption() {
+        let blog = BlogBuilder(mainContext)
+            .set(blogOption: "timezone", value: "America/Chicago")
+            .build()
+
+        #expect(blog.timeZone == TimeZone(identifier: "America/Chicago"))
+    }
+
+    @Test(arguments: [
+        (-5, -5 * 3600),
+        (5.5, 5 * 3600 + 1800),
+    ] as [(Double, Int)])
+    func timeZoneUsesGMTOffsetOption(offset: Double, expectedSeconds: Int) {
+        let blog = BlogBuilder(mainContext)
+            .set(blogOption: "gmt_offset", value: offset)
+            .build()
+
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: expectedSeconds))
+    }
+
+    @Test(arguments: [
+        ("-11", -11 * 3600),
+        ("5.5", 5 * 3600 + 1800),
+    ] as [(String, Int)])
+    func timeZoneUsesXMLRPCTimeZoneOption(value: String, expectedSeconds: Int) {
+        let blog = BlogBuilder(mainContext)
+            .set(blogOption: "time_zone", value: value)
+            .build()
+
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: expectedSeconds))
+    }
+
+    @Test func timeZonePrefersNameOverGMTOffset() {
+        let blog = BlogBuilder(mainContext)
+            .set(blogOption: "timezone", value: "America/Chicago")
+            .set(blogOption: "gmt_offset", value: 0)
+            .build()
+
+        #expect(blog.timeZone == TimeZone(identifier: "America/Chicago"))
+    }
+
+    // MARK: - postFormatTextFromSlug
+
+    @Test func postFormatTextReturnsDisplayName() {
+        let blog = BlogBuilder(mainContext)
+            .with(postFormats: ["standard": "Standard", "aside": "Aside"])
+            .build()
+
+        #expect(blog.postFormatText(fromSlug: "aside") == "Aside")
+    }
+
+    @Test func postFormatTextFallsBackToStandardForNilSlug() {
+        let blog = BlogBuilder(mainContext)
+            .with(postFormats: ["standard": "Standard", "aside": "Aside"])
+            .build()
+
+        #expect(blog.postFormatText(fromSlug: nil) == "Standard")
+    }
+
+    @Test func postFormatTextFallsBackToStandardForUnknownSlug() {
+        let blog = BlogBuilder(mainContext)
+            .with(postFormats: ["standard": "Standard"])
+            .build()
+
+        #expect(blog.postFormatText(fromSlug: "unknown") == "unknown")
+    }
+
+    @Test func postFormatTextReturnsSlugWhenNoFormats() {
+        let blog = BlogBuilder(mainContext).build()
+
+        #expect(blog.postFormatText(fromSlug: "aside") == "aside")
+    }
+
+    @Test func postFormatTextReturnsNilForNilSlugAndNoStandard() {
+        let blog = BlogBuilder(mainContext)
+            .with(postFormats: ["aside": "Aside"])
+            .build()
+
+        #expect(blog.postFormatText(fromSlug: nil) == nil)
+    }
+
+    // MARK: - isPrivate
+
+    @Test func isPrivateWhenVisibilityIsPrivate() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .private)
+            .build()
+
+        #expect(blog.isPrivate)
+    }
+
+    @Test func isNotPrivateWhenVisibilityIsPublic() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .public)
+            .build()
+
+        #expect(!blog.isPrivate)
+    }
+
+    @Test func isNotPrivateWhenVisibilityIsHidden() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .hidden)
+            .build()
+
+        #expect(!blog.isPrivate)
+    }
+
+    // MARK: - siteVisibility
+
+    @Test func siteVisibilityReturnsPrivate() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .private)
+            .build()
+
+        #expect(blog.siteVisibility == .private)
+    }
+
+    @Test func siteVisibilityReturnsPublic() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .public)
+            .build()
+
+        #expect(blog.siteVisibility == .public)
+    }
+
+    @Test func siteVisibilityReturnsHidden() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .hidden)
+            .build()
+
+        #expect(blog.siteVisibility == .hidden)
+    }
+
+    @Test func siteVisibilitySetterUpdatesPrivacy() {
+        let blog = BlogBuilder(mainContext)
+            .with(siteVisibility: .public)
+            .build()
+
+        blog.siteVisibility = .private
+        #expect(blog.isPrivate)
+
+        blog.siteVisibility = .public
+        #expect(!blog.isPrivate)
     }
 
     // MARK: - Blog URL Parsing

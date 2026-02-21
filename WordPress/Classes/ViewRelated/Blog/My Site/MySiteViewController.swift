@@ -380,7 +380,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            // Refresh editor capabilities
+            // Warm up editor (WebKit + data prefetch) for faster editor loading
+            EditorDependencyManager.shared.warmUpEditor(for: blog)
+            // Also refresh editor capabilities
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
         }
     }
@@ -408,9 +410,12 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        // Refresh editor capabilities
+        // Refresh editor capabilities and invalidate editor cache
         if RemoteFeatureFlag.newGutenberg.enabled() {
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+            Task {
+                await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(blog))
+            }
         }
 
         switch currentSection {

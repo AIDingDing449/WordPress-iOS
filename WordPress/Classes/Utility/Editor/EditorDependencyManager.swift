@@ -36,6 +36,8 @@ final class EditorDependencyManager: Sendable {
         var invalidationTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
         var capabilityTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
         var featureFlagObserver: AnyCancellable?
+        /// Tracks the last blog for which WebKit warmup was performed.
+        var lastWarmedUpBlogID: TaggedManagedObjectID<Blog>?
     }
 
     private struct CacheKey: Hashable, Sendable {
@@ -178,6 +180,11 @@ final class EditorDependencyManager: Sendable {
 
     private func _invalidate(for blogID: TaggedManagedObjectID<Blog>) async {
         let keysToInvalidate = self.state.withLock { state in
+            // Reset warmup tracking so the next warmUpEditor call re-runs WebKit warmup
+            if state.lastWarmedUpBlogID == blogID {
+                state.lastWarmedUpBlogID = nil
+            }
+
             let keys = state.cache.keys.filter { $0.blogID == blogID }
 
             for key in keys {
@@ -189,11 +196,22 @@ final class EditorDependencyManager: Sendable {
             return keys
         }
 
+        // GutenbergKit's on-disk cache is site-scoped (keyed by hostname), so a
+        // single purge clears all cached assets regardless of post type. When
+        // keysToInvalidate is populated, we use those configurations. Otherwise,
+        // we still need to purge because opening the editor without an existing
+        // dependencies cache (the "slow path") creates on-disk caches that
+        // EditorDependencyManager doesn't track. We should consider exposing
+        // GutenbergKit's cache to access and/or track these slow-path caches.
+        let postTypes = keysToInvalidate.isEmpty
+            ? [PostTypeDetails.post]
+            : keysToInvalidate.map(\.postType)
+
         let configurations: [EditorConfiguration]
         do {
             configurations = try await ContextManager.shared.performQuery { context in
                 let blog = try context.existingObject(with: blogID)
-                return keysToInvalidate.map { EditorConfiguration(blog: blog, postType: $0.postType) }
+                return postTypes.map { EditorConfiguration(blog: blog, postType: $0) }
             }
         } catch {
             DDLogError("Failed to find blog for \(blogID): \(error)")
@@ -218,6 +236,39 @@ final class EditorDependencyManager: Sendable {
         for blogID in blogIDs {
             await invalidate(for: blogID)
         }
+    }
+
+    /// Performs complete editor warmup for the given blog.
+    ///
+    /// This method:
+    /// 1. Performs WebKit warmup (once per blog) - pre-compiles HTML/JS (~100-200ms savings)
+    /// 2. Prefetches editor dependencies - fetches settings, assets, preload list
+    ///
+    /// Safe to call multiple times - internally handles deduplication.
+    @MainActor
+    func warmUpEditor(for blog: Blog) {
+        guard RemoteFeatureFlag.newGutenberg.enabled() else {
+            return
+        }
+
+        // WebKit warmup - only needed once per blog
+        let blogID = TaggedManagedObjectID(blog)
+        let needsWarmup = state.withLock { state in
+            if blogID != state.lastWarmedUpBlogID {
+                state.lastWarmedUpBlogID = blogID
+                return true
+            }
+            return false
+        }
+
+        if needsWarmup {
+            DDLogInfo("EditorDependencyManager: Warming up editor for blog \(blog.logDescription())")
+            let configuration = EditorConfiguration(blog: blog, postType: .post)
+            GutenbergKit.EditorViewController.warmup(configuration: configuration)
+        }
+
+        // Data prefetch - always call to detect flag changes
+        prefetchDependencies(for: blog, postType: .post)
     }
 
     /// Query the server for its editor capabilities, and update the local editor settings store with the result.
