@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAPIInternal
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -10,6 +11,16 @@ struct PostSettings: Hashable {
         let id: Int
         let displayName: String
         let avatarURL: URL?
+
+        static func == (lhs: Author, rhs: Author) -> Bool {
+            // The displayName may be fetched locally.
+            // Only id is sent to the API for updating author.
+            lhs.id == rhs.id
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 
     var excerpt: String
@@ -73,6 +84,48 @@ struct PostSettings: Hashable {
         default:
             wpAssertionFailure("unsupported post type", userInfo: ["post_type": String(describing: type(of: post))])
         }
+    }
+
+    /// Creates PostSettings from an AnyPostWithEditContext (REST API) instance.
+    init(from post: AnyPostWithEditContext) {
+        excerpt = post.excerpt?.raw ?? ""
+        slug = post.slug
+        status = BasePost.Status(post.status)
+        // For drafts that haven't been explicitly scheduled, treat as "publish immediately"
+        if status == .draft || status == .pending {
+            publishDate = nil
+        } else {
+            publishDate = post.dateGmt
+        }
+        password = post.password
+
+        if let authorId = post.author {
+            // FIXME: author name is not returned in the REST API.
+            // But We should be able to fetch the author name before showing the Post Settings.
+            author = Author(id: Int(authorId), displayName: "–", avatarURL: nil)
+        }
+
+        featuredImageID = post.featuredMedia.map { Int($0) }
+        // FIXME: Resolve custom taxonomy term names from term IDs returned by the REST API
+        otherTerms = [:]
+
+        // FIXME: Post metadata is not supported yet. Require wordpress-rs changes.
+        metadata = PostMetadata(from: .init())
+
+        postFormat = post.format.map { $0.id }
+        isStickyPost = post.sticky ?? false
+        // FIXME: Resolve tag names from term IDs returned by the REST API
+        tags = ""
+        categoryIDs = Set((post.categories ?? []).map { Int($0) })
+        allowComments = post.commentStatus == .open
+        allowPings = post.pingStatus == .open
+
+        // TODO: The Post Settings UI currently only supports Pages
+        // The parent post is available in `post.parent`
+        parentPageID = nil
+
+        // Social sharing (Publicize) is not available for REST API posts
+        sharing = nil
     }
 
     // MARK: - Applying Changes
@@ -201,6 +254,98 @@ struct PostSettings: Hashable {
         context.delete(temporaryPost)
         return parameters
     }
+
+    /// Creates `PostUpdateParams` representing the diff between the post and
+    /// the current settings, for use with the WordPress REST API.
+    func makeUpdateParameters(from post: AnyPostWithEditContext) -> PostUpdateParams {
+        var slug: String?
+        if post.slug != self.slug {
+            slug = self.slug
+        }
+
+        var status: PostStatus?
+        if BasePost.Status(post.status) != self.status {
+            status = PostStatus(self.status)
+        }
+
+        var password: String?
+        if post.password != self.password {
+            password = self.password ?? ""
+        }
+
+        var author: UserId?
+        if post.author.map({ Int($0) }) != self.author?.id, let authorId = self.author?.id {
+            author = UserId(Int64(authorId))
+        }
+
+        var excerpt: String?
+        if (post.excerpt?.raw ?? "") != self.excerpt {
+            excerpt = self.excerpt
+        }
+
+        var featuredMedia: MediaId?
+        if post.featuredMedia.map({ Int($0) }) != self.featuredImageID {
+            featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
+        }
+
+        var commentStatus: PostCommentStatus?
+        let postAllowsComments = post.commentStatus == .open
+        if postAllowsComments != self.allowComments {
+            commentStatus = self.allowComments ? .open : .closed
+        }
+
+        var pingStatus: PostPingStatus?
+        let postAllowsPings = post.pingStatus == .open
+        if postAllowsPings != self.allowPings {
+            pingStatus = self.allowPings ? .open : .closed
+        }
+
+        var format: PostFormat?
+        let postFormatSlug = post.format.map { $0.id }
+        if postFormatSlug != self.postFormat {
+            format = self.postFormat.flatMap { PostFormat.from(slug: $0) }
+        }
+
+        var sticky: Bool?
+        if (post.sticky ?? false) != self.isStickyPost {
+            sticky = self.isStickyPost
+        }
+
+        var categories: [TermId] = []
+        let postCategoryIDs = Set((post.categories ?? []).map { Int($0) })
+        if postCategoryIDs != self.categoryIDs {
+            categories = self.categoryIDs.map { TermId(Int64($0)) }
+        }
+
+        // FIXME: Not implemented yet.
+        // Tags are stored as comma-separated names for AbstractPost, but as IDs for remote posts.
+        // For remote posts, tag changes would need ID resolution. Skip for now.
+        // var tags: [TermId] = []
+
+        // TODO: The Post Settings UI currently only supports Pages
+//        var parent: PostId?
+//        let postParentPageID = post.parent.map { Int($0) }
+//        if postParentPageID != self.parentPageID {
+//            parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
+//        }
+
+        return PostUpdateParams(
+            slug: slug,
+            status: status,
+            password: password,
+            author: author,
+            excerpt: excerpt,
+            featuredMedia: featuredMedia,
+            commentStatus: commentStatus,
+            pingStatus: pingStatus,
+            format: format,
+            meta: nil,
+            sticky: sticky,
+            categories: categories,
+            tags: [],
+            parent: nil
+        )
+    }
 }
 
 extension PostSettings {
@@ -221,8 +366,12 @@ extension PostSettings {
         guard let post = post as? Post else {
             return []
         }
+        return getCategoryNames(for: post.blog)
+    }
+
+    func getCategoryNames(for blog: Blog) -> [String] {
         var categories: [Int: String] = [:]
-        for category in post.blog.categories ?? [] {
+        for category in blog.categories ?? [] {
             categories[category.categoryID.intValue] = category.categoryName
         }
         return categoryIDs.compactMap { categories[$0] }
@@ -236,6 +385,59 @@ extension PostSettings {
 
     mutating func setTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
         otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms)
+    }
+}
+
+// MARK: - PostFormat Slug
+
+extension PostFormat {
+    // TODO: Export from wordpress-rs
+    var id: String {
+        switch self {
+        case .standard: return "standard"
+        case .aside: return "aside"
+        case .chat: return "chat"
+        case .gallery: return "gallery"
+        case .link: return "link"
+        case .image: return "image"
+        case .quote: return "quote"
+        case .status: return "status"
+        case .video: return "video"
+        case .audio: return "audio"
+        case .custom(let value): return value
+        }
+    }
+}
+
+// MARK: - Status Mapping
+
+extension BasePost.Status {
+    init(_ status: PostStatus) {
+        switch status {
+        case .publish: self = .publish
+        case .draft: self = .draft
+        case .pending: self = .pending
+        case .private: self = .publishPrivate
+        case .future: self = .scheduled
+        case .trash: self = .trash
+        case .custom:
+            wpAssertionFailure("unexpected custom post status")
+            self = .draft
+        }
+    }
+}
+
+extension PostStatus {
+    init(_ status: BasePost.Status) {
+        switch status {
+        case .publish: self = .publish
+        case .draft: self = .draft
+        case .pending: self = .pending
+        case .publishPrivate: self = .private
+        case .scheduled: self = .future
+        case .trash: self = .trash
+        case .deleted: self = .trash
+        }
     }
 }
 

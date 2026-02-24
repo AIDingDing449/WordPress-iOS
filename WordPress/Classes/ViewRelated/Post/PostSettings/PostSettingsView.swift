@@ -137,11 +137,17 @@ struct PostSettingsFormContentView: View {
         if viewModel.context == .publishing {
             publishingOptionsSection
         }
-        featuredImageSection
-        if viewModel.isPost {
+        if viewModel.capabilities.supportsFeaturedImage {
+            featuredImageSection
+        }
+        if viewModel.capabilities.supportsCategories
+            || viewModel.capabilities.supportsTags
+            || !viewModel.capabilities.customTaxonomySlugs.isEmpty {
             organizationSection
         }
-        excerptSection
+        if viewModel.capabilities.supportsExcerpt {
+            excerptSection
+        }
         generalSection
         socialSharingSection
         accessSection
@@ -153,7 +159,7 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+            BlogListSiteView(site: .init(blog: viewModel.blog))
             publishDateRow
             visibilityRow
         } header: {
@@ -165,11 +171,13 @@ struct PostSettingsFormContentView: View {
 
     @ViewBuilder
     private var featuredImageSection: some View {
-        Section {
-            PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
-                .accessibilityIdentifier("post_settings_featured_image_cell")
-        } header: {
-            SectionHeader(Strings.featuredImageHeader)
+        if let featuredImageViewModel = viewModel.featuredImageViewModel {
+            Section {
+                PostSettingsFeaturedImageRow(viewModel: featuredImageViewModel)
+                    .accessibilityIdentifier("post_settings_featured_image_cell")
+            } header: {
+                SectionHeader(Strings.featuredImageHeader)
+            }
         }
     }
 
@@ -178,9 +186,13 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var organizationSection: some View {
         Section {
-            categoriesRow
-            tagsRow
-            suggestedTagsRow
+            if viewModel.capabilities.supportsCategories {
+                categoriesRow
+            }
+            if viewModel.capabilities.supportsTags {
+                tagsRow
+                suggestedTagsRow
+            }
             customTaxonomyRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
@@ -196,7 +208,7 @@ struct PostSettingsFormContentView: View {
 
     private var tagsRow: some View {
         NavigationLink {
-            PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
+            PostTagsView(blog: viewModel.blog, selectedTags: viewModel.settings.tags) { tags in
                 viewModel.didSelectTags(tags)
             }
         } label: {
@@ -224,7 +236,7 @@ struct PostSettingsFormContentView: View {
             ForEach(viewModel.customTaxonomies, id: \.slug) { taxonomy in
                 NavigationLink {
                     PostTagsView(
-                        blog: viewModel.post.blog,
+                        blog: viewModel.blog,
                         client: client,
                         taxonomy: taxonomy,
                         selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).joined(separator: ",")
@@ -245,7 +257,7 @@ struct PostSettingsFormContentView: View {
         Section {
             NavigationLink {
                 PostSettingsExcerptEditor(
-                    postContent: (viewModel.post.content ?? ""),
+                    postContent: viewModel.postContent,
                     text: $viewModel.settings.excerpt
                 )
                 .navigationTitle(Strings.excerptHeader)
@@ -265,9 +277,13 @@ struct PostSettingsFormContentView: View {
             if viewModel.context == .settings && viewModel.isStandalone {
                 statusRow
             }
-            authorRow
+            if viewModel.capabilities.supportsAuthor {
+                authorRow
+            }
             publishDateRow
-            slugRow
+            if viewModel.capabilities.supportsSlug {
+                slugRow
+            }
         } header: {
             SectionHeader(Strings.generalHeader)
         }
@@ -276,7 +292,7 @@ struct PostSettingsFormContentView: View {
     private var authorRow: some View {
         NavigationLink {
             PostAuthorPicker(
-                blog: viewModel.post.blog,
+                blog: viewModel.blog,
                 currentAuthorID: viewModel.settings.author?.id
             ) { selection in
                 viewModel.settings.updateAuthor(with: selection)
@@ -391,11 +407,13 @@ struct PostSettingsFormContentView: View {
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
-            if viewModel.isPost {
+            if viewModel.capabilities.supportsComments {
                 discussionRow
+            }
+            if viewModel.capabilities.supportsPostFormats {
                 postFormatRow
             }
-            if !viewModel.isPost {
+            if viewModel.capabilities.supportsPageAttributes {
                 parentPageRow
             }
         } header: {
@@ -405,7 +423,7 @@ struct PostSettingsFormContentView: View {
 
     private var postFormatRow: some View {
         NavigationLink {
-            PostFormatPicker(post: viewModel.post as! Post) { format in
+            PostFormatPicker(blog: viewModel.blog, currentFormat: viewModel.settings.postFormat) { format in
                 viewModel.settings.postFormat = format
                 viewModel.viewController?.navigationController?.popViewController(animated: true)
             }
@@ -422,26 +440,33 @@ struct PostSettingsFormContentView: View {
         }
     }
 
+    @ViewBuilder
     private var parentPageRow: some View {
-        NavigationLink {
-            if let page = viewModel.post as? Page {
+        if let page = viewModel.page {
+            NavigationLink {
                 ParentPagePicker(
-                    blog: viewModel.post.blog,
+                    blog: viewModel.blog,
                     currentPage: page,
                     onSelection: { selectedParentPage in
                         viewModel.settings.parentPageID = selectedParentPage?.postID?.intValue
                         viewModel.viewController?.navigationController?.popViewController(animated: true)
                     }
                 )
+            } label: {
+                SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
             }
-        } label: {
-            SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
         }
     }
 
     private var slugRow: some View {
         NavigationLink {
-            PostSlugEditorView(slug: $viewModel.settings.slug, post: viewModel.post)
+            PostSlugEditorView(
+                slug: $viewModel.settings.slug,
+                suggestedSlug: viewModel.suggestedSlug,
+                permalinkTemplate: viewModel.permalinkTemplate,
+                hasRemote: viewModel.hasRemote,
+                hasDotComID: viewModel.blog.dotComID != nil
+            )
         } label: {
             SettingsRow(Strings.slugLabel, value: viewModel.slugText)
         }

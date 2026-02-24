@@ -10,9 +10,12 @@ import GutenbergKit
 
 class CustomPostEditorViewController: PostGBKEditorViewController {
     let client: WordPressClient
-    var post: AnyPostWithEditContext
+    var post: AnyPostWithEditContext {
+        editorService.post
+    }
     let details: PostTypeDetailsWithEditContext
     let completion: () -> Void
+    let editorService: CustomPostEditorService
 
     private lazy var primarySaveButton = UIBarButtonItem(primaryAction: savePostAction())
     private lazy var redoButton = UIBarButtonItem(systemItem: .redo, primaryAction: UIAction {
@@ -32,9 +35,9 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         precondition(post.id > 0, "No new post support yet")
 
         self.client = client
-        self.post = post
         self.details = details
         self.completion = completion
+        self.editorService = CustomPostEditorService(post: post, details: details, client: client)
 
         let postTypeDetails = PostTypeDetails(
             postType: details.slug,
@@ -121,7 +124,12 @@ private extension CustomPostEditorViewController {
     }
 
     func rightBarButtonItems() -> [UIBarButtonItem] {
-        var children: [UIMenuElement] = [editorModeToggle(), helpAction(), feedbackAction()]
+        var children: [UIMenuElement] = [editorModeToggle()]
+        if FeatureFlag.cptPostSettings.enabled {
+            children.append(settingsAction())
+        }
+        children.append(contentsOf: [helpAction(), feedbackAction()])
+
         if post.status == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
@@ -154,7 +162,11 @@ private extension CustomPostEditorViewController {
         if post.status == .draft {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
                 Task {
-                    await self?.save(publish: true)
+                    if FeatureFlag.cptPostSettings.enabled {
+                        await self?.showPublishingSheet()
+                    } else {
+                        await self?.save(publish: true)
+                    }
                 }
             }
         } else {
@@ -164,6 +176,59 @@ private extension CustomPostEditorViewController {
                 }
             }
         }
+    }
+
+    func settingsAction() -> UIAction {
+        UIAction(
+            title: PostEditorStrings.postSettings,
+            image: UIImage(systemName: "gearshape")
+        ) { [weak self] _ in
+            self?.showPostSettings()
+        }
+    }
+
+    func showPostSettings() {
+        let viewModel = PostSettingsViewModel(
+            editorService: editorService,
+            blog: blog
+        )
+        viewModel.onEditorPostSaved = { /* No-op: shared editorService is already up-to-date */ }
+        let settingsVC = PostSettingsViewController(viewModel: viewModel)
+        let navigation = UINavigationController(rootViewController: settingsVC)
+        present(navigation, animated: true)
+    }
+
+    func showPublishingSheet() async {
+        let data: (title: String, content: String)
+        do {
+            let result = try await editorViewController.getTitleAndContent()
+            data = (result.title, result.content)
+        } catch {
+            DDLogError("Failed to get editor content: \(error)")
+            return
+        }
+
+        view.endEditing(true)
+
+        let editorContent = PostSettingsViewModel.EditorContent(
+            title: data.title,
+            content: data.content
+        )
+        PublishPostViewController.show(
+            editorService: editorService,
+            blog: blog,
+            editorContent: editorContent,
+            from: self,
+            completion: { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .published:
+                    completion()
+                case .cancelled:
+                    break
+                }
+            }
+        )
     }
 
     private func separator() -> UIBarButtonItem {
@@ -210,7 +275,6 @@ private extension CustomPostEditorViewController {
         // to align with the implementation in `PostRepository`.
         guard try await !hasBeenModified() else { throw PostUpdateError.conflicts }
 
-        let endpoint = details.toPostEndpointType()
         let hasTitle = details.supports.map[.title] == .bool(true)
         let params = PostUpdateParams(
             status: publish ? .publish : nil,
@@ -218,20 +282,7 @@ private extension CustomPostEditorViewController {
             content: content,
             meta: nil
         )
-        let post = try await client.api
-            .posts
-            .update(
-                postEndpointType: endpoint,
-                postId: post.id,
-                params: params
-            )
-            .data
-        self.post = post
-
-        // Refresh post in the background. This ensures the post list is up-to-date with the new changes.
-        Task {
-            try await client.service.posts().refreshPost(postId: post.id, endpointType: endpoint)
-        }
+        try await editorService.update(params: params)
     }
 
     private func dismissHUDWithSuccess() {
