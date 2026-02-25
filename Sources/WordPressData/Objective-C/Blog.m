@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "WPAccount.h"
 @import WordPressShared;
 #import "WordPressData-Swift.h"
 
@@ -36,8 +35,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic restApiRootURL;
 @dynamic apiKey;
 @dynamic organizationID;
-@dynamic hasOlderPosts;
-@dynamic hasOlderPages;
 @dynamic hasDomainCredit;
 @dynamic posts;
 @dynamic categories;
@@ -54,14 +51,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic menuLocations;
 @dynamic roles;
 @dynamic currentThemeId;
-@dynamic lastPostsSync;
-@dynamic lastPagesSync;
 @dynamic lastCommentsSync;
 @dynamic lastUpdateWarning;
 @dynamic options;
 @dynamic postTypes;
 @dynamic postFormats;
-@dynamic isActivated;
 @dynamic account;
 @dynamic isAdmin;
 @dynamic isMultiAuthor;

@@ -60,6 +60,7 @@ struct CustomPostListView<Header: View>: View {
             await viewModel.refresh()
         }
         .task(id: viewModel.filter) {
+            await viewModel.loadCachedItems()
             await viewModel.refresh()
         }
         .task(id: viewModel.filter) {
