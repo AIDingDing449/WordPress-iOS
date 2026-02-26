@@ -14,8 +14,9 @@ struct CustomPostTabView: View {
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
 
-    @State private var selectedTab: CustomPostTab = .published
+    @State private var selectedTab: CustomPostTab = .all
     @State private var searchText = ""
+    @State private var allViewModel: CustomPostListViewModel
     @State private var publishedViewModel: CustomPostListViewModel
     @State private var draftsViewModel: CustomPostListViewModel
     @State private var scheduledViewModel: CustomPostListViewModel
@@ -25,6 +26,8 @@ struct CustomPostTabView: View {
 
     private var activeViewModel: CustomPostListViewModel {
         switch selectedTab {
+        case .all:
+            allViewModel
         case .published:
             publishedViewModel
         case .drafts:
@@ -49,29 +52,40 @@ struct CustomPostTabView: View {
         self.details = details
         self.blog = blog
 
+        _allViewModel = State(initialValue: CustomPostListViewModel(
+            client: client,
+            service: service,
+            endpoint: endpoint,
+            filter: CustomPostListFilter(status: .custom("any")),
+            blog: blog
+        ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .publish)
+            filter: CustomPostListFilter(status: .publish),
+            blog: blog
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .draft)
+            filter: CustomPostListFilter(status: .draft),
+            blog: blog
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .future)
+            filter: CustomPostListFilter(status: .future),
+            blog: blog
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .trash)
+            filter: CustomPostListFilter(status: .trash),
+            blog: blog
         ))
     }
 
@@ -81,7 +95,9 @@ struct CustomPostTabView: View {
                 CustomPostListView(
                     viewModel: activeViewModel,
                     details: details,
+                    client: client,
                     onSelectPost: { selectedPost = $0 },
+                    mediaHost: MediaHost(blog),
                     header: { tabBar }
                 )
             } else {
@@ -91,7 +107,8 @@ struct CustomPostTabView: View {
                     endpoint: endpoint,
                     details: details,
                     searchText: $searchText,
-                    onSelectPost: { selectedPost = $0 }
+                    onSelectPost: { selectedPost = $0 },
+                    blog: blog
                 )
             }
         }
@@ -137,7 +154,8 @@ struct CustomPostTabView: View {
 }
 
 enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
-    case published = 0
+    case all = 0
+    case published
     case drafts
     case scheduled
     case trash
@@ -146,6 +164,7 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
 
     var localizedTitle: String {
         switch self {
+        case .all: return Strings.all
         case .published: return Strings.published
         case .drafts: return Strings.drafts
         case .scheduled: return Strings.scheduled
@@ -155,6 +174,7 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
 
     var status: PostStatus {
         switch self {
+        case .all: return .custom("any")
         case .published: return .publish
         case .drafts: return .draft
         case .scheduled: return .future
@@ -169,6 +189,7 @@ private struct AdaptiveTabBarRepresentable: UIViewRepresentable {
 
     func makeUIView(context: Context) -> AdaptiveTabBar {
         let tabBar = AdaptiveTabBar()
+        tabBar.preferredFont = UIFont.preferredFont(forTextStyle: .subheadline)
         tabBar.items = items
         tabBar.addTarget(context.coordinator, action: #selector(Coordinator.tabChanged(_:)), for: .valueChanged)
         return tabBar
@@ -210,6 +231,11 @@ private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
 }
 
 private enum Strings {
+    static let all = NSLocalizedString(
+        "customPostTab.all",
+        value: "All",
+        comment: "Tab title for showing all posts regardless of status"
+    )
     static let published = NSLocalizedString(
         "customPostTab.published",
         value: "Published",
