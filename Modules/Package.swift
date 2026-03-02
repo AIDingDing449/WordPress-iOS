@@ -56,7 +56,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "v0.14.0-alpha.0"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260216"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260226"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
@@ -282,6 +282,7 @@ enum XcodeSupport {
             .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
             .library(name: "XcodeTarget_WordPressKitTests", targets: ["XcodeTarget_WordPressKitTests"]),
             .library(name: "XcodeTarget_WordPressData", targets: ["XcodeTarget_WordPressData"]),
+            .library(name: "XcodeTarget_WordPressDataTests", targets: ["XcodeTarget_WordPressDataTests"]),
             .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
             .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
             .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
@@ -418,6 +419,9 @@ enum XcodeSupport {
             ]),
             .xcodeTarget("XcodeTarget_WordPressKitTests", dependencies: testDependencies + [
                 "wpxmlrpc",
+                "WordPressKit",
+            ]),
+            .xcodeTarget("XcodeTarget_WordPressDataTests", dependencies: [
                 "WordPressKit",
             ]),
             .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
