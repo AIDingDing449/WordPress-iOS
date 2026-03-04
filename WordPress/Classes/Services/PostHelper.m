@@ -1,13 +1,16 @@
 #import "PostHelper.h"
-#import "AbstractPost.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
 
+@import WordPressData;
 @import WordPressKit;
+@import WordPressKitModels;
+@import WordPressShared;
 @import NSObject_SafeExpectations;
+
+PostServiceType const PostServiceTypePost = @"post";
+PostServiceType const PostServiceTypePage = @"page";
+PostServiceType const PostServiceTypeAny = @"any";
+
 
 @implementation PostHelper
 
@@ -50,6 +53,7 @@
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
     post.suggested_slug = remotePost.suggestedSlug;
+    post.permalinkTemplateURL = remotePost.permalinkTemplateURL;
 
     if ([remotePost.revisions wp_isValidObject]) {
         post.revisions = [remotePost.revisions copy];
@@ -58,6 +62,10 @@
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
     }
+
+    post.rawMetadata = [PostHelper makeRawMetadataFrom:remotePost];
+    post.foreignID = [PostHelper getForeignIDFor:remotePost];
+    [post setParsedOtherTerms:remotePost.otherTerms];
 
     post.autosaveTitle = remotePost.autosave.title;
     post.autosaveExcerpt = remotePost.autosave.excerpt;
@@ -68,9 +76,10 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
-        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.commentsStatus = remotePost.commentsStatus;
+        postPost.pingsStatus = remotePost.pingsStatus;
         postPost.commentCount = remotePost.commentCount;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
@@ -98,7 +107,6 @@
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
-        postPost.foreignID = remotePost.foreignID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -134,7 +142,7 @@
 + (NSArray *)remoteMetadataForPost:(Post *)post
 {
     NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:5];
-    
+
     /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
     if (post.foreignID) {
         NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
@@ -183,9 +191,9 @@
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
         if (post == nil) {
-            NSUUID *foreignID = remotePost.foreignID;
+            NSUUID *foreignID = [PostHelper getForeignIDFor:remotePost];
             if (foreignID != nil) {
-                post = [blog lookupPostWithForeignID:foreignID inContext:context];
+                post = [blog lookupLocalPostWithForeignID:foreignID inContext:context];
             }
         }
         if (!post) {

@@ -1,16 +1,36 @@
 import Foundation
+import WordPressData
+import WordPressKit
 import WordPressShared
 
-public extension PostHelper {
-    @objc static let foreignIDKey = "wp_jp_foreign_id"
+extension PostHelper {
+    @objc static let foreignIDKey = PostMetadataContainer.Key.foreignID.rawValue
 
-    static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
-        let id = dictionary["id"]
-        return RemotePostMetadataItem(
-            id: (id as? String) ?? (id as? NSNumber)?.stringValue,
-            key: dictionary["key"] as? String,
-            value: dictionary["value"] as? String
-        )
+    @objc static func getForeignID(for post: RemotePost) -> UUID? {
+        guard let metadata = post.metadata as? [[String: Any]] else {
+            return nil
+        }
+        let container = PostMetadataContainer(metadata: metadata)
+        guard let value = container.getString(for: .foreignID) else {
+            return nil
+        }
+        return UUID(uuidString: value)
+    }
+
+    @objc static func makeRawMetadata(from post: RemotePost) -> Data? {
+        guard let metadata = post.metadata else {
+            return nil
+        }
+        guard JSONSerialization.isValidJSONObject(metadata) else {
+            wpAssertionFailure("metadata is not a valid JSON object")
+            return nil
+        }
+        do {
+            return try JSONSerialization.data(withJSONObject: metadata)
+        } catch {
+            wpAssertionFailure("failed to convert metadata to JSON", userInfo: ["error": "\(error)"])
+            return nil
+        }
     }
 
     @objc(createOrUpdateCategoryForRemoteCategory:blog:context:)

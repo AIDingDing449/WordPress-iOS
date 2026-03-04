@@ -1,10 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "PostService.h"
 
-@class AbstractPost, RemotePost;
+@class AbstractPost, RemotePost, Post, Blog, ReaderPost, ReaderAbstractTopic;
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NSString * PostServiceType NS_TYPED_ENUM;
+extern PostServiceType const PostServiceTypePost;
+extern PostServiceType const PostServiceTypePage;
+extern PostServiceType const PostServiceTypeAny;
 
 @interface PostHelper: NSObject
 

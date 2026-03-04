@@ -1,9 +1,14 @@
-Abbiamo effettuato un aggiornamento tecnico che riduce le dimensioni dell'app di circa 6 MB. Cosa farai con tutto quello spazio appena guadagnato?
+Il 112% del nostro team ha adorato le grandi modifiche apportate alla sezione Statistiche. (Qualcuno potrebbe aver votato due volte; non possiamo dirlo con certezza).
 
-È più facile trovare, visualizzare e modificare le impostazioni di visibilità dei post esistenti. Il pulsante "Fatto" non scomparirà nemmeno quando imposti la password durante la pubblicazione di un articolo protetto da password.
+- C'è una nuova scheda Annunci dove puoi visualizzare dati importanti di WordAds, come il numero di annunci pubblicati e le entrate generate.
+- Abbiamo aggiunto una scheda UTM per permetterti di visualizzare l'origine e il mezzo del traffico del tuo sito. È presente anche una vista "Dispositivi" che mostra i dispositivi usati dai visitatori.
+- Quando selezioni "Oggi" o un altro periodo giornaliero nella schermata delle statistiche degli articoli, vedrai "Ultimi 7 giorni" invece dei dati orari che non esistono. Non possiamo ancora prevedere il futuro.
+- Abbiamo risolto alcuni problemi visivi con i grafici e apportato miglioramenti al design in tutta la sezione Statistiche.
 
-Aspetto gradevole: abbiamo aggiornato le icone dei collegamenti e le illustrazioni per adattarle meglio al resto dell'app e al tuo dispositivo.
+Abbiamo risolto un problema di caching nella schermata Panoramica che mostrava un'area "Attività di pubblicazione" vuota. Ora potrai sempre vedere cos'hai combinato.
 
-Abbiamo risolto un problema, quindi ora le anteprime degli articoli funzionano correttamente per alcuni siti che utilizzano i piani Business e Commerce.
+Abbiamo apportato piccoli miglioramenti visivi alla schermata dei Log attività, come titoli, icone e colori.
 
-Quando aggiungi un nuovo sito ospitato personalmente, ti verrà richiesta la password dell'app per l'autenticazione. Tienilo segreto. Tienilo al sicuro.
+Abbiamo aggiunto i Tipi di articolo personalizzato come funzionalità sperimentale. Provali e facci sapere cosa ne pensi. #science
+
+Un'ultima cosa: se il tuo sito è autenticato con una password per applicazioni, non è necessario che XML-RPC sia abilitato. Lo svantaggio è che sono disponibili solo funzionalità limitate. Una volta abilitato, potrai ripristinare tali funzionalità.
