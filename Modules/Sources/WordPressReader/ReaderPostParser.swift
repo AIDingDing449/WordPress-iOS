@@ -23,6 +23,29 @@ public enum ReaderPostParser {
         public let description: String?
         /// From `data-image-caption`.
         public let caption: String?
+
+        /// Returns the srcset URL that best fills a square of `maxDimension` pixels.
+        ///
+        /// Uses `originalSize` to account for aspect ratio: for a landscape image
+        /// the width already matches the larger side, but for a portrait image the
+        /// required width is scaled up so the *height* fills `maxDimension`.
+        /// Falls back to the largest available entry if nothing is big enough.
+        ///
+        /// - Parameter maxDimension: The target size of the larger side, in **pixels**.
+        /// - Returns: The best matching URL, or `nil` when `srcset` is empty.
+        public func bestURL(maxDimension: Int) -> URL? {
+            guard !srcset.isEmpty else { return nil }
+
+            // Compute the width needed so the larger side >= maxDimension.
+            var requiredWidth = maxDimension
+            if let originalSize, originalSize.height > originalSize.width {
+                // Portrait: we need a wider image so height fills maxDimension.
+                requiredWidth = Int(ceil(Double(maxDimension) * originalSize.width / originalSize.height))
+            }
+
+            let sorted = srcset.sorted { $0.width < $1.width }
+            return (sorted.first { $0.width >= requiredWidth } ?? sorted.last)?.url
+        }
     }
 
     public struct SrcsetEntry: Sendable {

@@ -10,6 +10,7 @@ final class LightboxViewController: UIViewController {
     private var items: [LightboxItem]
     private var selectedIndex: Int
     private var pageCounter: UILabel?
+    private var prefetchTask: Task<Void, Never>?
 
     /// A thumbnail to display during transition and for the initial image download.
     var thumbnail: UIImage?
@@ -31,7 +32,7 @@ final class LightboxViewController: UIViewController {
     }
 
     convenience init(_ item: LightboxItem, configuration: Configuration = .init()) {
-        self.init(items: [item])
+        self.init(items: [item], configuration: configuration)
     }
 
     convenience init(assets: [LightboxAsset], selectedIndex: Int = 0) {
@@ -62,6 +63,14 @@ final class LightboxViewController: UIViewController {
         if configuration.showsCloseButton {
             addCloseButton()
         }
+        prefetchPreviews()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        prefetchTask?.cancel()
+        prefetchTask = nil
     }
 
     // MARK: - Single item
@@ -121,6 +130,23 @@ final class LightboxViewController: UIViewController {
 
     private func updatePageCounter() {
         pageCounter?.text = "\(selectedIndex + 1) / \(items.count)"
+    }
+
+    // MARK: - Prefetching
+
+    private func prefetchPreviews() {
+        let urls = items.prefix(10).compactMap { item -> URL? in
+            guard case .asset(let asset) = item else { return nil }
+            return asset.previewURL
+        }
+        guard !urls.isEmpty else { return }
+        prefetchTask = Task {
+            let downloader = ImageDownloader.shared
+            for url in urls {
+                guard !Task.isCancelled else { return }
+                _ = try? await downloader.image(from: url)
+            }
+        }
     }
 
     // MARK: - Helpers
