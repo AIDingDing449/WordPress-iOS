@@ -238,7 +238,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private var shouldAttemptDisplayHierarchy: Bool {
-        isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")))
+        isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.any))
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
@@ -631,6 +631,9 @@ extension PostStatus {
             return SharedStrings.PostStatus.privatePost
         case .trash:
             return SharedStrings.PostStatus.trash
+        case .any:
+            // This branch should never happen, since "any" is magic filter and no post would have this status.
+            return SharedStrings.PostStatus.any
         case .custom(let value):
             return value
         }
