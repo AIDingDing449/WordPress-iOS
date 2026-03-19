@@ -53,6 +53,16 @@ struct ActivityLogRowView: View {
                             .font(.footnote)
                             .foregroundColor(.secondary)
                     }
+
+                    if let metadata = viewModel.actorMetadata {
+                        Text("·")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        Text(metadata)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
                 }
             }
         }

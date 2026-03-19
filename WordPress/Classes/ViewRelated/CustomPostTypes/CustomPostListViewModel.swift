@@ -27,14 +27,15 @@ final class CustomPostListViewModel: ObservableObject {
     // true if the number of cached items or the total items return by the API
     // is less than a threshold, where the app can fetch all content relative quickly.
     private var shouldShowHierarchy = false
-
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
     @Published private(set) var indentationMap: IndentationMap = [:]
     @Published private var error: Error?
     @Published var postToDelete: AnyPostWithEditContext?
     @Published var postToTrash: AnyPostWithEditContext?
-    @Published var progressHUDState: ProgressHUDState = .idle
+    /// Post IDs with in-flight API operations (delete, trash, move-to-draft).
+    /// The view uses this set to dim rows, show spinners, and disable interaction.
+    @Published private(set) var pendingPostIDs: Set<Int64> = []
 
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
@@ -302,9 +303,17 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func moveToDraft(_ post: AnyPostWithEditContext) async {
-        var params = PostUpdateParams(meta: nil)
-        params.status = .draft
-        await updatePost(post, params: params)
+        pendingPostIDs.insert(post.id)
+        defer { pendingPostIDs.remove(post.id) }
+
+        do {
+            var params = PostUpdateParams(meta: nil)
+            params.status = .draft
+            _ = try await service.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
+        } catch {
+            Loggers.app.error("Failed to move post to draft: \(error)")
+            Notice(error: error).post()
+        }
     }
 
     func viewPost(_ post: AnyPostWithEditContext) {
@@ -404,35 +413,26 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func trashPost(_ post: AnyPostWithEditContext) async {
-        progressHUDState = .running
+        pendingPostIDs.insert(post.id)
+        defer { pendingPostIDs.remove(post.id) }
+
         do {
             _ = try await service.posts().trashPost(endpointType: endpoint, postId: post.id)
-            progressHUDState = .success
         } catch {
             Loggers.app.error("Failed to trash post: \(error)")
-            progressHUDState = .failure(error.localizedDescription)
+            Notice(error: error).post()
         }
     }
 
     func deletePost(_ post: AnyPostWithEditContext) async {
-        progressHUDState = .running
+        pendingPostIDs.insert(post.id)
+        defer { pendingPostIDs.remove(post.id) }
+
         do {
             _ = try await service.posts().deletePostPermanently(endpointType: endpoint, postId: post.id)
-            progressHUDState = .success
         } catch {
             Loggers.app.error("Failed to delete post: \(error)")
-            progressHUDState = .failure(error.localizedDescription)
-        }
-    }
-
-    private func updatePost(_ post: AnyPostWithEditContext, params: PostUpdateParams) async {
-        progressHUDState = .running
-        do {
-            _ = try await service.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
-            progressHUDState = .success
-        } catch {
-            Loggers.app.error("Failed to update post: \(error)")
-            progressHUDState = .failure(error.localizedDescription)
+            Notice(error: error).post()
         }
     }
 
@@ -455,7 +455,11 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private func show(error: Error) {
-        // TODO: Ignore error https://github.com/Automattic/wordpress-rs/pull/1227
+        // This particular error should be ignored.
+        if case FetchError.StaleLoadMore = error {
+            return
+        }
+
         self.error = error
 
         if !items.isEmpty {
@@ -500,6 +504,7 @@ extension CustomPostListViewModel {
 
 struct CustomPostCollectionDisplayPost: Equatable {
     let date: Date
+    let modifiedDate: Date?
     let title: String?
     let content: String?
     let authorName: String?
@@ -511,6 +516,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
 
     init(
         date: Date,
+        modifiedDate: Date? = nil,
         title: String?,
         content: String?,
         authorName: String? = nil,
@@ -521,6 +527,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         isHomepage: Bool = false
     ) {
         self.date = date
+        self.modifiedDate = modifiedDate
         self.title = title
         self.content = content
         self.authorName = authorName
@@ -533,6 +540,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
 
     init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
+        self.modifiedDate = entity.modifiedGmt
         self.title = entity.title?.raw
         let contentPreview = GutenbergExcerptGenerator
             .firstParagraph(from: entity.content.rendered)
@@ -578,10 +586,18 @@ struct CustomPostCollectionDisplayPost: Equatable {
     }
 
     private var dateForDisplay: String {
-        if status == .future {
-            return date.formatted(date: .abbreviated, time: .shortened)
+        let string: String
+        switch status {
+        case .future:
+            string = date.mediumStringWithTime()
+        case .publish, .private:
+            string = date.toMediumString()
+        case .trash:
+            string = (modifiedDate ?? date).toMediumString()
+        default:
+            string = (modifiedDate ?? date).toMediumString()
         }
-        return date.formatted(date: .abbreviated, time: .omitted)
+        return string.capitalized(with: .current)
     }
 
     /// Combined status badges (e.g. "Private · Sticky") matching the regular

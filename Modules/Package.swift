@@ -24,6 +24,7 @@ let package = Package(
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
+        .library(name: "WordPressKit", targets: ["WordPressKit"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -196,16 +197,10 @@ let package = Package(
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
-            name: "WordPressKitObjCUtils",
-            cSettings: [
-                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
-            ]
-        ),
-        .target(
             name: "WordPressKitModels",
             dependencies: [
                 "NSObject-SafeExpectations",
-                "WordPressKitObjCUtils",
+                "WordPressShared",
             ]
         ),
         .target(
@@ -213,8 +208,8 @@ let package = Package(
             dependencies: [
                 "NSObject-SafeExpectations",
                 "wpxmlrpc",
-                "WordPressKitModels",
-                "WordPressKitObjCUtils",
+                "WordPressShared",
+                "WordPressKitModels"
             ],
             publicHeadersPath: "include",
             cSettings: [
@@ -226,7 +221,6 @@ let package = Package(
             dependencies: [
                 "WordPressKitObjC",
                 "WordPressKitModels",
-                "WordPressKitObjCUtils",
                 "NSObject-SafeExpectations",
                 "WordPressShared",
                 "wpxmlrpc",
