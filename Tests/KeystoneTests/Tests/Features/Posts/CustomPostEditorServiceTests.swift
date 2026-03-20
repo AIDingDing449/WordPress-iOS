@@ -2,8 +2,9 @@ import Testing
 import Foundation
 import WordPressAPI
 import WordPressAPIInternal
-import WordPressCore
+
 @testable import WordPress
+@testable import WordPressCore
 @testable import WordPressData
 
 @MainActor
@@ -166,14 +167,14 @@ private func makeService(
         api: api,
         siteURL: URL(string: "https://example.com")!
     )
-    let postService = PostService(noHandle: .init())
+    let wpService = try api.createSelfHostedService(cache: .bootstrap())
 
     return CustomPostEditorService(
         blog: blog,
         post: post,
         details: makePostTypeDetails(),
         client: client,
-        service: postService
+        wpService: wpService
     )
 }
 

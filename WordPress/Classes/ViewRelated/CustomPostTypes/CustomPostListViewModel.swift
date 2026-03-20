@@ -292,7 +292,7 @@ final class CustomPostListViewModel: ObservableObject {
             post: post,
             details: details,
             client: client,
-            service: service.posts()
+            wpService: service
         )
         PublishPostViewController.show(
             editorService: editorService,
@@ -384,7 +384,7 @@ final class CustomPostListViewModel: ObservableObject {
                 post: post,
                 details: details,
                 client: client,
-                service: service.posts()
+                wpService: service
             )
             let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
             let settingsVC = PostSettingsViewController(viewModel: viewModel)

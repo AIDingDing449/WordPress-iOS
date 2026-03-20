@@ -27,7 +27,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
     init(
         blog: Blog,
-        service: WordPressAPIInternal.PostService,
+        wpService: WpService,
         client: WordPressClient,
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
@@ -38,7 +38,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         self.completion = completion
 
         self.editorService = CustomPostEditorService(
-            blog: blog, post: post, details: details, client: client, service: service
+            blog: blog, post: post, details: details, client: client, wpService: wpService
         )
 
         let postTypeDetails = PostTypeDetails(
