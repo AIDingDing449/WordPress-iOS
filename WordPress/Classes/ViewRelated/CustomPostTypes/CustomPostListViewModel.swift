@@ -17,7 +17,9 @@ final class CustomPostListViewModel: ObservableObject {
     private let details: PostTypeDetailsWithEditContext
     let blog: Blog
     private let isHierarchical: Bool
+    private let showsHierarchyIfApplicable: Bool
     private(set) var filter: CustomPostListFilter
+    private let exclude: Predicate<CustomPostCollectionItem>?
     weak var presentingViewController: UIViewController?
 
     private var collection: PostMetadataCollectionWithEditContext
@@ -59,6 +61,8 @@ final class CustomPostListViewModel: ObservableObject {
         details: PostTypeDetailsWithEditContext,
         filter: CustomPostListFilter,
         blog: Blog,
+        exclude: Predicate<CustomPostCollectionItem>? = nil,
+        showsHierarchyIfApplicable: Bool = false,
         presentingViewController: UIViewController? = nil
     ) {
         self.client = client
@@ -68,6 +72,8 @@ final class CustomPostListViewModel: ObservableObject {
         self.blog = blog
         self.isHierarchical = details.hierarchical
         self.filter = filter
+        self.exclude = exclude
+        self.showsHierarchyIfApplicable = showsHierarchyIfApplicable
         self.presentingViewController = presentingViewController
 
         collection = service
@@ -239,7 +245,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private var shouldAttemptDisplayHierarchy: Bool {
-        isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.any))
+        isHierarchical && showsHierarchyIfApplicable
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
@@ -251,6 +257,10 @@ final class CustomPostListViewModel: ObservableObject {
            case .staticPage(let homepagePageID) = homepageSetting,
            filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")) {
             items.markHomepage(id: homepagePageID)
+        }
+
+        if let exclude {
+            items.removeAll { (try? exclude.evaluate($0)) == true }
         }
 
         guard shouldShowHierarchy else {

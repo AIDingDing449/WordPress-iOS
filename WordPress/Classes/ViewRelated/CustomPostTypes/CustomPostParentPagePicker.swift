@@ -16,6 +16,7 @@ struct CustomPostParentPagePicker: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
+    @State private var finalSearchText = ""
 
     init(
         client: WordPressClient,
@@ -34,30 +35,50 @@ struct CustomPostParentPagePicker: View {
         self.currentParentID = currentParentID
         self.onSelection = onSelection
 
+        let excludeCurrentPost = currentPostID.map { postID in
+            let id = Int64(postID)
+            return #Predicate<CustomPostCollectionItem> { $0.id == id }
+        }
         _listViewModel = StateObject(wrappedValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(statuses: [.publish]),
-            blog: blog
+            blog: blog,
+            exclude: excludeCurrentPost
         ))
     }
 
     var body: some View {
         ZStack {
-            if searchText.isEmpty {
+            if finalSearchText.isEmpty {
                 publishedList
             } else {
                 searchResultsList
             }
         }
         .searchable(text: $searchText)
+        .task(id: searchText) {
+            do {
+                try await Task.sleep(for: .milliseconds(100))
+                finalSearchText = searchText
+            } catch {
+                // Do nothing.
+            }
+        }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private var selectedPostID: Int64? {
         currentParentID.map { Int64($0) }
+    }
+
+    private var excludeCurrentPost: Predicate<CustomPostCollectionItem>? {
+        currentPostID.map { postID in
+            let id = Int64(postID)
+            return #Predicate<CustomPostCollectionItem> { $0.id == id }
+        }
     }
 
     private var publishedList: some View {
@@ -80,8 +101,9 @@ struct CustomPostParentPagePicker: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: .search(input: searchText),
-                blog: blog
+                filter: .search(input: finalSearchText),
+                blog: blog,
+                exclude: excludeCurrentPost
             ),
             details: details,
             client: client,
