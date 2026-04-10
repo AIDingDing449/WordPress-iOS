@@ -5,6 +5,7 @@
 * [*] Stats: Add a confirmation dialog when marking referrers as spam [#25475]
 * [*] Reader: Fix an issue with Article screen not updating comments if comment is posted from inline section [#25483]
 * [*] Reader: Fix button style [#25447]
+* [*] Reader: Add smart cropping for featured images in the feed so it never cut the heads off [#25451]
 * [*] Reader: Fix separator not visible in Dark Mode for comments [#25466]
 * [*] Reader: Fix an issue with "Notificaton Settings" showing incorrect state right after subscribing [#25459]
 * [*] Reader: Fix an issue with "Notificaton Settings" button shown when you are not subscribed [#25459]
