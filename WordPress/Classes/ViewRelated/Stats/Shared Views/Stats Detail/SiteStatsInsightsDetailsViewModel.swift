@@ -268,7 +268,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsViewsVisitors:
-            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { status in
+            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { _ in
                 var rows = [any HashableImmutableRow]()
 
                 let viewsAndVisitorsData = revampStore.getViewsAndVisitorsData()
@@ -380,7 +380,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsLikesTotals:
-            return periodImmuTable(for: revampStore.likesTotalsStatus) { status in
+            return periodImmuTable(for: revampStore.likesTotalsStatus) { _ in
                 var rows = [any HashableImmutableRow]()
 
                 let likesTotalsData = revampStore.getLikesTotalsData()
@@ -1068,10 +1068,8 @@ private extension SiteStatsInsightsDetailsViewModel {
         let countries = topCountries?.countries ?? []
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                 maxViewsCount: countries.first?.viewsCount ?? 0,
-                data: countries.reduce([String: NSNumber]()) { (dict, country) in
-                    var nextDict = dict
-                    nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
-                    return nextDict
+                data: countries.reduce(into: [String: NSNumber]()) { dict, country in
+                    dict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
                 })
     }
 
