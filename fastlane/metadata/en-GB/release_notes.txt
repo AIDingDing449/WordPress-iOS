@@ -1,6 +1,7 @@
-You can now create an excerpt for your posts and get auto-suggested tags using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
-We made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen.
-While we were at it, we also squashed a few bugs.
-- Reader articles render properly on devices with Display Zoom enabled.
-- The “Add Media” button stays visible in the media library. No more disappearing act.
-- You can search in Reader Subscriptions without freezing the app.
+If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
+
+When you delete a comment using the swipe action, it now disappears from the list. So long, farewell.
+
+We fixed an issue where the footer view in Menu Editing wasn’t resizing. As a result, action buttons are now legible in non-English languages.
+
+We removed the non-functional X link on the About screen. (Shout-out to @zynp-KC for reporting!)
