@@ -480,12 +480,6 @@ import WordPressShared
     case promptsOtherAnswersTapped
     case promptsSettingsShowPromptsTapped
 
-    // Bloganuary Nudges
-    case bloganuaryNudgeCardLearnMoreTapped
-    case bloganuaryNudgeModalShown
-    case bloganuaryNudgeModalDismissed
-    case bloganuaryNudgeModalActionTapped
-
     // Jetpack branding
     case jetpackPoweredBadgeTapped
     case jetpackPoweredBannerTapped
@@ -742,7 +736,7 @@ import WordPressShared
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
-            // Media
+        // Media
         case .siteMediaShareTapped:
             return "site_media_shared_tapped"
         case .mediaStorageDetailsViewed:
@@ -1543,16 +1537,6 @@ import WordPressShared
         case .promptsSettingsShowPromptsTapped:
             return "blogging_prompts_settings_show_prompts_tapped"
 
-        // Bloganuary Nudges
-        case .bloganuaryNudgeCardLearnMoreTapped:
-            return "bloganuary_nudge_my_site_card_learn_more_tapped"
-        case .bloganuaryNudgeModalShown:
-            return "bloganuary_nudge_learn_more_modal_shown"
-        case .bloganuaryNudgeModalDismissed:
-            return "bloganuary_nudge_learn_more_modal_dismissed"
-        case .bloganuaryNudgeModalActionTapped:
-            return "bloganuary_nudge_learn_more_modal_action_tapped"
-
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:
             return "jetpack_powered_badge_tapped"
@@ -1909,7 +1893,7 @@ import WordPressShared
         case .jetpackConnectStepRetried:
             return "jetpack_rest_connect_step_retried"
 
-            // Intelligence
+        // Intelligence
         case .intelligenceExcerptGeneratorOpened:
             return "intelligence_excerpt_generator_opened"
         case .intelligenceExcerptSelected:
@@ -2009,7 +1993,8 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
-        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
+        props[WPAppAnalyticsKeySiteType] =
+            blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 
@@ -2105,7 +2090,9 @@ extension WPAnalytics {
         }
 
         if event == nil {
-            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+            print(
+                "🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases."
+            )
         } else {
             WPAnalytics.track(event!, properties: properties, blog: blog)
         }
