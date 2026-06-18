@@ -232,12 +232,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     }
 
     func shouldShow(_ row: PostSettingsRow) -> Bool {
-        // FIXME: meta support missing in AnyPostWithEditContext
         switch row {
         case .jetpackAccessLevel:
-            return blog.supports(.wpComRESTAPI)
+            return isPost && blog.supports(.jetpackNewsletter)
         case .jetpackNewsletterEmailOptions:
-            return blog.supports(.wpComRESTAPI) && context == .publishing
+            return isPost && blog.supports(.jetpackNewsletter) && context == .publishing
         }
     }
 
