@@ -1,1 +1,5 @@
-Als je een zelfgehoste site hebt, log je nu in op de app met een applicatiewachtwoord. Als je er nog geen hebt, maken we er automatisch een voor je aan, zodat je die kunt gebruiken wanneer je hem nodig hebt
+We hebben een paar bugs verholpen.
+
+- Categorieën en tags werken nu correct op self-gehoste sites.
+- Tekst op het scherm blogging herinneringen is zichtbaar in donkere modus. Geen verstoppertje meer.
+- Je ziet geen fout meer bij het kiezen van een site vanuit een deelbladactie terwijl je sites nog laden. We hebben ook het site kiezerontwerp geüpdatet om te matchen met andere gebieden van de app, omdat het ons wakker hield.

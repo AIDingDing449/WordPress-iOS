@@ -1,3 +1,5 @@
-Hemos eliminado la biblioteca GIF gratuita como fuente de medios, ya que el servicio Tenor en el que se ejecuta se retirará el 30 de junio. También estamos tristes por eso.
+Por último, hemos eliminado algunos errores.
 
-Si tienes un sitio autoalojado, ahora iniciarás sesión en la aplicación con una contraseña de aplicación. Si no tienes, crearemos una automáticamente para cuando la necesites.
+- Las categorías y etiquetas ahora funcionan correctamente en sitios autoalojados.
+- El texto en la pantalla de recordatorios de blogueo es visible en modo oscuro. No más escondite.
+- Ya no verás ningún error al elegir un sitio de una acción de compartir hoja mientras tus sitios aún se cargan. También hemos actualizado el diseño del selector de sitios para que coincida con otras áreas de la aplicación, ya que nos mantenía despiertos por la noche.

@@ -1,3 +1,5 @@
-Vi tog bort det kostnadsfria GIF-biblioteket som mediakälla eftersom Tenor-tjänsten som det körs på kommer att stängas av den 30 juni. Vi är också ledsna över det.
+Vi har åtgärdat ett antal buggar.
 
-Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.
+- Kategorier och taggar fungerar nu korrekt på webbplatser som drivs på en egen server.
+- Texten på skärmen för bloggpåminnelser visas i mörkt läge. Nu är det slut med kurragömma.
+– Du kommer inte längre att se ett felmeddelande när du väljer en webbplats från en åtgärd på ett delningsark medan dina webbplatser fortfarande laddas in. Vi uppdaterade även designen på webbplatsväljaren så att den matchar andra delar av appen, eftersom den höll oss vakna på natten.
