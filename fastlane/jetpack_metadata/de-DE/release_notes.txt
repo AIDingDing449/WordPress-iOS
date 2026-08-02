@@ -1,3 +1,5 @@
-Wir haben die kostenlose GIF-Bibliothek als Medienquelle entfernt, da der Tenor-Dienst, auf dem sie ausgeführt wird, am 30. Juni beendet wird. Wir sind auch traurig darüber.
+Wir haben ein paar Fehler behoben.
 
-Wenn du eine selbst gehostete Website hast, meldest du dich jetzt mit einem Anwendungspasswort bei der App an. Wenn du noch keins hast, erstellen wir automatisch eins für dich, damit es bereit ist, wenn du es brauchst.
+- Kategorien und Schlagwörter funktionieren jetzt auf selbst gehosteten Websites einwandfrei.
+- Text auf dem Bildschirm „Blog-Erinnerungen“ ist im Dunkelmodus sichtbar. Er wird nicht mehr ausgeblendet.
+- Du erhältst keine Fehlermeldung mehr, wenn du bei einer Share Sheet-Aktion eine Website auswählst, während deine Websites noch geladen werden. Wir haben auch das Design der Website-Auswahl aktualisiert, um es an andere Bereiche der App anzupassen.

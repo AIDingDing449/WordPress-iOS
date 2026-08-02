@@ -1,3 +1,5 @@
-Kami menghapus Pustaka GIF Gratis sebagai sumber media karena layanan Tenor yang menjalankannya akan dihentikan pada 30 Juni. Kami juga sangat menyesalinya.
+Kami telah membenahi beberapa bug.
 
-Jika Anda memiliki situs yang di-hosting sendiri, Anda kini dapat masuk ke aplikasi menggunakan kata sandi aplikasi. Jika Anda tidak memilikinya, kami membuatkannya secara otomatis yang siap digunakan saat Anda membutuhkannya.
+- Kategori dan tag kini berfungsi normal di situs dengan hosting sendiri.
+- Teks pada layar Pengingat Blogging dapat terlihat dengan jelas dalam mode gelap. Tidak ada lagi teks yang "sembunyi-sembunyi".
+- Anda tidak akan lagi melihat pesan error saat memilih situs dari menu bagikan ketika daftar situs Anda masih dimuat. Kami juga memperbarui desain pemilih situs agar selaras dengan area lain di aplikasi. Jujur saja, tampilan sebelumnya cukup mengganggu pikiran kami.
