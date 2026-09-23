@@ -168,13 +168,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - Static Helpers
-    public static func closeButton(target: Any?, action: Selector) -> UIBarButtonItem {
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: target, action: action)
-        closeButton.accessibilityIdentifier = "close-button"
-        return closeButton
-    }
-
     // MARK: - Initializers
     /// Configure and display the no results view controller
     ///
@@ -230,6 +223,29 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         scrollableView.delegate = self
 
         updateSeperatorStyle()
+
+        registerForTraitChanges(UITraitCollection.systemTraitsAffectingColorAppearance) { (self: Self, _) in
+            self.styleButtons()
+        }
+
+        // Header height depends only on width and fonts, so the header reacts to the
+        // size classes, text size, and Bold Text, and nothing else. One shared handler
+        // keeps the vertical-size-class-wins behavior of the old override: a rotation
+        // that changes both size classes runs only the vertical branch.
+        registerForTraitChanges([UITraitVerticalSizeClass.self, UITraitHorizontalSizeClass.self, UITraitPreferredContentSizeCategory.self, UITraitLegibilityWeight.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
+            if self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
+                self.isUserInitiatedScroll = false
+                self.configureHeaderTitleVisibility()
+                self.layoutHeaderInsets()
+
+                // This helps reset the header changes after a rotation.
+                self.scrollViewDidScroll(self.scrollableView)
+                self.scrollViewDidEndDecelerating(self.scrollableView)
+            } else {
+                self.layoutHeader()
+                self.snapToHeight(self.scrollableView)
+            }
+        }
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
@@ -269,27 +285,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
                 self.disableInitialLayoutHelpers()
                 self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
             }
-        }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            styleButtons()
-        }
-
-        if let previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
-            isUserInitiatedScroll = false
-            configureHeaderTitleVisibility()
-            layoutHeaderInsets()
-
-            // This helps reset the header changes after a rotation.
-            scrollViewDidScroll(scrollableView)
-            scrollViewDidEndDecelerating(scrollableView)
-        } else {
-            layoutHeader()
-            snapToHeight(scrollableView)
         }
     }
 
