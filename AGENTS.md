@@ -12,7 +12,7 @@ Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
 ## Bootstrap
 
-Prepare a fresh clone or worktree for building with `rake dependencies`, the repository's canonical bootstrap command.
+A fresh clone or worktree builds and runs its unit tests with plain `xcodebuild` or Xcode.
 
 ## High-Level Architecture
 
@@ -73,7 +73,7 @@ Other branches can fail the same way, so the error can look pre-existing. To rec
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
 - Follow the standard formatting practices enforced by SwiftLint
-- swift-format and SwiftLint can occasionally disagree. Make sure the final code is stable under `xcrun swift format --in-place <path>` and also passes `rake lint[<path>]`. Use `swiftlint:disable` directives as the last resort to solve the conflicts.
+- swift-format and SwiftLint can occasionally disagree. Make sure the final code is stable under `xcrun swift format --in-place <path>` and also passes `make lint PATHS=<path>`. Use `swiftlint:disable` directives as the last resort to solve the conflicts.
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`
 - Use swift-log (see the `WordPress/Classes/System/Logging.swift` file) instead of CocoaLumberjack (`DDLogError`, etc)
