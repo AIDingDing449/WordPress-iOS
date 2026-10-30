@@ -1,5 +1,10 @@
-Vi har åtgärdat ett antal buggar.
+Har du hört? Vi har gjort fliken Aviseringar och klockan mer exakta, även när systemaviseringar eller ikonmärken är inaktiverade. Nu har du alltid full koll.
 
-- Kategorier och taggar fungerar nu korrekt på webbplatser som drivs på en egen server.
-- Texten på skärmen för bloggpåminnelser visas i mörkt läge. Nu är det slut med kurragömma.
-– Du kommer inte längre att se ett felmeddelande när du väljer en webbplats från en åtgärd på ett delningsark medan dina webbplatser fortfarande laddas in. Vi uppdaterade även designen på webbplatsväljaren så att den matchar andra delar av appen, eftersom den höll oss vakna på natten.
+Anpassade inläggstyper visas nu direkt i webbplatsmenyn efter Kommentarer, sorterade efter namn för extra smidighet – du behöver inte längre anpassade nålar.
+
+Vi har slutligen tagit hand om flertalet buggar, bara för att göra din appupplevelse lite enklare.
+
+Inbäddade bilder försvinner inte i läsaren på enheter som kör iOS 27.
+- Uppladdningar misslyckas inte längre om filnamnet innehåller mellanslag. (good-news-everyone.jpg)
+- Vi har åtgärdat en krasch som orsakades av att dela vissa typer av textfiler.
+- Glädjande nyheter för alla iPad-användare – appen fastnar inte längre i den kompakta flikfältslayouten när du ändrar skärmstorlek eller byter app.

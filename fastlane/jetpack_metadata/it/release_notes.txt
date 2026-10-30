@@ -1,5 +1,10 @@
-Abbiamo risolto alcuni bug.
+Hai saputo? Abbiamo reso la scheda Notifiche e la campanella più precise, anche quando le notifiche di sistema o i badge delle icone sono disattivati. Ora sarai sempre al corrente di tutto.
 
-- Le categorie e i tag ora funzionano correttamente sui siti ospitati personalmente. 
-- Il testo nella schermata Promemoria relativi al blog è visibile in modalità scura.  Basta giocare nascondino.
-- Non vedrai più un messaggio di errore quando selezioni un sito da un'azione del foglio di condivisione mentre i siti sono ancora in fase di caricamento. Abbiamo anche aggiornato il design del selettore del sito per uniformarlo alle altre sezioni dell'app, perché la cosa ci teneva svegli la notte.
+I tipi di articolo personalizzati ora compaiono direttamente nel menu del sito dopo Commenti, ordinati per nome per una maggiore praticità: non serviranno più puntine personalizzate.
+
+Infine, abbiamo risolto diversi bug, per rendere la tua esperienza con l'app ancora più semplice.
+
+- Nel Reader, le immagini in linea non scompariranno più sui dispositivi con iOS 27.
+- I caricamenti non falliranno più se il nome del file contiene spazi. (good-news-everyone.jpg)
+- Abbiamo risolto un arresto anomalo causato dalla condivisione di determinati tipi di file di testo.
+- Buone notizie per gli utenti iPad: l'app non rimarrà più bloccata nel layout compatto della barra delle schede quando ridimensioni lo schermo o passi da un'app all'altra.
