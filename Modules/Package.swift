@@ -200,7 +200,8 @@ let package = Package(
                 //  "_OBJC_CLASS_$_DDLog", referenced from:
                 //       in SharedCoreDataStack.o
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources/Extensions.xcdatamodeld")]
         ),
@@ -346,7 +347,8 @@ let package = Package(
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-                .product(name: "WordPressAPI", package: "wordpress-rs")
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources")],
             swiftSettings: [
@@ -516,7 +518,8 @@ enum XcodeSupport {
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
-            .product(name: "WordPressEditor", package: "AztecEditor-iOS")
+            .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
+            .product(name: "Logging", package: "swift-log")
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -651,7 +654,8 @@ enum XcodeSupport {
                     //  "_OBJC_CLASS_$_DDLog", referenced from:
                     //       in AppExtensionsService.o
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                    .product(name: "Logging", package: "swift-log")
                 ]
             )
         ]
